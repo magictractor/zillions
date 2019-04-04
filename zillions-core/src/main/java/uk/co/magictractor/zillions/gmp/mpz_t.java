@@ -32,8 +32,6 @@ import com.sun.jna.ptr.NativeLongByReference;
  * href="http://rococoa.dev.java.net/">Rococoa</a>, or <a
  * href="http://jna.dev.java.net/">JNA</a>.
  */
-// March 2019 - I think I had stopped using JNAerator and just crafted required files
-// manually.
 public class mpz_t extends Structure implements ByReference
 {
   /**
@@ -59,7 +57,7 @@ public class mpz_t extends Structure implements ByReference
   }
 
   @Override
-  protected List<?> getFieldOrder() {
+  protected List<String> getFieldOrder() {
     return Arrays.asList("_mp_alloc", "_mp_size", "_mp_d");
   };
 

@@ -5,29 +5,25 @@
   <artifactId>zillions-core</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>Magic Tractor Math</name>
-  <description>Math description</description>
+  <name>Zillions - fast large integer arithmetic</name>
+  <description>Zillions - fast large integer arithmetic</description>
 
   <dependencies>
-    <!-- <dependency> <groupId>uk.co.magictractor</groupId> <artifactId>core</artifactId> 
-      <version>0.1-SNAPSHOT</version> <scope>compile</scope> </dependency> <dependency> 
-      <groupId>uk.co.magictractor</groupId> <artifactId>test</artifactId> <version>0.1-SNAPSHOT</version> 
-      <scope>test</scope> </dependency> -->
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.10</version>
+      <version>1.7.26</version>
     </dependency>
 
-<!-- Now 5.2.0 -->
     <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
-      <version>4.1.0</version>
+      <version>5.2.0</version>
       <optional>true</optional>
     </dependency>
 
+<!--  TODO! move to JUnit5 - suites may need some work -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -38,7 +34,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.1.2</version>
+      <version>1.2.3</version>
       <scope>test</scope>
     </dependency>
 
@@ -83,11 +79,12 @@
       <!-- Generate JNA classes. Run using "mvn jnaerator:generate". Config 
         in src/main/jnaerator/config.jnaerator See https://code.google.com/p/jnaerator/wiki/Maven 
         https://code.google.com/p/jnaerator/wiki/CommandLineOptionsAndEnvironmentVariables -->
+        <!-- 
       <plugin>
         <groupId>com.nativelibs4java</groupId>
         <artifactId>maven-jnaerator-plugin</artifactId>
         <version>0.11</version>
-      </plugin>
+      </plugin>  -->
     </plugins>
   </build>
 
@@ -101,12 +98,7 @@
   </licenses>
 
   <scm>
-    <connection>
-      scm:svn:http://subversion.magictractor.co.uk/Lowp
-    </connection>
-    <url>http://subversion.magictractor.co.uk/Lowp</url>
-    <!-- <developerConnection>scm:svn:https://127.0.0.1/svn/my-project</developerConnection> 
-      <tag>HEAD</tag> <url>http://127.0.0.1/websvn/my-project</url> -->
+    <!-- TODO! -->
   </scm>
 
 </project>
