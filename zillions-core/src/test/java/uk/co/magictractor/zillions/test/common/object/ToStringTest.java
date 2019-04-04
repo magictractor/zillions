@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.test.arithmetic;
+package uk.co.magictractor.zillions.test.common.object;
 
 import static uk.co.magictractor.zillions.core.BigIntCreate.from;
 
@@ -23,15 +23,24 @@ import org.junit.Test;
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.test.common.ReuseTest;
 
-public class AddTest extends ReuseTest
+public class ToStringTest extends ReuseTest
 {
   @Test
-  public void testAddSmallPositiveNumbers() {
-    BigInt bigInt1 = from("10");
-    BigInt bigInt2 = from("4");
-    bigInt1.add(bigInt2);
-    BigInt expected = from("14");
-    Assert.assertEquals(expected, bigInt1);
+  public void testToStringPositive() {
+    BigInt bigInt = from("102");
+    Assert.assertEquals("102", bigInt.toString());
+  }
+
+  @Test
+  public void testToStringZero() {
+    BigInt bigInt = from("0");
+    Assert.assertEquals("0", bigInt.toString());
+  }
+
+  @Test
+  public void testToStringNegative() {
+    BigInt bigInt = from("-98");
+    Assert.assertEquals("-98", bigInt.toString());
   }
 
 }

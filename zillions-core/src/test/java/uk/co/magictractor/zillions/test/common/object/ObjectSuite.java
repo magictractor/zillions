@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.test.arithmetic;
+package uk.co.magictractor.zillions.test.common.object;
 
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(Suite.class)
-@SuiteClasses({AddTest.class, MultiplyTest.class})
-public class ArithmeticSuite
+import uk.co.magictractor.zillions.test.common.ReuseSuite;
+
+@RunWith(ReuseSuite.class)
+@SuiteClasses({ToStringTest.class, EqualsTest.class, HashCodeTest.class})
+public class ObjectSuite
 {
   // This class is left intentionally blank.
 }

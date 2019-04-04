@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.test.arithmetic;
+package uk.co.magictractor.zillions.test.common.object;
 
 import static uk.co.magictractor.zillions.core.BigIntCreate.from;
 
@@ -23,16 +23,21 @@ import org.junit.Test;
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.test.common.ReuseTest;
 
-public class MultiplyTest extends ReuseTest
+public class HashCodeTest extends ReuseTest
 {
 
   @Test
-  public void testMultiplySmallPositiveNumbers() {
+  public void testHashCodeEquality() {
     BigInt bigInt1 = from("10");
-    BigInt bigInt2 = from("4");
-    bigInt1.multiply(bigInt2);
-    BigInt expected = from("40");
-    Assert.assertEquals(expected, bigInt1);
+    BigInt bigInt2 = from("10");
+    Assert.assertEquals(bigInt1.hashCode(), bigInt2.hashCode());
+  }
+
+  @Test
+  public void testHashCodeEqualityIgnoresLeadingZero() {
+    BigInt bigInt1 = from("10");
+    BigInt bigInt2 = from("010");
+    Assert.assertEquals(bigInt1.hashCode(), bigInt2.hashCode());
   }
 
 }

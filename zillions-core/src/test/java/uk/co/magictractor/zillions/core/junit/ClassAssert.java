@@ -17,6 +17,7 @@ package uk.co.magictractor.zillions.core.junit;
 
 import org.junit.Assert;
 
+// TODO! bin this and use AssertJ
 public final class ClassAssert
 {
 

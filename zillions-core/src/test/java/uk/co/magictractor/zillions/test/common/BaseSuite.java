@@ -18,9 +18,9 @@ package uk.co.magictractor.zillions.test.common;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-import uk.co.magictractor.math.zillions.test.bits.BitSuite;
-import uk.co.magictractor.zillions.test.arithmetic.ArithmeticSuite;
-import uk.co.magictractor.zillions.test.object.ObjectSuite;
+import uk.co.magictractor.zillions.test.common.arithmetic.ArithmeticSuite;
+import uk.co.magictractor.zillions.test.common.bits.BitSuite;
+import uk.co.magictractor.zillions.test.common.object.ObjectSuite;
 
 @RunWith(ReuseSuite.class)
 @SuiteClasses({ObjectSuite.class, ArithmeticSuite.class, BitSuite.class})

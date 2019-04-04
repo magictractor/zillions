@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.math.zillions.test.bits;
+package uk.co.magictractor.zillions.test.common.arithmetic;
 
 import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import uk.co.magictractor.zillions.test.common.ReuseSuite;
-
-@RunWith(ReuseSuite.class)
-@SuiteClasses({XorTest.class})
-public class BitSuite
+@RunWith(Suite.class)
+@SuiteClasses({AddTest.class, MultiplyTest.class})
+public class ArithmeticSuite
 {
   // This class is left intentionally blank.
 }

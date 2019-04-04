@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.test.object;
+package uk.co.magictractor.zillions.test.common.bits;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -21,8 +21,8 @@ import org.junit.runners.Suite.SuiteClasses;
 import uk.co.magictractor.zillions.test.common.ReuseSuite;
 
 @RunWith(ReuseSuite.class)
-@SuiteClasses({ToStringTest.class, EqualsTest.class, HashCodeTest.class})
-public class ObjectSuite
+@SuiteClasses({XorTest.class})
+public class BitSuite
 {
   // This class is left intentionally blank.
 }

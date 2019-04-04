@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.math.zillions.test.bits;
+package uk.co.magictractor.zillions.test.common.bits;
 
 import static uk.co.magictractor.zillions.core.BigIntCreate.from;
 
