@@ -13,29 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.core;
+package uk.co.magictractor.zillions.test.common.arithmetic;
 
-import uk.co.magictractor.zillions.core.create.CreateStrategy;
-import uk.co.magictractor.zillions.core.environment.Environment;
+import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.magictractor.zillions.core.BigIntFactory.from;
 
-public final class BigIntCreate
+import org.junit.jupiter.api.Test;
+
+import uk.co.magictractor.zillions.core.BigInt;
+
+public abstract class SubtractTest
 {
 
-  private static final CreateStrategy CREATE = Environment.getImplementation(CreateStrategy.class);
-
-  private BigIntCreate() {
-  }
-
-  public static BigInt from(String decimal) {
-    return CREATE.fromString(decimal);
-  }
-
-  public static BigInt from(long value) {
-    return CREATE.fromLong(value);
-  }
-
-  public static BigInt from(BigInt other) {
-    return CREATE.copy(other);
+  @Test
+  public void testSubtractSmallPositiveNumbers() {
+    BigInt bigInt1 = from("10");
+    BigInt bigInt2 = from("4");
+    bigInt1.subtract(bigInt2);
+    BigInt expected = from("6");
+    //Assert.assertEquals(expected, bigInt1);
+    assertThat(bigInt1).isEqualTo(expected);
   }
 
 }

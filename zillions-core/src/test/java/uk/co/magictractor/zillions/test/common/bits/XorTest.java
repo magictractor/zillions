@@ -15,10 +15,10 @@
  */
 package uk.co.magictractor.zillions.test.common.bits;
 
-import static uk.co.magictractor.zillions.core.BigIntCreate.from;
+import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.magictractor.zillions.core.BigIntFactory.from;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.test.common.ReuseTest;
@@ -34,7 +34,8 @@ public class XorTest extends ReuseTest
     BigInt j = from("3");
     i.xor(j);
     BigInt expected = from("9");
-    Assert.assertEquals(expected, i);
+    //Assert.assertEquals(expected, i);
+    assertThat(i).isEqualTo(expected);
   }
 
   @Test
@@ -43,7 +44,8 @@ public class XorTest extends ReuseTest
     BigInt j = from("-3");
     i.xor(j);
     BigInt expected = from("-9");
-    Assert.assertEquals(expected, i);
+   // Assert.assertEquals(expected, i);
+    assertThat(i).isEqualTo(expected);
   }
 
   @Test
@@ -52,7 +54,8 @@ public class XorTest extends ReuseTest
     BigInt j = from("3");
     i.xor(j);
     BigInt expected = from("-11");
-    Assert.assertEquals(expected, i);
+   // Assert.assertEquals(expected, i);
+    assertThat(i).isEqualTo(expected);
   }
 
   @Test
@@ -61,7 +64,8 @@ public class XorTest extends ReuseTest
     BigInt j = from("-3");
     i.xor(j);
     BigInt expected = from("11");
-    Assert.assertEquals(expected, i);
+   // Assert.assertEquals(expected, i);
+    assertThat(i).isEqualTo(expected);
   }
 
 }

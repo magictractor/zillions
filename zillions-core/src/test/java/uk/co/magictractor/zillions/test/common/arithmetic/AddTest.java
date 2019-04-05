@@ -15,10 +15,10 @@
  */
 package uk.co.magictractor.zillions.test.common.arithmetic;
 
-import static uk.co.magictractor.zillions.core.BigIntCreate.from;
+import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.magictractor.zillions.core.BigIntFactory.from;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.test.common.ReuseTest;
@@ -31,7 +31,7 @@ public class AddTest extends ReuseTest
     BigInt bigInt2 = from("4");
     bigInt1.add(bigInt2);
     BigInt expected = from("14");
-    Assert.assertEquals(expected, bigInt1);
+    assertThat(bigInt1).isEqualTo(expected);
   }
 
 }

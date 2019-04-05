@@ -20,68 +20,70 @@ import java.util.List;
 import uk.co.magictractor.zillions.core.property.PropertyDecorator;
 import uk.co.magictractor.zillions.core.property.PropertyStrategy;
 
-public final class Environment
-{
+public final class Environment {
 
-  private static final StrategiesFactory STRATEGY_FACTORY = new StrategiesFactory();
-  private static final PropertyDecorator PROPERTIES;
+	private static final StrategiesFactory STRATEGY_FACTORY = new StrategiesFactory();
+	private static final PropertyDecorator PROPERTIES;
 
-  static {
-    // PROPERTY_LIST = (PropertyStrategyList)
-    // STRATEGY_FACTORY.getStrategyList(PropertyStrategy.class);
+	static {
+		// PROPERTY_LIST = (PropertyStrategyList)
+		// STRATEGY_FACTORY.getStrategyList(PropertyStrategy.class);
 
-    // Custom bootstrapping should never be required, but is possible.
-    String bootstrapClassName = System.getProperty(Environment.class.getName() + ".bootstrap");
-    BootstrapStrategy bootstrapStrategy;
-    if (bootstrapClassName == null) {
-      bootstrapStrategy = new DefaultBootstrapStrategy();
-    } else {
-      bootstrapStrategy = safeLoadBootstrapClass(bootstrapClassName);
-    }
-    bootstrapStrategy.bootstrap(STRATEGY_FACTORY);
+		/*
+		 * Custom bootstrapping should never be required but can be done. It's intended
+		 * that sufficient customisation is using the default bootstrap.
+		 */
+		String bootstrapClassName = System.getProperty(Environment.class.getName() + ".bootstrap");
+		BootstrapStrategy bootstrapStrategy;
+		if (bootstrapClassName == null) {
+			bootstrapStrategy = new DefaultBootstrapStrategy();
+		} else {
+			bootstrapStrategy = safeLoadBootstrapClass(bootstrapClassName);
+		}
 
-    PROPERTIES = new PropertyDecorator(STRATEGY_FACTORY.getStrategyList(PropertyStrategy.class));
-  }
+		PROPERTIES = new PropertyDecorator(STRATEGY_FACTORY.getStrategyListWithoutDiscovery(PropertyStrategy.class));
 
-  private Environment() {
-  }
+		bootstrapStrategy.bootstrap(STRATEGY_FACTORY);
+	}
 
-  private static BootstrapStrategy safeLoadBootstrapClass(String bootstrapClassName) {
-    try {
-      return loadBootstrapClass(bootstrapClassName);
-    } catch (Exception e) {
-      // TODO! what to do now?
-      // Perhaps wire in special strategies.
-      System.err.println("Could not load " + bootstrapClassName);
-      e.printStackTrace(System.err);
-      return null;
-    }
-  }
+	private Environment() {
+	}
 
-  private static BootstrapStrategy loadBootstrapClass(String bootstrapClassName)
-    throws Exception {
-    Class<?> bootstrapClass = Class.forName(bootstrapClassName);
-    return (BootstrapStrategy) bootstrapClass.newInstance();
-  }
+	private static BootstrapStrategy safeLoadBootstrapClass(String bootstrapClassName) {
+		try {
+			return loadBootstrapClass(bootstrapClassName);
+		} catch (Exception e) {
+			// TODO! what to do now?
+			// Perhaps wire in special strategies.
+			System.err.println("Could not load " + bootstrapClassName);
+			e.printStackTrace(System.err);
+			return null;
+		}
+	}
 
-  public static <S> S getImplementation(Class<S> apiClass) {
-    return getStrategyList(apiClass).firstAvailable();
-  }
+	private static BootstrapStrategy loadBootstrapClass(String bootstrapClassName) throws ReflectiveOperationException  {
+		Class<?> bootstrapClass = Class.forName(bootstrapClassName);
+		return (BootstrapStrategy) bootstrapClass.newInstance();
+	}
 
-  public static <S> List<S> getAvailableImplementations(Class<S> apiClass) {
-    return getStrategyList(apiClass).allAvailable();
-  }
+	public static <S> S getImplementation(Class<S> apiClass) {
+		return getStrategyList(apiClass).firstAvailable();
+	}
 
-  public static <S> Strategies<S> getStrategyList(Class<S> apiClass) {
-    return STRATEGY_FACTORY.getStrategyList(apiClass);
-  }
+	public static <S> List<S> getAvailableImplementations(Class<S> apiClass) {
+		return getStrategyList(apiClass).allAvailable();
+	}
 
-  public static StrategiesFactory getImplementations() {
-    return STRATEGY_FACTORY;
-  }
+	public static <S> Strategies<S> getStrategyList(Class<S> apiClass) {
+		return STRATEGY_FACTORY.getStrategyList(apiClass);
+	}
 
-  public static PropertyDecorator getProperties() {
-    return PROPERTIES;
-  }
+	public static StrategiesFactory getImplementations() {
+		return STRATEGY_FACTORY;
+	}
+
+	public static PropertyDecorator getProperties() {
+		return PROPERTIES;
+	}
 
 }

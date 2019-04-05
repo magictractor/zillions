@@ -39,22 +39,25 @@ public class DefaultBootstrapStrategy implements BootstrapStrategy
 
   private void bootstrapPropertyStrategies(StrategiesFactory implementations) {
     // TODO! refactor - at least get rid of casting
-    CachedStrategies<PropertyStrategy> propertyStrategies = (CachedStrategies) implementations.getStrategyList(PropertyStrategy.class);
+	  // TODO! why get this list? could just add impl?
+    CachedStrategies<PropertyStrategy> propertyStrategies = (CachedStrategies) implementations.getStrategyListWithoutDiscovery(PropertyStrategy.class);
 
-    propertyStrategies.addStrategyImplementation(new SystemPropertyStrategy());
-    // TODO! allow these to be renamed and disabled
+    propertyStrategies.addStrategyImplementation(new SystemPropertyStrategy(), StrategyOption.SKIP_EXPLICIT_DISABLED_CHECK);
+    
+    // TODO! allow these to be renamed and disabled (subclasses of FilePropertyStrategy?)
     propertyStrategies.addStrategyImplementation(new FilePropertyStrategy("/strategies.properties"));
     propertyStrategies.addStrategyImplementation(new FilePropertyStrategy("/test-strategies.properties"));
   }
 
   private void bootstrapDiscoveryStrategies(StrategiesFactory implementations) {
     // TODO! refactor - at least get rid of casting
-    CachedStrategies<DiscoveryStrategy> discoveryStrategies = (CachedStrategies) implementations.getStrategyList(DiscoveryStrategy.class);
+    CachedStrategies<DiscoveryStrategy> discoveryStrategies = (CachedStrategies) implementations.getStrategyListWithoutDiscovery(DiscoveryStrategy.class);
 
     discoveryStrategies.addStrategyImplementation(new ImplPropertyDiscoveryStrategy());
     discoveryStrategies.addStrategyImplementation(new SpiDiscoveryStrategy());
   }
 
+  // hmm over engineering? is this used? - should look for other PropertyStrategies though?
   // TODO! discovery using discovered strategies
   // TODO! guard against infinite loops
   private void discoverOtherStrategies(StrategiesFactory implementations, DiscoveryStrategy discoveryStrategy) {

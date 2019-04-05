@@ -15,15 +15,14 @@
  */
 package uk.co.magictractor.zillions.test.common;
 
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
 
 import uk.co.magictractor.zillions.core.junit.AssumeTestContext;
 
-@RunWith(ReuseRunner.class)
+//@RunWith(ReuseRunner.class)
 public abstract class ReuseTest
 {
-  @BeforeClass
+  @BeforeAll
   public static void assumeTestContext() {
     AssumeTestContext.assumeTextContext();
   }

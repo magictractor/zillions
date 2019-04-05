@@ -17,13 +17,17 @@ package uk.co.magictractor.zillions.core.environment;
 
 import java.util.List;
 
-public interface Strategies<S>
-{
+public interface Strategies<S> {
 
-  S firstAvailable();
+	// TODO! first or best?
+	S firstAvailable();
 
-  List<S> allAvailable();
+	List<S> allAvailable();
 
-  List<StrategyHolder<S>> strategyHolders();
+	/**
+	 * Information about all strategy implementations, including those which could
+	 * not be loaded, or are explicitly disabled.
+	 */
+	List<StrategyHolder<S>> strategyHolders();
 
 }

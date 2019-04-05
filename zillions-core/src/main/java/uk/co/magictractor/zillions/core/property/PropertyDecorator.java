@@ -17,6 +17,7 @@ package uk.co.magictractor.zillions.core.property;
 
 import uk.co.magictractor.zillions.core.environment.Strategies;
 
+// TODO! rename - not convinced about "Decorator" here
 public class PropertyDecorator
 {
   private Strategies<PropertyStrategy> _propertyStrategies;

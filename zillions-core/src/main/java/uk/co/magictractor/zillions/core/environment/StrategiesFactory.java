@@ -24,60 +24,76 @@ import org.slf4j.LoggerFactory;
 
 import uk.co.magictractor.zillions.core.discovery.DiscoveryStrategy;
 
-public class StrategiesFactory
+public class StrategiesFactory {
+	private final Logger _logger = LoggerFactory.getLogger(getClass());
 
-{
-  private final Logger _logger = LoggerFactory.getLogger(getClass());
+	private final Map<Class<?>, Strategies<?>> _implementationMap = new HashMap<Class<?>, Strategies<?>>();
 
-  private final Map<Class<?>, Strategies<?>> _implementationMap = new HashMap<Class<?>, Strategies<?>>();
+	public StrategiesFactory() {
+		// ?
+		// _implementationMap.put(PropertyStrategy.class, new PropertyStrategyList());
+		_implementationMap.put(DiscoveryStrategy.class,
+				new CachedStrategies<DiscoveryStrategy>(DiscoveryStrategy.class));
+	}
 
-  public StrategiesFactory() {
-    // _implementationMap.put(PropertyStrategy.class, new PropertyStrategyList());
-    _implementationMap.put(DiscoveryStrategy.class, new CachedStrategies<DiscoveryStrategy>(DiscoveryStrategy.class));
-  }
+	public <S> Strategies<S> getStrategyList(Class<S> apiClass) {
+		return getStrategyList(apiClass, true);
+	}
 
-  public <S> Strategies<S> getStrategyList(Class<S> apiClass) {
-    Strategies<S> implementations;
-    if (!_implementationMap.containsKey(apiClass)) {
-      implementations = discoverStrategyList(apiClass);
-      _implementationMap.put(apiClass, implementations);
-    } else {
-      implementations = (Strategies<S>) _implementationMap.get(apiClass);
-    }
+	public <S> Strategies<S> getStrategyListWithoutDiscovery(Class<S> apiClass) {
+		return getStrategyList(apiClass, false);
+	}
 
-    return implementations;
-  }
+	// TODO! param to skip discovery?
+	private <S> Strategies<S> getStrategyList(Class<S> apiClass, boolean allowDiscovery) {
+		System.out.println("discover: " + apiClass + ", " + allowDiscovery);
 
-  private <S> Strategies<S> discoverStrategyList(Class<S> apiClass) {
-    CachedStrategies<S> implementations = new CachedStrategies<S>(apiClass);
+		Strategies<S> implementations;
+		if (!_implementationMap.containsKey(apiClass)) {
+			// TODO! tidy this (if it works)
+			implementations = allowDiscovery ? discoverStrategyList(apiClass) : new CachedStrategies<S>(apiClass);
+			_implementationMap.put(apiClass, implementations);
+		} else {
+			implementations = (Strategies<S>) _implementationMap.get(apiClass);
+		}
 
-    // Give every known StrategyFactory an opportunity to create an instance of the api.
-    if (apiClass != StrategyFactory.class) {
-      // TODO! temporary workaround for empty StrategyFactory list being cached.
-      _implementationMap.remove(StrategyFactory.class);
-      for (StrategyFactory strategyFactory : getStrategyList(StrategyFactory.class).allAvailable()) {
-        S strategy = strategyFactory.createInstance(apiClass);
-        if (strategy != null) {
-          implementations.addStrategyImplementation(strategy);
-        }
-      }
-    }
+		return implementations;
+	}
 
-    for (DiscoveryStrategy discoveryStrategy : allAvailableDiscoveryStrategies()) {
-      implementations.addStrategies(discoveryStrategy.discoverImplementations(apiClass));
-    }
+	private <S> Strategies<S> discoverStrategyList(Class<S> apiClass) {
 
-    if (implementations.allAvailable().isEmpty()) {
-      _logger.warn("No available implementation found for {}", apiClass.getName());
-    }
+		CachedStrategies<S> implementations = new CachedStrategies<S>(apiClass);
 
-    return implementations;
-  }
+		// Give every known StrategyFactory an opportunity to create an instance of the
+		// api.
+		if (apiClass != StrategyFactory.class) {
+			// TODO! temporary workaround for empty StrategyFactory list being cached.
+			// ?!? bad smell
+			_implementationMap.remove(StrategyFactory.class);
+			for (StrategyFactory strategyFactory : getStrategyList(StrategyFactory.class).allAvailable()) {
+				S strategy = strategyFactory.createInstance(apiClass);
+				if (strategy != null) {
+					implementations.addStrategyImplementation(strategy);
+				}
+			}
+		}
 
-  @SuppressWarnings("unchecked")
-  private List<DiscoveryStrategy> allAvailableDiscoveryStrategies() {
-    Strategies<DiscoveryStrategy> discoveryStrategies = (Strategies<DiscoveryStrategy>) _implementationMap.get(DiscoveryStrategy.class);
-    return discoveryStrategies.allAvailable();
-  }
+		for (DiscoveryStrategy discoveryStrategy : allAvailableDiscoveryStrategies()) {
+			implementations.addStrategies(discoveryStrategy.discoverImplementations(apiClass));
+		}
+
+		if (implementations.allAvailable().isEmpty()) {
+			_logger.warn("No available implementation found for {}", apiClass.getName());
+		}
+
+		return implementations;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<DiscoveryStrategy> allAvailableDiscoveryStrategies() {
+		Strategies<DiscoveryStrategy> discoveryStrategies = (Strategies<DiscoveryStrategy>) _implementationMap
+				.get(DiscoveryStrategy.class);
+		return discoveryStrategies.allAvailable();
+	}
 
 }

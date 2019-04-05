@@ -15,69 +15,69 @@
  */
 package uk.co.magictractor.zillions.core.example;
 
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import uk.co.magictractor.zillions.biginteger.BigIntegerCreateStrategy;
 import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntCreate;
-import uk.co.magictractor.zillions.core.junit.TestContextRule;
+import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.core.junit.TestContextExtension;
 
-public class ExampleQuickStart
-{
-  @ClassRule
-  public static TestContextRule __testContextRule = new TestContextRule(BigIntegerCreateStrategy.class);
+public class ExampleQuickStart {
 
-  @Test
-  public void fibonacciWithLong() {
-    long a = 1;
-    long b = 1;
-    int i = 2;
-    while (a <= b) {
-      long c = a + b;
-      a = b;
-      b = c;
-      i++;
-      System.out.println(i + "  " + b);
-    }
-  }
+	@RegisterExtension
+	private static TestContextExtension __testContextRule = new TestContextExtension(BigIntegerCreateStrategy.class);
 
-  @Test
-  public void fibonacciWithBigInt() {
-    BigInt a = BigIntCreate.from(1);
-    BigInt b = BigIntCreate.from(1);
-    int i = 2;
-    while (i < 100) {
-      a.add(b);
-      BigInt c = a;
-      a = b;
-      b = c;
-      i++;
-      System.out.println(i + "  " + b);
-    }
-  }
+	@Test
+	public void fibonacciWithLong() {
+		long a = 1;
+		long b = 1;
+		int i = 2;
+		while (a <= b) {
+			long c = a + b;
+			a = b;
+			b = c;
+			i++;
+			System.out.println(i + "  " + b);
+		}
+	}
 
-  @Test
-  public void factorialWithLong() {
-    long f = 1;
-    for (int i = 2; i < 24; i++) {
-      f = f * i;
-      System.out.println(i + "  " + f);
-    }
-  }
+	@Test
+	public void fibonacciWithBigInt() {
+		BigInt a = BigIntFactory.from(1);
+		BigInt b = BigIntFactory.from(1);
+		int i = 2;
+		while (i < 100) {
+			a.add(b);
+			BigInt c = a;
+			a = b;
+			b = c;
+			i++;
+			System.out.println(i + "  " + b);
+		}
+	}
 
-  // Note: f is mutable
-  @Test
-  public void factorialWithBigInt() {
-    BigInt f = BigIntCreate.from(1);
-    for (int i = 2; i < 24; i++) {
-      f.multiply(i);
-      System.out.println(i + "  " + f);
-    }
-  }
+	@Test
+	public void factorialWithLong() {
+		long f = 1;
+		for (int i = 2; i < 24; i++) {
+			f = f * i;
+			System.out.println(i + "  " + f);
+		}
+	}
 
-  // TODO! use a Factorial function
-  // TODO! show different implementations of the function
-  // TODO! show performance differences
+	// Note: f is mutable
+	@Test
+	public void factorialWithBigInt() {
+		BigInt f = BigIntFactory.from(1);
+		for (int i = 2; i < 24; i++) {
+			f.multiply(i);
+			System.out.println(i + "  " + f);
+		}
+	}
+
+	// TODO! use a Factorial function
+	// TODO! show different implementations of the function
+	// TODO! show performance differences
 
 }

@@ -15,14 +15,14 @@
  */
 package uk.co.magictractor.zillions.core.environment;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class GenericsHelperTest
 {
 
   @Test
-  @Ignore("revisit this later for getting information about the api for logging")
+  @Disabled("revisit this later for getting information about the api for logging")
   public void t() {
     // CachedStrategies<CreateStrategy> strategyList = new
     // CachedStrategies<CreateStrategy>();

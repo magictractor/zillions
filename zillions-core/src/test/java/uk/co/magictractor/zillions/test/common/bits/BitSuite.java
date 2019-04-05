@@ -15,14 +15,11 @@
  */
 package uk.co.magictractor.zillions.test.common.bits;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.platform.suite.api.SelectClasses;
 
-import uk.co.magictractor.zillions.test.common.ReuseSuite;
-
-@RunWith(ReuseSuite.class)
-@SuiteClasses({XorTest.class})
-public class BitSuite
-{
-  // This class is left intentionally blank.
+//@RunWith(ReuseSuite.class)
+//@SuiteClasses({XorTest.class})
+@SelectClasses({ XorTest.class })
+public class BitSuite {
+	// This class is left intentionally blank.
 }

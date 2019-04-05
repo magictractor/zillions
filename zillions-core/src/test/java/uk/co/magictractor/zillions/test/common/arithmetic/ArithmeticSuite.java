@@ -15,12 +15,11 @@
  */
 package uk.co.magictractor.zillions.test.common.arithmetic;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.platform.suite.api.SelectClasses;
 
-@RunWith(Suite.class)
-@SuiteClasses({AddTest.class, MultiplyTest.class})
+//@RunWith(Suite.class)
+//@SuiteClasses({AddTest.class, MultiplyTest.class})
+@SelectClasses({AddTest.class, MultiplyTest.class})
 public class ArithmeticSuite
 {
   // This class is left intentionally blank.

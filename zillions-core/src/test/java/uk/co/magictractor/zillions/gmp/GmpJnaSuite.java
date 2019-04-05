@@ -15,15 +15,24 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import org.junit.ClassRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.platform.suite.api.SuiteDisplayName;
+import org.junit.runner.RunWith;
 
-import uk.co.magictractor.zillions.core.junit.TestContextRule;
-import uk.co.magictractor.zillions.gmp.GmpJnaCreateStrategy;
-import uk.co.magictractor.zillions.test.common.BaseSuite;
+import uk.co.magictractor.zillions.core.junit.TestContextExtension;
+import uk.co.magictractor.zillions.test.common.AllBigIntOpsSuite;
 
-public class GmpJnaSuite extends BaseSuite
-{
-  @ClassRule
-  public static final TestContextRule TEST_CONTEXT_RULE = new TestContextRule(GmpJnaCreateStrategy.class);
+//@RunWith(JUnitPlatform.class)
+//@SuiteDisplayName("GmpJna")
+public class GmpJnaSuite extends AllBigIntOpsSuite {
 
+	// TODO! rename (at least)
+	@RegisterExtension
+	public TestContextExtension TEST_CONTEXT_RULE = new TestContextExtension(GmpJnaCreateStrategy.class);
+
+//	@Test
+//	public void t() {
+//		
+//	}
 }

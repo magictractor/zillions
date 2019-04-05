@@ -35,25 +35,25 @@ public class CachedStrategies<S> implements Strategies<S>
     _apiClass = apiClass;
   }
 
-  public void addStrategyClass(String strategyClassName) {
+  public void addStrategyClass(String strategyClassName, StrategyOption... options) {
     if (strategyClassName == null) {
       throw new IllegalArgumentException("strategyClassName parameter must not be null");
     }
-    addStrategyHolder(new StrategyHolder<S>(strategyClassName));
+    addStrategyHolder(new StrategyHolder<S>(strategyClassName, options));
   }
 
-  public void addStrategyClass(Class<S> strategyClass) {
+  public void addStrategyClass(Class<S> strategyClass, StrategyOption... options) {
     if (strategyClass == null) {
       throw new IllegalArgumentException("strategyClass parameter must not be null");
     }
-    addStrategyHolder(new StrategyHolder<S>(strategyClass));
+    addStrategyHolder(new StrategyHolder<S>(strategyClass, options));
   }
 
-  public void addStrategyImplementation(S strategy) {
+  public void addStrategyImplementation(S strategy, StrategyOption... options) {
     if (strategy == null) {
       throw new IllegalArgumentException("strategy parameter must not be null");
     }
-    addStrategyHolder(new StrategyHolder<S>(strategy));
+    addStrategyHolder(new StrategyHolder<S>(strategy, options));
   }
 
   public void addStrategies(Strategies<S> strategies) {
@@ -67,20 +67,24 @@ public class CachedStrategies<S> implements Strategies<S>
   }
 
   public void addStrategyHolder(StrategyHolder<S> strategyHolder) {
-    _logger.debug("Added {}", strategyHolder);
-    clearCache();
     _strategyHolders.add(strategyHolder);
+    clearCache();
+    _logger.debug("Added {}", strategyHolder);
   }
 
+
+	// TODO! improve this - should add a holder?
+  public void addStrategyUnavailable(String reason, Throwable cause) {
+//    if (cause == null) {
+//      throw new IllegalArgumentException("cause parameter must not be null");
+//    }
+//    _logger.error("Strategy is unavailable", cause);
+	  addStrategyHolder(new StrategyHolder<>(reason, cause));
+  } 
+
+  // TODO! should this instead throw an error if _available is not null?
   private void clearCache() {
     _available = null;
-  }
-
-  public void addStrategyUnavailable(Throwable cause) {
-    if (cause == null) {
-      throw new IllegalArgumentException("cause parameter must not be null");
-    }
-    _logger.error("Strategy is unavailable", cause);
   }
 
   @Override

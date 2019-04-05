@@ -15,15 +15,16 @@
  */
 package uk.co.magictractor.zillions.core.junit;
 
-import org.junit.Assume;
+import org.junit.jupiter.api.Assumptions;
 
 public final class AssumeTestContext
 {
   private AssumeTestContext() {
   }
 
+  // TODO! we want a convenient way to run the test in isolation too. - bear in mind that impls will move to a sibling project.
   public static void assumeTextContext() {
-    Assume.assumeTrue("TODO! fluffy message", TestContext.getInstance().hasImplementation());
+    Assumptions.assumeTrue(TestContext.getInstance().hasImplementation(), "This test must have a BigIntCreateStrategy defined, which is usually done in a test suite which contains these tests");
   }
 
 }

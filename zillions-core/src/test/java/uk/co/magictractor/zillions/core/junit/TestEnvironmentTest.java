@@ -15,56 +15,57 @@
  */
 package uk.co.magictractor.zillions.core.junit;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Proxy;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import uk.co.magictractor.zillions.biginteger.BigIntegerBigInt;
 import uk.co.magictractor.zillions.biginteger.BigIntegerCreateStrategy;
 import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntCreate;
+import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 import uk.co.magictractor.zillions.core.environment.Environment;
 import uk.co.magictractor.zillions.gmp.GmpJnaBigInt;
 import uk.co.magictractor.zillions.gmp.GmpJnaCreateStrategy;
 
-public class TestEnvironmentTest
-{
+public class TestEnvironmentTest {
 
-  @Rule
-  public TestContextRule _textContextRule = new TestContextRule();
+	// TODO! ensure it has been registered (so implement before too)
+	@RegisterExtension
+	private TestContextExtension _textContextRule = new TestContextExtension();
 
-  /**
-   * failing because the first strategy remains in the StrategyListMap, and second
-   * strategy isn't even loaded. want to reset implementations cleanly, but leave
-   * bootstrapped class intact.
-   */
-  @Test
-  public void t() {
+	/**
+	 * failing because the first strategy remains in the StrategyListMap, and second
+	 * strategy isn't even loaded. want to reset implementations cleanly, but leave
+	 * bootstrapped class intact.
+	 */
+	@Test
+	public void t() {
 
-    _textContextRule.addImplementation(new GmpJnaCreateStrategy());
-    BigInt i = BigIntCreate.from("1");
-    assertEquals(GmpJnaBigInt.class, i.getClass());
-    TestContext.getInstance().reset();
+		_textContextRule.addImplementation(new GmpJnaCreateStrategy());
+		BigInt i = BigIntFactory.from("1");
+		// assertEquals(GmpJnaBigInt.class, i.getClass());
+		assertThat(i.getClass()).isEqualTo(GmpJnaBigInt.class);
+		TestContext.getInstance().reset();
 
-    _textContextRule.addImplementation(new BigIntegerCreateStrategy());
-    BigInt j = BigIntCreate.from("1");
-    assertEquals(BigIntegerBigInt.class, j.getClass());
-  }
+		_textContextRule.addImplementation(new BigIntegerCreateStrategy());
+		BigInt j = BigIntFactory.from("1");
+		// assertEquals(BigIntegerBigInt.class, j.getClass());
+		assertThat(j.getClass()).isEqualTo(BigIntegerBigInt.class);
+	}
 
-  @Test
-  public void t2() {
+	@Test
+	public void t2() {
 
-    _textContextRule.addImplementation(new GmpJnaCreateStrategy());
-    CreateStrategy strategy = Environment.getImplementation(CreateStrategy.class);
-    if (!Proxy.isProxyClass(strategy.getClass())) {
-      Assert.fail("Strategy implementation should be a proxy for unit tests: "
-          + strategy.getClass().getSimpleName());
-    }
-  }
+		_textContextRule.addImplementation(new GmpJnaCreateStrategy());
+		CreateStrategy strategy = Environment.getImplementation(CreateStrategy.class);
+		if (!Proxy.isProxyClass(strategy.getClass())) {
+			fail("Strategy implementation should be a proxy for unit tests: " + strategy.getClass().getSimpleName());
+		}
+	}
 
 }

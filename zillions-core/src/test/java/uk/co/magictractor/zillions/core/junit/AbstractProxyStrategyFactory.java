@@ -22,42 +22,49 @@ import java.lang.reflect.Proxy;
 
 import uk.co.magictractor.zillions.core.environment.StrategyFactory;
 
-public abstract class AbstractProxyStrategyFactory implements StrategyFactory
-{
+public abstract class AbstractProxyStrategyFactory implements StrategyFactory {
 
-  public AbstractProxyStrategyFactory() {
-  }
+	public AbstractProxyStrategyFactory() {
+	}
 
-  public <S> S createInstance(Class<S> apiClass) {
-    ClassLoader classLoader = AbstractProxyStrategyFactory.class.getClassLoader();
-    EnvironmentDelegatingHandler handler = new EnvironmentDelegatingHandler(apiClass);
-    return (S) Proxy.newProxyInstance(classLoader, new Class[] {apiClass}, handler);
-  }
+	public <S> S createInstance(Class<S> apiClass) {
 
-  abstract <S> S findDelegate(Class<S> apiClass);
+		// TODO! change tests so that this isn't required
+		// Some tests use Java SPI classes which are abstract without an interface
+		if (!apiClass.isInterface()) {
+			System.err.println("API class is not an interface so cannot be proxied: " + apiClass.getName());
+			// return apiCla
+			throw new IllegalArgumentException(
+					"API class is not an interface so cannot be proxied: " + apiClass.getName());
+		}
 
+		ClassLoader classLoader = AbstractProxyStrategyFactory.class.getClassLoader();
+		EnvironmentDelegatingHandler handler = new EnvironmentDelegatingHandler(apiClass);
 
-  private final class EnvironmentDelegatingHandler implements InvocationHandler
-  {
-    private Class<?> _apiClass;
+		return (S) Proxy.newProxyInstance(classLoader, new Class[] { apiClass }, handler);
+	}
 
-    private EnvironmentDelegatingHandler(Class<?> apiClass) {
-      _apiClass = apiClass;
-    }
+	abstract <S> S findDelegate(Class<S> apiClass);
 
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args)
-      throws Throwable {
+	private final class EnvironmentDelegatingHandler implements InvocationHandler {
+		private Class<?> _apiClass;
 
-      Object delegate = findDelegate(_apiClass);
+		private EnvironmentDelegatingHandler(Class<?> apiClass) {
+			_apiClass = apiClass;
+		}
 
-      try {
-        return method.invoke(delegate, args);
-      } catch (InvocationTargetException e) {
-        // Unwrap and rethrow original exception.
-        throw e.getCause();
-      }
-    }
-  }
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+			Object delegate = findDelegate(_apiClass);
+
+			try {
+				return method.invoke(delegate, args);
+			} catch (InvocationTargetException e) {
+				// Unwrap and rethrow original exception.
+				throw e.getCause();
+			}
+		}
+	}
 
 }

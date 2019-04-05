@@ -15,15 +15,18 @@
  */
 package uk.co.magictractor.zillions.biginteger;
 
-import org.junit.ClassRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.platform.suite.api.SuiteDisplayName;
 
-import uk.co.magictractor.zillions.biginteger.BigIntegerCreateStrategy;
-import uk.co.magictractor.zillions.core.junit.TestContextRule;
-import uk.co.magictractor.zillions.test.common.BaseSuite;
+import uk.co.magictractor.zillions.core.junit.TestContextExtension;
+import uk.co.magictractor.zillions.test.common.AllBigIntOpsSuite;
 
-public class BigIntegerSuite extends BaseSuite
-{
-  @ClassRule
-  public static final TestContextRule TEST_CONTEXT_RULE = new TestContextRule(BigIntegerCreateStrategy.class);
+@SuiteDisplayName("BigInteger")
+public class BigIntegerSuite extends AllBigIntOpsSuite {
+
+	// TODO! rename (at least)
+	@RegisterExtension
+	public static final TestContextExtension TEST_CONTEXT_RULE = new TestContextExtension(
+			BigIntegerCreateStrategy.class);
 
 }

@@ -33,7 +33,8 @@ import uk.co.magictractor.zillions.core.property.PropertyStrategy;
  */
 public class ImplPropertyDiscoveryStrategy implements DiscoveryStrategy
 {
-  private static final PropertyDecorator PROPERTIES = new PropertyDecorator(Environment.getImplementations().getStrategyList(PropertyStrategy.class));
+	// TODO! this clunky decorator is used elsewhere too
+  private static final PropertyDecorator PROPERTIES = new PropertyDecorator(Environment.getImplementations().getStrategyListWithoutDiscovery(PropertyStrategy.class));
 
   @Override
   public <T> CachedStrategies<T> discoverImplementations(Class<T> apiClass) {

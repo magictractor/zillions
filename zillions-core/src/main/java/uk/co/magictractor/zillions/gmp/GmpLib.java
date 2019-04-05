@@ -15,42 +15,40 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import com.sun.jna.Library;
 import com.sun.jna.Memory;
 
-// TODO! extends Library should be moved to JnaGmpLib?
 // https://gmplib.org/manual/Integer-Arithmetic.html
-public interface GmpLib extends Library
-{
+// https://gmplib.org/manual/Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling
+public interface GmpLib {
 
-  void mpz_init(mpz_t x);
+	void mpz_init(mpz_t x);
 
-  void mpz_init_set_si(mpz_t rop, long op);
+	void mpz_init_set_si(mpz_t rop, long op);
 
-  int mpz_init_set_str(mpz_t rop, String str, int base);
+	int mpz_init_set_str(mpz_t rop, String str, int base);
 
-  void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
+	void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
 
-  void mpz_add_ui(mpz_t rop, mpz_t op1, long op2);
+	void mpz_add_ui(mpz_t rop, mpz_t op1, long op2);
 
-  void mpz_sub(mpz_t rop, mpz_t op1, mpz_t op2);
+	void mpz_sub(mpz_t rop, mpz_t op1, mpz_t op2);
 
-  void mpz_sub_ui(mpz_t rop, mpz_t op1, long op2);
+	void mpz_sub_ui(mpz_t rop, mpz_t op1, long op2);
 
-  void mpz_mul(mpz_t rop, mpz_t op1, mpz_t op2);
+	void mpz_mul(mpz_t rop, mpz_t op1, mpz_t op2);
 
-  void mpz_mul_si(mpz_t rop, mpz_t op1, long op2);
+	void mpz_mul_si(mpz_t rop, mpz_t op1, long op2);
 
-  String mpz_get_str(Memory mem, int base, mpz_t op);
+	String mpz_get_str(Memory mem, int base, mpz_t op);
 
-  int mpz_cmp(mpz_t op1, mpz_t op2);
+	int mpz_cmp(mpz_t op1, mpz_t op2);
 
-  long mpz_get_si(mpz_t op);
+	long mpz_get_si(mpz_t op);
 
-  void mpz_and(mpz_t rop, mpz_t op1, mpz_t op2);
+	void mpz_and(mpz_t rop, mpz_t op1, mpz_t op2);
 
-  void mpz_ior(mpz_t rop, mpz_t op1, mpz_t op2);
+	void mpz_ior(mpz_t rop, mpz_t op1, mpz_t op2);
 
-  void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
+	void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
 
 }

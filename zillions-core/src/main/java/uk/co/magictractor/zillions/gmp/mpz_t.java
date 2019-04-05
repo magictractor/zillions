@@ -56,6 +56,7 @@ public class mpz_t extends Structure implements ByReference
     // this(0,0,new NativeLongByReference());
   }
 
+  // TODO! can now use an annotation instead of this
   @Override
   protected List<String> getFieldOrder() {
     return Arrays.asList("_mp_alloc", "_mp_size", "_mp_d");

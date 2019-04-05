@@ -15,34 +15,36 @@
  */
 package uk.co.magictractor.zillions.core.discovery;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
-import uk.co.magictractor.zillions.core.discovery.SpiDiscoveryStrategy;
 import uk.co.magictractor.zillions.core.environment.CachedStrategies;
-import uk.co.magictractor.zillions.core.junit.ClassAssert;
 import uk.co.magictractor.zillions.gmp.GmpJnaCreateStrategy;
 
-public class SpiDiscoveryStrategyTest
-{
+public class SpiDiscoveryStrategyTest {
 
-  private SpiDiscoveryStrategy _testee = new SpiDiscoveryStrategy();
+	private SpiDiscoveryStrategy _testee = new SpiDiscoveryStrategy();
 
-  @Test
-  public void testSuccessfulDiscovery() {
-    CachedStrategies<CreateStrategy> discovered = _testee.discoverImplementations(CreateStrategy.class);
+	// NEXT - NPE in bootstrap.
+	@Test
+	public void testSuccessfulDiscovery() {
+		CachedStrategies<CreateStrategy> discovered = _testee.discoverImplementations(CreateStrategy.class);
 
-    assertEquals(1, discovered.allAvailable().size());
-    ClassAssert.assertType(GmpJnaCreateStrategy.class, discovered.firstAvailable());
-  }
+		// assertEquals(1, discovered.allAvailable().size());
+		assertThat(discovered.allAvailable()).hasSize(1);
+		assertThat(discovered.firstAvailable()).isExactlyInstanceOf(GmpJnaCreateStrategy.class);
+		// ClassAssert.assertType(GmpJnaCreateStrategy.class,
+		// discovered.firstAvailable());
+	}
 
-  @Test
-  public void testUnsuccessfulDiscovery() {
-    CachedStrategies<Test> discovered = _testee.discoverImplementations(Test.class);
+	@Test
+	public void testUnsuccessfulDiscovery() {
+		CachedStrategies<Test> discovered = _testee.discoverImplementations(Test.class);
 
-    assertEquals(0, discovered.allAvailable().size());
-  }
+		// assertEquals(0, discovered.allAvailable().size());
+		assertThat(discovered.allAvailable()).isEmpty();
+	}
 
 }

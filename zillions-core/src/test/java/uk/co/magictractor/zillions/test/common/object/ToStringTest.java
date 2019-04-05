@@ -15,32 +15,31 @@
  */
 package uk.co.magictractor.zillions.test.common.object;
 
-import static uk.co.magictractor.zillions.core.BigIntCreate.from;
+import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.magictractor.zillions.core.BigIntFactory.from;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.test.common.ReuseTest;
 
-public class ToStringTest extends ReuseTest
-{
-  @Test
-  public void testToStringPositive() {
-    BigInt bigInt = from("102");
-    Assert.assertEquals("102", bigInt.toString());
-  }
+public class ToStringTest extends ReuseTest {
+	@Test
+	public void testToStringPositive() {
+		BigInt bigInt = from("102");
+		assertThat(bigInt.toString()).isEqualTo("102");
+	}
 
-  @Test
-  public void testToStringZero() {
-    BigInt bigInt = from("0");
-    Assert.assertEquals("0", bigInt.toString());
-  }
+	@Test
+	public void testToStringZero() {
+		BigInt bigInt = from("0");
+		assertThat(bigInt.toString()).isEqualTo("0");
+	}
 
-  @Test
-  public void testToStringNegative() {
-    BigInt bigInt = from("-98");
-    Assert.assertEquals("-98", bigInt.toString());
-  }
+	@Test
+	public void testToStringNegative() {
+		BigInt bigInt = from("-98");
+		assertThat(bigInt.toString()).isEqualTo("-98");
+	}
 
 }
