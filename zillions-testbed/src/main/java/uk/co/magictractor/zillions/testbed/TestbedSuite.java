@@ -21,6 +21,9 @@ import org.junit.runner.RunWith;
 
 import uk.co.magictractor.zillions.testbed.arithmetic.AddTest;
 import uk.co.magictractor.zillions.testbed.arithmetic.MultiplyTest;
+import uk.co.magictractor.zillions.testbed.arithmetic.SubtractTest;
+import uk.co.magictractor.zillions.testbed.bits.AndTest;
+import uk.co.magictractor.zillions.testbed.bits.OrTest;
 import uk.co.magictractor.zillions.testbed.bits.XorTest;
 import uk.co.magictractor.zillions.testbed.object.EqualsTest;
 import uk.co.magictractor.zillions.testbed.object.HashCodeTest;
@@ -33,8 +36,8 @@ import uk.co.magictractor.zillions.testbed.object.ToStringTest;
 // See https://github.com/junit-team/junit5/issues/744.
 @RunWith(JUnitPlatform.class)
 //@SelectClasses({ObjectSuite.class, ArithmeticSuite.class, BitSuite.class})
-@SelectClasses({ ToStringTest.class, EqualsTest.class, HashCodeTest.class , AddTest.class, MultiplyTest.class, XorTest.class})
-public abstract class TestbedSuite
-{
-  // This class is left intentionally blank.
+@SelectClasses({ ToStringTest.class, EqualsTest.class, HashCodeTest.class, AddTest.class, SubtractTest.class,
+		MultiplyTest.class, AndTest.class, OrTest.class, XorTest.class })
+public abstract class TestbedSuite {
+	// This class is left intentionally blank.
 }

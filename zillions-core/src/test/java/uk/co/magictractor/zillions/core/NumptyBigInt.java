@@ -50,6 +50,18 @@ public class NumptyBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt and(BigInt y) {
+		n &= ((NumptyBigInt) y).n;
+		return this;
+	}
+
+	@Override
+	public BigInt or(BigInt y) {
+		n |= ((NumptyBigInt) y).n;
+		return this;
+	}
+
+	@Override
 	public BigInt xor(BigInt y) {
 		n ^= ((NumptyBigInt) y).n;
 		return this;

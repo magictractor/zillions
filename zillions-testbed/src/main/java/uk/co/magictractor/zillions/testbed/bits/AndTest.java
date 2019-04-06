@@ -13,22 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.arithmetic;
+package uk.co.magictractor.zillions.testbed.bits;
 
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.testbed.OpTest;
 
-public class AddTest extends OpTest {
+public class AndTest extends OpTest {
 
-	public AddTest() {
-		super(BigInt::add);
+	public AndTest() {
+		super(BigInt::and);
 	}
 
 	@Test
-	public void testAddSmallPositiveNumbers() {
-		check(10, 4, 14);
+	public void testAndPositivePositive() {
+		check(10, 3, 2);
+	}
+
+	@Test
+	public void testAndPositiveNegative() {
+		check(10, -3, 8);
+	}
+
+	@Test
+	public void testAndNegativePositive() {
+		check(-10, 3, 2);
+	}
+
+	@Test
+	public void testAndNegativeNegative() {
+		check(-10, -3, -12);
 	}
 
 }

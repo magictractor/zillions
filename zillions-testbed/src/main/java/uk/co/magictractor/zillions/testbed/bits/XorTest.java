@@ -15,52 +15,35 @@
  */
 package uk.co.magictractor.zillions.testbed.bits;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.magictractor.zillions.core.BigIntFactory.from;
-
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.testbed.OpTest;
 
-public class XorTest
-{
-  // private static final BigInt EXPECTED_POSITIVE = from("9");
-  // private static final BigInt EXPECTED_NEGATIVE = from("-9");
+public class XorTest extends OpTest {
 
-  @Test
-  public void testXorPositivePositive() {
-    BigInt i = from("10");
-    BigInt j = from("3");
-    i.xor(j);
-    BigInt expected = from("9");
-    assertThat(i).isEqualTo(expected);
-  }
+	public XorTest() {
+		super(BigInt::xor);
+	}
 
-  @Test
-  public void testXorPositiveNegative() {
-    BigInt i = from("10");
-    BigInt j = from("-3");
-    i.xor(j);
-    BigInt expected = from("-9");
-    assertThat(i).isEqualTo(expected);
-  }
+	@Test
+	public void testXorPositivePositive() {
+		check(10, 3, 9);
+	}
 
-  @Test
-  public void testXorNegativePositive() {
-    BigInt i = from("-10");
-    BigInt j = from("3");
-    i.xor(j);
-    BigInt expected = from("-11");
-    assertThat(i).isEqualTo(expected);
-  }
+	@Test
+	public void testXorPositiveNegative() {
+		check(10, -3, -9);
+	}
 
-  @Test
-  public void testXorNegativeNegative() {
-    BigInt i = from("-10");
-    BigInt j = from("-3");
-    i.xor(j);
-    BigInt expected = from("11");
-    assertThat(i).isEqualTo(expected);
-  }
+	@Test
+	public void testXorNegativePositive() {
+		check(-10, 3, -11);
+	}
+
+	@Test
+	public void testXorNegativeNegative() {
+		check(-10, -3, 11);
+	}
 
 }

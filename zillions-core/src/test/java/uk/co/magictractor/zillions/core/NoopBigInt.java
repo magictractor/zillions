@@ -39,6 +39,16 @@ public class NoopBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt and(BigInt y) {
+		return this;
+	}
+
+	@Override
+	public BigInt or(BigInt y) {
+		return this;
+	}
+
+	@Override
 	public BigInt xor(BigInt y) {
 		return this;
 	}

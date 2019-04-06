@@ -15,24 +15,20 @@
  */
 package uk.co.magictractor.zillions.testbed.arithmetic;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.magictractor.zillions.core.BigIntFactory.from;
-
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.testbed.OpTest;
 
-public abstract class SubtractTest
-{
+public class SubtractTest extends OpTest {
 
-  @Test
-  public void testSubtractSmallPositiveNumbers() {
-    BigInt bigInt1 = from("10");
-    BigInt bigInt2 = from("4");
-    bigInt1.subtract(bigInt2);
-    BigInt expected = from("6");
-    //Assert.assertEquals(expected, bigInt1);
-    assertThat(bigInt1).isEqualTo(expected);
-  }
+	public SubtractTest() {
+		super(BigInt::subtract);
+	}
+
+	@Test
+	public void testSubtractSmallPositiveNumbers() {
+		check(10, 4, 6);
+	}
 
 }

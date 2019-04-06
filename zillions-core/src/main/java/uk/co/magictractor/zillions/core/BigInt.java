@@ -37,7 +37,10 @@ public interface BigInt
 
   BigInt multiply(long y);
 
-  //TODO! if xor() is here other bit operators should be too?
+  BigInt or(BigInt y);
+  
+  BigInt and(BigInt y);
+  
   BigInt xor(BigInt y);
 
 }

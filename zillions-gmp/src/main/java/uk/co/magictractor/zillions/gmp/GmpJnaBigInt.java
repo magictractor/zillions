@@ -19,7 +19,8 @@ import uk.co.magictractor.zillions.core.BigInt;
 
 public class GmpJnaBigInt implements BigInt {
 
-	// TODO! Why not use a static instance? - ah! could have JNA and JNI bindings for the lib.
+	// TODO! Why not use a static instance? - ah! could have JNA and JNI bindings
+	// for the lib.
 	// But would not have both at the same same - so static lib should be fine
 	private final GmpLib _lib;
 
@@ -33,9 +34,9 @@ public class GmpJnaBigInt implements BigInt {
 		_lib = lib;
 	}
 
-	public GmpJnaBigInt(long value, GmpLib lib) {
+	public GmpJnaBigInt(long x, GmpLib lib) {
+		lib.mpz_init_set_si(_mpz, x);
 		_lib = lib;
-		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	public GmpJnaBigInt(BigInt other, GmpLib lib) {
@@ -84,6 +85,16 @@ public class GmpJnaBigInt implements BigInt {
 
 	public BigInt multiply(long y) {
 		_lib.mpz_mul_si(_mpz, _mpz, y);
+		return this;
+	}
+
+	public BigInt and(BigInt y) {
+		_lib.mpz_and(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
+		return this;
+	}
+
+	public BigInt or(BigInt y) {
+		_lib.mpz_ior(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
 	}
 

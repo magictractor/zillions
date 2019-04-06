@@ -26,8 +26,8 @@ public class HashCodeTest {
 
 	@Test
 	public void testHashCodeEquality() {
-		BigInt bigInt1 = from("10");
-		BigInt bigInt2 = from("10");
+		BigInt bigInt1 = from(10);
+		BigInt bigInt2 = from(10);
 		assertThat(bigInt1.hashCode()).isEqualTo(bigInt2.hashCode());
 	}
 

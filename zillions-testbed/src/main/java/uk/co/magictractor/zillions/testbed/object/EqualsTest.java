@@ -26,8 +26,8 @@ public class EqualsTest {
 
 	@Test
 	public void testEquals() {
-		BigInt bigInt1 = from("10");
-		BigInt bigInt2 = from("10");
+		BigInt bigInt1 = from(10);
+		BigInt bigInt2 = from(10);
 		assertThat(bigInt1).isEqualTo(bigInt2);
 	}
 
