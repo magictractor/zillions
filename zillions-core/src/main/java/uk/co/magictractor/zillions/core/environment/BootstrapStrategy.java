@@ -15,6 +15,8 @@
  */
 package uk.co.magictractor.zillions.core.environment;
 
+import uk.co.magictractor.zillions.core.api.StrategiesFactory;
+
 public interface BootstrapStrategy
 {
 

@@ -15,6 +15,7 @@
  */
 package uk.co.magictractor.zillions.core.environment;
 
+import uk.co.magictractor.zillions.core.api.StrategiesFactory;
 import uk.co.magictractor.zillions.core.discovery.DiscoveryStrategy;
 import uk.co.magictractor.zillions.core.discovery.ImplPropertyDiscoveryStrategy;
 import uk.co.magictractor.zillions.core.discovery.SpiDiscoveryStrategy;

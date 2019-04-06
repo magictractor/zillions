@@ -1,2 +1,2 @@
 #uk.co.magictractor.zillions.biginteger.BigIntegerCreateStrategy
-uk.co.magictractor.zillions.gmp.GmpJnaCreateStrategy
+#uk.co.magictractor.zillions.gmp.GmpJnaCreateStrategy

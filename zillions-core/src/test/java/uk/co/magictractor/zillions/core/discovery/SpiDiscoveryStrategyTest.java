@@ -19,9 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
+import uk.co.magictractor.zillions.core.NumptyCreateStrategy;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 import uk.co.magictractor.zillions.core.environment.CachedStrategies;
-import uk.co.magictractor.zillions.gmp.GmpJnaCreateStrategy;
 
 public class SpiDiscoveryStrategyTest {
 
@@ -34,7 +34,7 @@ public class SpiDiscoveryStrategyTest {
 
 		// assertEquals(1, discovered.allAvailable().size());
 		assertThat(discovered.allAvailable()).hasSize(1);
-		assertThat(discovered.firstAvailable()).isExactlyInstanceOf(GmpJnaCreateStrategy.class);
+		assertThat(discovered.firstAvailable()).isExactlyInstanceOf(NumptyCreateStrategy.class);
 		// ClassAssert.assertType(GmpJnaCreateStrategy.class,
 		// discovered.firstAvailable());
 	}

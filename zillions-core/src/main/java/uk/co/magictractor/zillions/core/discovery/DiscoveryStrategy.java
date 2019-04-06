@@ -15,7 +15,7 @@
  */
 package uk.co.magictractor.zillions.core.discovery;
 
-import uk.co.magictractor.zillions.core.environment.Strategies;
+import uk.co.magictractor.zillions.core.api.Strategies;
 
 public interface DiscoveryStrategy
 {

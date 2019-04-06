@@ -18,15 +18,15 @@ package uk.co.magictractor.zillions.core.example;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import uk.co.magictractor.zillions.biginteger.BigIntegerCreateStrategy;
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.core.NumptyCreateStrategy;
 import uk.co.magictractor.zillions.core.junit.TestContextExtension;
 
 public class ExampleQuickStart {
 
 	@RegisterExtension
-	private static TestContextExtension __testContextRule = new TestContextExtension(BigIntegerCreateStrategy.class);
+	private static TestContextExtension __testContextRule = new TestContextExtension(NumptyCreateStrategy.class);
 
 	@Test
 	public void fibonacciWithLong() {

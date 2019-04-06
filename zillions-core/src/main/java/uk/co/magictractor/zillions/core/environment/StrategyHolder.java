@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import uk.co.magictractor.zillions.core.property.PropertyDecorator;
 import uk.co.magictractor.zillions.core.property.PropertyStrategy;
 
+// TODO! need interface for this for splitting out zillions-api
 public class StrategyHolder<S> {
 
 	// Use the getImplementations to avoid circular dependencies when bootstrapping.

@@ -43,7 +43,8 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>${junit.jupiter.version}</version>
-			<scope>test</scope>
+			<!-- TODO! maybe split up into even more projects so that TestContextExtension can be used in z-core and z-testbed -->
+			<!-- <scope>test</scope> -->
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -89,6 +90,20 @@
         </configuration>
       </plugin>
 
+<!--  https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -104,7 +119,7 @@
           <includes>**\/*.*</includes>
           <!-- <resourceIncludes>**\/*.*</resourceIncludes> -->
         </configuration>
-        <dependencies>
+         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>

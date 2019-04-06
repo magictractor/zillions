@@ -17,6 +17,8 @@ package uk.co.magictractor.zillions.core.environment;
 
 import java.util.List;
 
+import uk.co.magictractor.zillions.core.api.Strategies;
+import uk.co.magictractor.zillions.core.api.StrategiesFactory;
 import uk.co.magictractor.zillions.core.property.PropertyDecorator;
 import uk.co.magictractor.zillions.core.property.PropertyStrategy;
 
