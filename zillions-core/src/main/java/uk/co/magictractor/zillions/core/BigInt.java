@@ -42,5 +42,11 @@ public interface BigInt
   BigInt and(BigInt y);
   
   BigInt xor(BigInt y);
+  
+  /** Negate value. */
+  BigInt negate();
+  
+  /** Absolute value. */
+  BigInt abs();
 
 }

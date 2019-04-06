@@ -19,6 +19,7 @@ import com.sun.jna.Memory;
 
 // https://gmplib.org/manual/Integer-Arithmetic.html
 // https://gmplib.org/manual/Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling
+// https://gmplib.org/manual/Integer-Random-Numbers.html#Integer-Random-Numbers
 public interface GmpLib {
 
 	void mpz_init(mpz_t x);
@@ -39,10 +40,16 @@ public interface GmpLib {
 
 	void mpz_mul_si(mpz_t rop, mpz_t op1, long op2);
 
+	void mpz_neg(mpz_t rop, mpz_t op);
+
+	void mpz_abs(mpz_t rop, mpz_t op);
+
 	String mpz_get_str(Memory mem, int base, mpz_t op);
 
+	// compare, used for equals()
 	int mpz_cmp(mpz_t op1, mpz_t op2);
 
+	// least significant bits, used for hashCode()
 	long mpz_get_si(mpz_t op);
 
 	void mpz_and(mpz_t rop, mpz_t op1, mpz_t op2);

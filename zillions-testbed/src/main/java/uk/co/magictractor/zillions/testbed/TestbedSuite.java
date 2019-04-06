@@ -19,8 +19,10 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.runner.RunWith;
 
+import uk.co.magictractor.zillions.testbed.arithmetic.AbsTest;
 import uk.co.magictractor.zillions.testbed.arithmetic.AddTest;
 import uk.co.magictractor.zillions.testbed.arithmetic.MultiplyTest;
+import uk.co.magictractor.zillions.testbed.arithmetic.NegateTest;
 import uk.co.magictractor.zillions.testbed.arithmetic.SubtractTest;
 import uk.co.magictractor.zillions.testbed.bits.AndTest;
 import uk.co.magictractor.zillions.testbed.bits.OrTest;
@@ -37,7 +39,7 @@ import uk.co.magictractor.zillions.testbed.object.ToStringTest;
 @RunWith(JUnitPlatform.class)
 //@SelectClasses({ObjectSuite.class, ArithmeticSuite.class, BitSuite.class})
 @SelectClasses({ ToStringTest.class, EqualsTest.class, HashCodeTest.class, AddTest.class, SubtractTest.class,
-		MultiplyTest.class, AndTest.class, OrTest.class, XorTest.class })
+		MultiplyTest.class, NegateTest.class, AbsTest.class, AndTest.class, OrTest.class, XorTest.class })
 public abstract class TestbedSuite {
 	// This class is left intentionally blank.
 }

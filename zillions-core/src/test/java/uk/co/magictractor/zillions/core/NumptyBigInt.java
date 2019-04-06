@@ -68,6 +68,20 @@ public class NumptyBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt negate() {
+		n = -n;
+		return this;
+	}
+
+	@Override
+	public BigInt abs() {
+		if (n < 0) {
+			n = -n;
+		}
+		return this;
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		return (other instanceof NumptyBigInt) && ((NumptyBigInt) other).n == n;
 	}

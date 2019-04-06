@@ -78,6 +78,10 @@ public class GmpJnaBigInt implements BigInt {
 		return this;
 	}
 
+	// TODO! multiply will be more efficient if the result has a distinct destination
+	// See "In-Place Operations" in https://gmplib.org/manual/Efficiency.html
+	// perhaps add swap() which will init a second _mpz
+	// Slightly wasteful on memory, but more efficient if multiplying a lot (like simple factorial calc)
 	public BigInt multiply(BigInt y) {
 		_lib.mpz_mul(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
@@ -100,6 +104,18 @@ public class GmpJnaBigInt implements BigInt {
 
 	public BigInt xor(BigInt y) {
 		_lib.mpz_xor(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
+		return this;
+	}
+
+	@Override
+	public BigInt negate() {
+		_lib.mpz_neg(_mpz, _mpz);
+		return this;
+	}
+
+	@Override
+	public BigInt abs() {
+		_lib.mpz_abs(_mpz, _mpz);
 		return this;
 	}
 

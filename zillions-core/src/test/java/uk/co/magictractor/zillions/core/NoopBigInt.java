@@ -54,6 +54,16 @@ public class NoopBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt negate() {
+		return this;
+	}
+
+	@Override
+	public BigInt abs() {
+		return this;
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		return (other instanceof NoopBigInt);
 	}

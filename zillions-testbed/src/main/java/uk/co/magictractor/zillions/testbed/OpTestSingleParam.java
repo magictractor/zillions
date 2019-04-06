@@ -8,11 +8,11 @@ import org.assertj.core.api.Assertions;
 
 import uk.co.magictractor.zillions.core.BigInt;
 
-public class OpTest {
+public class OpTestSingleParam {
 
 	private final BiConsumer<BigInt, BigInt> _op;
 
-	protected OpTest(BiConsumer<BigInt, BigInt> op) {
+	protected OpTestSingleParam(BiConsumer<BigInt, BigInt> op) {
 		_op = op;
 	}
 

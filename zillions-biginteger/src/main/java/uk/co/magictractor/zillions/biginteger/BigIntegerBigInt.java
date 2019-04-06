@@ -80,8 +80,16 @@ public class BigIntegerBigInt implements BigInt {
 		return this;
 	}
 
-	public String toString() {
-		return _bigInteger.toString();
+	@Override
+	public BigInt negate() {
+		_bigInteger = _bigInteger.negate();
+		return this;
+	}
+
+	@Override
+	public BigInt abs() {
+		_bigInteger = _bigInteger.abs();
+		return this;
 	}
 
 	public boolean equals(Object other) {
@@ -94,6 +102,10 @@ public class BigIntegerBigInt implements BigInt {
 
 	public int hashCode() {
 		return _bigInteger.hashCode();
+	}
+
+	public String toString() {
+		return _bigInteger.toString();
 	}
 
 }
