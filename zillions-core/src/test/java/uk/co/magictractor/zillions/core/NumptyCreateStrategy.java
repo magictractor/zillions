@@ -20,9 +20,4 @@ public class NumptyCreateStrategy implements CreateStrategy {
 		return new NumptyBigInt(value);
 	}
 
-	@Override
-	public BigInt copy(BigInt other) {
-		throw new UnsupportedOperationException("not yet implemented");
-	}
-
 }

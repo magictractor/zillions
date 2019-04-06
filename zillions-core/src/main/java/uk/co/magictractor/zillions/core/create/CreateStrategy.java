@@ -39,6 +39,4 @@ public interface CreateStrategy
 
   BigInt fromLong(long value);
 
-  BigInt copy(BigInt other);
-
 }

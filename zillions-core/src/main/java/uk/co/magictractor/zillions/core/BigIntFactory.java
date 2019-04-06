@@ -34,10 +34,4 @@ public final class BigIntFactory {
 		return CREATE.fromLong(value);
 	}
 
-	public static BigInt from(BigInt other) {
-		// TODO! check impl type matches?
-		// perhaps need to use strategies for cloning? might not always be supported by the BigInt impl.
-		return CREATE.copy(other);
-	}
-
 }

@@ -20,9 +20,4 @@ public class NoopCreateStrategy implements CreateStrategy {
 		return new NoopBigInt();
 	}
 
-	@Override
-	public BigInt copy(BigInt other) {
-		throw new UnsupportedOperationException("not yet implemented");
-	}
-
 }

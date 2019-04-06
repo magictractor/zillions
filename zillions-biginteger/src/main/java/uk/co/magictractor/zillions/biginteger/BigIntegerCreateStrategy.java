@@ -34,9 +34,4 @@ public class BigIntegerCreateStrategy implements CreateStrategy
     return new BigIntegerBigInt(value);
   }
 
-  @Override
-  public BigInt copy(BigInt other) {
-    return new BigIntegerBigInt(other);
-  }
-
 }
