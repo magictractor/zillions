@@ -20,6 +20,7 @@ import uk.co.magictractor.zillions.core.environment.Environment;
 
 public final class BigIntFactory {
 
+	// TODO! always have a proxy which will be the fallback if nothing else is registered
 	private static final CreateStrategy CREATE = Environment.getImplementation(CreateStrategy.class);
 
 	private BigIntFactory() {
@@ -35,6 +36,7 @@ public final class BigIntFactory {
 
 	public static BigInt from(BigInt other) {
 		// TODO! check impl type matches?
+		// perhaps need to use strategies for cloning? might not always be supported by the BigInt impl.
 		return CREATE.copy(other);
 	}
 

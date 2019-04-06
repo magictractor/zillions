@@ -23,11 +23,11 @@ import uk.co.magictractor.zillions.core.api.StrategiesFactory;
 import uk.co.magictractor.zillions.core.environment.CachedStrategies;
 
 /**
- * This class is not public, to ensure that unit tests use {@link TestContextRule} to
+ * This class is not public, to ensure that unit tests use {@link TestContextExtension} to
  * modify the TestContext, which will also result in changes to the context being reverted
  * at the end of the test.
  */
-public final class TestContext
+/* default */ final class TestContext
 {
 
   private static TestContext __instance = new TestContext();

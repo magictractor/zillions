@@ -23,10 +23,11 @@ import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.core.NumptyCreateStrategy;
 import uk.co.magictractor.zillions.core.junit.TestContextExtension;
 
+// TODO! move this to an examples project
 public class ExampleQuickStart {
 
 	@RegisterExtension
-	private static TestContextExtension __testContextRule = new TestContextExtension(NumptyCreateStrategy.class);
+	public static TestContextExtension __testContextRule = new TestContextExtension(NumptyCreateStrategy.class);
 
 	@Test
 	public void fibonacciWithLong() {

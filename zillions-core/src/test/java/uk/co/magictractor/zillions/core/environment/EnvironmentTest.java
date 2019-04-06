@@ -20,8 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.spi.CurrencyNameProvider;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -33,18 +31,10 @@ import uk.co.magictractor.zillions.core.junit.TestContextExtension;
 public class EnvironmentTest {
 
 	@RegisterExtension
-	public static SystemPropertiesExtension _systemProperties = new SystemPropertiesExtension();
+	public static SystemPropertiesExtension _systemProperties = new SystemPropertiesExtension().withProperty(SpiDiscoveryStrategy.class, "disabled", "false");
 
 	@RegisterExtension
 	public static TestContextExtension _testContextRule = new TestContextExtension();
-
-	// TODO! add withProperty() to the extension and remove this method
-	//@BeforeEach
-	@BeforeAll
-	public static void setUp() {
-		// tests generally have SpiDiscoveryStrategy disabled using a test scoped property file
-		_systemProperties.setProperty(SpiDiscoveryStrategy.class.getName() + ".disabled", "false");
-	}
 
 	@Test
 	public void testSystemPropertyIsAvailable() {
@@ -55,7 +45,7 @@ public class EnvironmentTest {
 	@Test
 	public void testUpdatedSystemPropertyIsCorrect() {
 		String modified = "modified by unit test";
-		_systemProperties.setProperty("os.name", modified);
+		_systemProperties.withProperty("os.name", modified);
 
 		String actual = Environment.getProperties().getString("os.name", null);
 		assertThat(actual).isEqualTo(modified);
@@ -86,6 +76,7 @@ public class EnvironmentTest {
 
 	@Test
 	public void testSpiFromThisProject() {
+		// TODO! bad test - this is a proxy rather than a proper SPI service load.
 		CreateStrategy impl = Environment.getImplementation(CreateStrategy.class);
 		assertThat(impl).isNotNull();
 	}

@@ -15,13 +15,18 @@
  */
 package uk.co.magictractor.zillions.core.junit;
 
-import org.junit.jupiter.api.extension.AfterEachCallback;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-public class TestContextExtension extends EnsureRegisteredExtension implements AfterEachCallback {
+public class TestContextExtension extends EnsureRegisteredExtension {
+
+	private List<Object> _pendingImplementations;
 
 	public TestContextExtension(Object... implementations) {
-		addImplementations0(implementations);
+		addImplementations(implementations);
 	}
 
 	public void addImplementation(Object implementation) {
@@ -29,19 +34,42 @@ public class TestContextExtension extends EnsureRegisteredExtension implements A
 	}
 
 	private void addImplementations(Object... implementations) {
-		ensureRegistered();
-		addImplementations0(implementations);
+		List<Object> implementationsList = Arrays.asList(implementations);
+		if (isWithinTest()) {
+			// Change the environment immediately.
+			// Because isWithinTest() is true, this Extension must be registered correctly
+			// and after() will be called.
+			modifyTestContext(implementationsList);
+		} else {
+			// Store the changes and change the environment from before().
+			// This ensures that after() will also be called to reinstate the environment.
+			if (_pendingImplementations == null) {
+				_pendingImplementations = new ArrayList<>(implementationsList);
+			} else {
+				_pendingImplementations.addAll(implementationsList);
+			}
+		}
 	}
 
-	private void addImplementations0(Object... implementations) {
+	// TODO! similar shenanigans to sys.prop.extension?
+	@Override
+	public void before(boolean isBeforeAll, ExtensionContext context) throws Exception {
+		modifyTestContext(_pendingImplementations);
+	}
+
+	@Override
+	public void after(boolean isWithinTest, ExtensionContext context) throws Exception {
+		restoreTestContext();
+	}
+
+	private void modifyTestContext(List<Object> implementations) {
 		TestContext testContext = TestContext.getInstance();
 		for (Object implementation : implementations) {
 			testContext.addImplementation(implementation);
 		}
 	}
 
-	@Override
-	public void after(ExtensionContext context) throws Exception {
+	private void restoreTestContext() {
 		TestContext.getInstance().reset();
 	}
 

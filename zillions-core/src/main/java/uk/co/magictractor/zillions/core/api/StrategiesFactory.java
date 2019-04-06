@@ -46,7 +46,6 @@ public class StrategiesFactory {
 		return getStrategyList(apiClass, false);
 	}
 
-	// TODO! param to skip discovery?
 	private <S> Strategies<S> getStrategyList(Class<S> apiClass, boolean allowDiscovery) {
 		System.out.println("discover: " + apiClass + ", " + allowDiscovery);
 
