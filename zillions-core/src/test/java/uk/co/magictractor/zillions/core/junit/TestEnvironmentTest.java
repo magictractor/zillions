@@ -27,7 +27,6 @@ import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.core.NoopBigInt;
 import uk.co.magictractor.zillions.core.NoopCreateStrategy;
-import uk.co.magictractor.zillions.core.NumptyBigInt;
 import uk.co.magictractor.zillions.core.NumptyCreateStrategy;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 import uk.co.magictractor.zillions.core.environment.Environment;

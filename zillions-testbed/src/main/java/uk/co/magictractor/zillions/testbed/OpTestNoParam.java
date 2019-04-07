@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 
 import uk.co.magictractor.zillions.core.BigInt;
 
+// TODO! generics and RESULT - like OpTestSingleParam
 public class OpTestNoParam {
 
 	private final Consumer<BigInt> _op;

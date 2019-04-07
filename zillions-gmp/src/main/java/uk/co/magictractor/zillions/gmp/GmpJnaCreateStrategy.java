@@ -18,41 +18,41 @@ package uk.co.magictractor.zillions.gmp;
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 
-public class GmpJnaCreateStrategy implements CreateStrategy
-{
+public class GmpJnaCreateStrategy implements CreateStrategy {
 
-  private static GmpLib __lib;
+	private static GmpLib __lib;
 
-  // private static final boolean IS_AVAILABLE;
+	// private static final boolean IS_AVAILABLE;
 
-  static {
-    // TODO! make more robust
-    // TODO! also make libraries optional (jna?)
-    try {
-      init();
-    } catch (Exception e) {
-      System.out.println(e);
-    }
-  }
+	static {
+		// TODO! make more robust
+		// TODO! also make libraries optional (jna?)
+		try {
+			init();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 
-  private static void init() {
-    __lib = new JnaGmpLib();
-  }
+	private static void init() {
+		__lib = new JnaGmpLib();
+	}
 
-  public BigInt fromString(String decimal) {
-    return new GmpJnaBigInt(decimal, __lib);
-  }
+	public boolean isAvailable() {
+		// There was a problem loading the native library.
+		return (__lib != null);
+	}
 
-  public BigInt fromLong(long value) {
-    return new GmpJnaBigInt(value, __lib);
-  }
+	public BigInt fromString(String decimal) {
+		return new GmpJnaBigInt(decimal, __lib);
+	}
 
-  public BigInt copy(BigInt other) {
-    return new GmpJnaBigInt(other, __lib);
-  }
+	public BigInt fromLong(long value) {
+		return new GmpJnaBigInt(value, __lib);
+	}
 
-  public boolean isAvailable() {
-    return (__lib != null);
-  }
+	public BigInt copy(BigInt other) {
+		return new GmpJnaBigInt(other, __lib);
+	}
 
 }

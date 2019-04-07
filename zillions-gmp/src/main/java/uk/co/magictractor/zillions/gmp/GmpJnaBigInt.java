@@ -78,10 +78,12 @@ public class GmpJnaBigInt implements BigInt {
 		return this;
 	}
 
-	// TODO! multiply will be more efficient if the result has a distinct destination
+	// TODO! multiply will be more efficient if the result has a distinct
+	// destination
 	// See "In-Place Operations" in https://gmplib.org/manual/Efficiency.html
 	// perhaps add swap() which will init a second _mpz
-	// Slightly wasteful on memory, but more efficient if multiplying a lot (like simple factorial calc)
+	// Slightly wasteful on memory, but more efficient if multiplying a lot (like
+	// simple factorial calc)
 	public BigInt multiply(BigInt y) {
 		_lib.mpz_mul(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
@@ -119,10 +121,19 @@ public class GmpJnaBigInt implements BigInt {
 		return this;
 	}
 
+	@Override
+	public int compareTo(BigInt other) {
+		return compareTo0((GmpJnaBigInt) other);
+	}
+
+	private int compareTo0(GmpJnaBigInt other) {
+		return _lib.mpz_cmp(_mpz, other._mpz);
+	}
+
 	public boolean equals(Object other) {
 		boolean equals = false;
 		if (other != null && other instanceof GmpJnaBigInt) {
-			equals = (_lib.mpz_cmp(_mpz, ((GmpJnaBigInt) other)._mpz) == 0);
+			equals = compareTo0((GmpJnaBigInt) other) == 0;
 		}
 		return equals;
 	}

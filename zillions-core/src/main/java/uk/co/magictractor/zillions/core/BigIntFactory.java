@@ -16,12 +16,15 @@
 package uk.co.magictractor.zillions.core;
 
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
+import uk.co.magictractor.zillions.core.create.RandomStrategy;
 import uk.co.magictractor.zillions.core.environment.Environment;
 
 public final class BigIntFactory {
 
-	// TODO! always have a proxy which will be the fallback if nothing else is registered
+	// TODO! always have a proxy which will be the fallback if nothing else is
+	// registered
 	private static final CreateStrategy CREATE = Environment.getImplementation(CreateStrategy.class);
+	private static final RandomStrategy RANDOM = Environment.getImplementation(RandomStrategy.class);
 
 	private BigIntFactory() {
 	}
@@ -32,6 +35,11 @@ public final class BigIntFactory {
 
 	public static BigInt from(long value) {
 		return CREATE.fromLong(value);
+	}
+
+	/** @return a uniformly random BigInt in the range 0 to 2^n-1 (inclusive) */
+	public static BigInt random(int numBits) {
+		return RANDOM.random(numBits);
 	}
 
 }

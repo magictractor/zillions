@@ -64,6 +64,11 @@ public class NoopBigInt implements BigInt {
 	}
 
 	@Override
+	public int compareTo(BigInt o) {
+		return 0;
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		return (other instanceof NoopBigInt);
 	}

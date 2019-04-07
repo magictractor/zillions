@@ -18,9 +18,9 @@ package uk.co.magictractor.zillions.testbed.arithmetic;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.testbed.OpTestSingleParam;
+import uk.co.magictractor.zillions.testbed.OpTestBigIntParam;
 
-public class MultiplyTest extends OpTestSingleParam {
+public class MultiplyTest extends OpTestBigIntParam {
 
 	public MultiplyTest() {
 		super(BigInt::multiply);

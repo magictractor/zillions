@@ -31,8 +31,8 @@ public class BigIntegerBigInt implements BigInt {
 		_bigInteger = BigInteger.valueOf(value);
 	}
 
-	public BigIntegerBigInt(BigInt other) {
-		_bigInteger = ((BigIntegerBigInt) other)._bigInteger;
+	public BigIntegerBigInt(BigInteger bigInteger) {
+		_bigInteger = bigInteger;
 	}
 
 	public BigInt add(BigInt y) {
@@ -90,6 +90,11 @@ public class BigIntegerBigInt implements BigInt {
 	public BigInt abs() {
 		_bigInteger = _bigInteger.abs();
 		return this;
+	}
+
+	@Override
+	public int compareTo(BigInt other) {
+		return _bigInteger.compareTo(((BigIntegerBigInt) other)._bigInteger);
 	}
 
 	public boolean equals(Object other) {

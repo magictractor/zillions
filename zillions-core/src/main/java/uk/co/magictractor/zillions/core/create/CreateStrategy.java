@@ -18,25 +18,34 @@ package uk.co.magictractor.zillions.core.create;
 import uk.co.magictractor.zillions.core.BigInt;
 
 /**
- * <p> Strategy for the creation of BigInts. </p> <p> Implementations will be associated
- * with a Java or native library for implementing large integers, such as
- * java.lang.BigInteger or GNU's gmp library. <p>
+ * <p>
+ * Strategy for the creation of BigInts.
+ * </p>
+ * <p>
+ * Implementations will be associated with a Java or native library for
+ * implementing large integers, such as java.lang.BigInteger or GNU's gmp
+ * library.
+ * <p>
  */
-public interface CreateStrategy
-{
+public interface CreateStrategy {
 
-  /**
-   * <p> A typical reason for not being available is that a required native library is not
-   * available. </p> <p> If this method returns false it is recommended that information
-   * is logged to indicate the reason. The BigInt framework should only call this method
-   * once, avoiding noise in logs. </p>
-   * 
-   * @return true if is this strategy is available for use; false otherwise
-   */
-  boolean isAvailable();
+	/**
+	 * <p>
+	 * A typical reason for not being available is that a required native library is
+	 * not available.
+	 * </p>
+	 * <p>
+	 * If this method returns false it is recommended that information is logged to
+	 * indicate the reason. The BigInt framework should only call this method once,
+	 * avoiding noise in logs.
+	 * </p>
+	 * 
+	 * @return true if is this strategy is available for use; false otherwise
+	 */
+	boolean isAvailable();
 
-  BigInt fromString(String decimal);
+	BigInt fromString(String decimal);
 
-  BigInt fromLong(long value);
+	BigInt fromLong(long value);
 
 }

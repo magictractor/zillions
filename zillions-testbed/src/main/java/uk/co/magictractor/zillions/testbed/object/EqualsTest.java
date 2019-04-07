@@ -21,11 +21,12 @@ import static uk.co.magictractor.zillions.core.BigIntFactory.from;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.core.junit.NumptyBigInt;
 
 public class EqualsTest {
 
 	@Test
-	public void testEquals() {
+	public void testEqualsTrue() {
 		BigInt bigInt1 = from(10);
 		BigInt bigInt2 = from(10);
 		assertThat(bigInt1).isEqualTo(bigInt2);
@@ -38,4 +39,13 @@ public class EqualsTest {
 		assertThat(bigInt1).isEqualTo(bigInt2);
 	}
 
+	@Test
+	public void testEqualsOtherImpl() {
+		BigInt bigInt1 = from(10);
+		BigInt bigInt2 = new NumptyBigInt(10);
+		// String representations are the same.
+		assertThat(bigInt1.toString()).isEqualTo(bigInt1.toString());
+		// But equals is false because of the different implementing class.
+		assertThat(bigInt1).isNotEqualTo(bigInt2);
+	}
 }

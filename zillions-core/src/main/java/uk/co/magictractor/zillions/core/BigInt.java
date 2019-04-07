@@ -16,37 +16,48 @@
 package uk.co.magictractor.zillions.core;
 
 /**
- * <p> BigInt implementations are mutable. All methods should return "this" to allow daisy
- * chaining of operations.</p>
+ * <p>
+ * BigInt implementations are mutable. All methods should return "this" to allow
+ * daisy chaining of operations.
+ * </p>
  * 
- * <p> As well as the methods defined on this interface, implementations will require
- * implementations of toString(), equals() and hashCode().</p>
+ * <p>
+ * As well as the methods defined on this interface, implementations will
+ * require implementations of toString(), equals() and hashCode().
+ * </p>
+ * 
+ * <p>
+ * Note that for a different BigInt implementation with the same numeric value,
+ * equals() should return false. All other methods which have a BigInt parameter
+ * should throw a RuntimeException if passed a BigInt with different
+ * implementation type. In most cases that will be a ClassCastException to avoid
+ * the (very small) overhead of always checking the type of the parameter.
+ * </p>
  */
-public interface BigInt
-{
+public interface BigInt extends EnhancedComparable<BigInt> {
 
-  BigInt add(BigInt y);
+	BigInt add(BigInt y);
 
-  BigInt add(long y);
+	BigInt add(long y);
 
-  BigInt subtract(BigInt y);
+	BigInt subtract(BigInt y);
 
-  BigInt subtract(long y);
+	BigInt subtract(long y);
 
-  BigInt multiply(BigInt y);
+	BigInt multiply(BigInt y);
 
-  BigInt multiply(long y);
+	BigInt multiply(long y);
 
-  BigInt or(BigInt y);
-  
-  BigInt and(BigInt y);
-  
-  BigInt xor(BigInt y);
-  
-  /** Negate value. */
-  BigInt negate();
-  
-  /** Absolute value. */
-  BigInt abs();
+	BigInt or(BigInt y);
+
+	BigInt and(BigInt y);
+
+	BigInt xor(BigInt y);
+
+	/** Negate value. */
+	BigInt negate();
+
+	/** Absolute value. */
+	BigInt abs();
 
 }

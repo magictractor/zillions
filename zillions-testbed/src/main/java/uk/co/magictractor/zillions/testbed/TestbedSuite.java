@@ -27,9 +27,11 @@ import uk.co.magictractor.zillions.testbed.arithmetic.SubtractTest;
 import uk.co.magictractor.zillions.testbed.bits.AndTest;
 import uk.co.magictractor.zillions.testbed.bits.OrTest;
 import uk.co.magictractor.zillions.testbed.bits.XorTest;
+import uk.co.magictractor.zillions.testbed.object.CompareTest;
 import uk.co.magictractor.zillions.testbed.object.EqualsTest;
 import uk.co.magictractor.zillions.testbed.object.HashCodeTest;
 import uk.co.magictractor.zillions.testbed.object.ToStringTest;
+import uk.co.magictractor.zillions.testbed.random.RandomTest;
 
 // @SelectClasses does not work with nested suites
 
@@ -38,8 +40,8 @@ import uk.co.magictractor.zillions.testbed.object.ToStringTest;
 // See https://github.com/junit-team/junit5/issues/744.
 @RunWith(JUnitPlatform.class)
 //@SelectClasses({ObjectSuite.class, ArithmeticSuite.class, BitSuite.class})
-@SelectClasses({ ToStringTest.class, EqualsTest.class, HashCodeTest.class, AddTest.class, SubtractTest.class,
-		MultiplyTest.class, NegateTest.class, AbsTest.class, AndTest.class, OrTest.class, XorTest.class })
+@SelectClasses({ ToStringTest.class, EqualsTest.class, CompareTest.class,  HashCodeTest.class, AddTest.class, SubtractTest.class,
+		MultiplyTest.class, NegateTest.class, AbsTest.class, AndTest.class, OrTest.class, XorTest.class, RandomTest.class })
 public abstract class TestbedSuite {
 	// This class is left intentionally blank.
 }

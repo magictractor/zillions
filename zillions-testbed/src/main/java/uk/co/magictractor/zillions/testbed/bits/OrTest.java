@@ -18,9 +18,9 @@ package uk.co.magictractor.zillions.testbed.bits;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.testbed.OpTestSingleParam;
+import uk.co.magictractor.zillions.testbed.OpTestBigIntParam;
 
-public class OrTest extends OpTestSingleParam {
+public class OrTest extends OpTestBigIntParam {
 
 	public OrTest() {
 		super(BigInt::or);
