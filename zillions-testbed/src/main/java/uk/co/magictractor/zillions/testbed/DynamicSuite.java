@@ -187,91 +187,100 @@ public class DynamicSuite {
 			return null;
 		}
 
-		URI uri;
+		String className;
+		String methodName = null;
 		TestSource source = testIdentifier.getSource().get();
 		if (source instanceof ClassSource) {
-			uri = getUri(((ClassSource) source).getClassName());
+			className = ((ClassSource) source).getClassName();
 		} else if (source instanceof MethodSource) {
 			// The method name cannot currently be included in the source URI.
 			// The best we can do is just link back to the class.
 			// See https://github.com/junit-team/junit5/issues/1850
-			uri = getUri(((MethodSource) source).getClassName());
+			MethodSource methodSource = (MethodSource) source;
+			className = methodSource.getClassName();
+			methodName = methodSource.getMethodName();
 		} else {
 			// This should be relaxed to just log a warning.
 			throw new IllegalStateException(
 					"Code needs modified to create a URI for source type " + source.getClass().getSimpleName());
 		}
 
+		return getUri(className, methodName);
+	}
+
+	private URI getUri(String className, String methodName) {
+		String path = "/" + className.replace('.', '/');
+		String query = null;
+		if (methodName != null) {
+			query = "method=" + methodName;
+		}
+
+		URI uri;
+		try {
+			uri = new URI("classpath", null, path, query, null);
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException(e);
+		}
+
 		return uri;
 	}
 
-	private URI getUri(String className) {
-		// TODO! fix this - was a quick hack
-		String p = className.replace('.', '\\');
-		Path path = Paths.get(p);
-		// System.err.println(path.toUri());
-
-		return path.toUri();
-	}
-
 	private DynamicNode dynamicTest(TestPlan testPlan, TestIdentifier testIdentifier) {
+		URI uri = getSourceUri(testIdentifier);
 		MethodSource source = ((MethodSource) testIdentifier.getSource().get());
 
-		// URI uri = getUri(source.getClassName());
-		// URI uri = URI.create(source.getMethodName());
-		// URI uri = getUri(source.getClassName() + "." + source.getMethodName());
-		// URI uri = getUri(source.getClassName() + ":" + source.getMethodName()); //
-		// boom
-		// URI uri = URI.create(source.getMethodName() + "()");
-		// URI uri = null;
-		// URI uri = URI.create("method:" + source.getMethodName());
-		// URI uri = URI.create("method:" + source.getMethodName() + "()");
-
-		URI uri = getUri(source.getClassName());
-		// uri = new URI(scheme, authority, path, query, fragment)
-		try {
-			// "file", null, <path>, null, null
-			// fragment gives "#<method" - still doesn't work
-			// uri = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(),
-			// source.getMethodName(), uri.getFragment());
-			// uri = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), null,
-			// source.getMethodName());
-			// uri = new URI(null, null, null, null, source.getMethodName());
-			uri = new URI("file", null, uri.getPath() + ".java", "line=23&column=9", null);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
-
-		// Aah... use classpath scheme?
-		// https://github.com/junit-team/junit5/issues/1467
-
-		System.err.println("test uri: " + uri);
-
-		return DynamicTest.dynamicTest(testIdentifier.getDisplayName(), uri, () -> executeTest(source));
+		// System.err.println("testIdentifier: " + testIdentifier);
+		
+		return DynamicTest.dynamicTest(testIdentifier.getDisplayName(), uri, () -> executeTest(source, testIdentifier));
 	}
 
-	private void executeTest(TestSource testSource) throws Throwable {
+	private void executeTest(TestSource testSource, TestIdentifier testIdentifier) throws Throwable {
 		MethodSource methodSource = (MethodSource) testSource;
+		
+		// TODO! 
 		DiscoverySelector selector = DiscoverySelectors.selectMethod(methodSource.getClassName(),
 				methodSource.getMethodName());
 
 		LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request().selectors(selector).build();
 
-		ResultListener resultListener = new ResultListener();
+		ResultListener resultListener = new ResultListener(testIdentifier);
+		// System.err.println("exec");
 		_launcher.execute(request, resultListener);
 
-		if (resultListener.throwable != null) {
-			throw resultListener.throwable;
+		TestExecutionResult testExecutionResult = resultListener._testExecutionResult;
+		// System.err.println("result: " + testExecutionResult);
+		if (testExecutionResult == null) {
+			// An ignored test.
+			// TODO! is there a way to indicate that the test was ignored?
+			// For now, just mark it as a pass.
+			return;
 		}
+		if (testExecutionResult.getThrowable().isPresent()) {
+			// System.err.println("rethrow failure");
+			throw testExecutionResult.getThrowable().get();
+		}
+		if (!testExecutionResult.getStatus().equals(Status.SUCCESSFUL)) {
+			// System.err.println("missing throwable");
+			throw new IllegalStateException("Test was not successful, but does not have a Throwable");
+		}
+		// System.err.println("pass");
 	}
 
 	private static final class ResultListener implements TestExecutionListener {
-		private Throwable throwable;
+		private final TestIdentifier _testIdentifier;
+		private TestExecutionResult _testExecutionResult;
 
+		ResultListener(TestIdentifier testIdentifier) {
+			_testIdentifier=testIdentifier;
+		}
 		public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-			if (!Status.SUCCESSFUL.equals(testExecutionResult.getStatus())) {
-				throwable = testExecutionResult.getThrowable().get();
+			if (!testIdentifier.equals(_testIdentifier)) {
+				// Also notified when containers finish.
+				// System.err.println("ignore other: " + testIdentifier);
+				return;
 			}
+			// System.err.println("finished: " +  testExecutionResult);
+			_testExecutionResult = testExecutionResult;
 		}
 	}
 

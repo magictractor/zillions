@@ -15,6 +15,7 @@
  */
 package uk.co.magictractor.zillions.testbed.bits;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,7 @@ public class XorTest extends OpTestBigIntParam {
 	@Test
 	@Disabled
 	public void disabled() {
-		check(-10, -3, 11);
+		Assertions.fail("@Disabled tests in the suite should not be executed");
 	}
 	
 	// For checking behaviour with dynamic test suite
