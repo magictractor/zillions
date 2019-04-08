@@ -15,9 +15,20 @@
  */
 package uk.co.magictractor.zillions.testbed.object;
 
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.SelectClasses;
 
-@SelectClasses({ ToStringTest.class, EqualsTest.class, HashCodeTest.class })
+import uk.co.magictractor.zillions.testbed.DynamicSuite;
+
+@SelectClasses({ ToStringTest.class, EqualsTest.class, CompareTest.class, HashCodeTest.class })
 public class ObjectSuite {
-	// This class is left intentionally blank.
+	
+	@TestFactory
+	public Stream<DynamicNode> suiteFactory() {
+		return new DynamicSuite(this).stream();
+	}
+	
 }

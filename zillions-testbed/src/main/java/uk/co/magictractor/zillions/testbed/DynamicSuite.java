@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicContainer;
@@ -17,6 +18,7 @@ import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.TestExecutionResult.Status;
 import org.junit.platform.engine.TestSource;
+import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.engine.support.descriptor.ClassSource;
 import org.junit.platform.engine.support.descriptor.MethodSource;
@@ -27,19 +29,29 @@ import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
+import org.junit.platform.suite.api.ExcludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectClasses;
 
 import com.google.common.collect.Iterables;
 
 /**
+ * Runs a JUnit suite as dynamic tests without having to change the test engine.
+ * 
+ * Only supports a subset of suite associated annotations. Currently these
+ * annotations are supported
+ * <ul>
+ * <li>@SelectClasses</li>
+ * <li>@ExcludeClassNamePatterns</li>
+ * </ul>
+ * 
  * This class will probably be removed once JUnit5 has better support for
  * suites. See https://github.com/junit-team/junit5/issues/744.
  * 
- * TODO! what happens with a suite within a suite?
+ * TODO! suite within a suite is broken
  * 
- * TODO! check what happens with ignored tests.
+ * TODO! ignored tests are displayed as passed tests
  * 
- * TODO! support @SelectPackages and @ExcludeClasses
+ * TODO! support @SelectPackages
  * 
  * TODO! fix dynamic test node URI. Requires JUnit enhancement. Have raised
  * https://github.com/junit-team/junit5/issues/1850
@@ -96,8 +108,29 @@ public class DynamicSuite {
 		}
 	}
 
-	private List<Class<?>> getSuiteTestClasses(Class<?> testClass) {
-		return Arrays.asList(testClass.getAnnotation(SelectClasses.class).value());
+//	private List<Class<?>> getSuiteTestClasses(Class<?> suiteClass) {
+//		return Arrays.asList(suiteClass.getAnnotation(SelectClasses.class).value());
+//	}
+
+	/** A holder for filter information for a suite. */
+	private static final class SuiteFilters {
+		private ClassNameFilter _excludeClassNamePatterns;
+
+		SuiteFilters(Class<?> suiteClass) {
+			if (suiteClass.isAnnotationPresent(ExcludeClassNamePatterns.class)) {
+				String[] patterns = suiteClass.getAnnotation(ExcludeClassNamePatterns.class).value();
+				_excludeClassNamePatterns = ClassNameFilter.excludeClassNamePatterns(patterns);
+			}
+		}
+
+		Predicate<Class<?>> getClassPredicate() {
+			if (_excludeClassNamePatterns != null) {
+				return c -> _excludeClassNamePatterns.apply(c.getName()).included();
+			} else {
+				// No filter.
+				return c -> true;
+			}
+		}
 	}
 
 	public Stream<DynamicNode> stream() {
@@ -105,7 +138,11 @@ public class DynamicSuite {
 	}
 
 	private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
-		return getSuiteTestClasses(suiteClass).stream().map(this::streamForUnitTests).flatMap(i -> i);
+		List<Class<?>> unfilteredClasses = Arrays.asList(suiteClass.getAnnotation(SelectClasses.class).value());
+		SuiteFilters suiteFilters = new SuiteFilters(suiteClass);
+
+		return unfilteredClasses.stream().filter(suiteFilters.getClassPredicate()).map(this::streamForUnitTests)
+				.flatMap(i -> i);
 	}
 
 	private Stream<DynamicNode> streamForUnitTests(Class<?> testClass) {
@@ -138,10 +175,34 @@ public class DynamicSuite {
 		Stream<? extends DynamicNode> children = testPlan.getChildren(testIdentifier).stream()
 				.map(tid -> dynamicNode(testPlan, tid));
 
-		ClassSource source = ((ClassSource) testIdentifier.getSource().get());
-		URI uri = getUri(source.getClassName());
+		URI uri = getSourceUri(testIdentifier);
 
 		return DynamicContainer.dynamicContainer(testIdentifier.getDisplayName(), uri, children);
+	}
+
+	private URI getSourceUri(TestIdentifier testIdentifier) {
+		if (!testIdentifier.getSource().isPresent()) {
+			// Very unlikely, there should always be a source.
+			// Just use the default URI.
+			return null;
+		}
+
+		URI uri;
+		TestSource source = testIdentifier.getSource().get();
+		if (source instanceof ClassSource) {
+			uri = getUri(((ClassSource) source).getClassName());
+		} else if (source instanceof MethodSource) {
+			// The method name cannot currently be included in the source URI.
+			// The best we can do is just link back to the class.
+			// See https://github.com/junit-team/junit5/issues/1850
+			uri = getUri(((MethodSource) source).getClassName());
+		} else {
+			// This should be relaxed to just log a warning.
+			throw new IllegalStateException(
+					"Code needs modified to create a URI for source type " + source.getClass().getSimpleName());
+		}
+
+		return uri;
 	}
 
 	private URI getUri(String className) {
