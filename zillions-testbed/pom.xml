@@ -11,9 +11,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<junit.jupiter.version>5.4.1</junit.jupiter.version>
-		<!-- <junit.platform.version>1.0.0-M2</junit.platform.version> // for surefire 
-			plugin -->
+		<junit.jupiter.version>5.4.2</junit.jupiter.version>
+		<junit.platform.version>1.4.1</junit.platform.version>
 	</properties>
 	
   <dependencies>
@@ -43,12 +42,12 @@
 		<dependency>
     		<groupId>org.junit.platform</groupId>
     		<artifactId>junit-platform-suite-api</artifactId>
- 			<version>1.4.1</version>
+ 			<version>${junit.platform.version}</version>
 		</dependency>
 		<dependency>
     		<groupId>org.junit.platform</groupId>
     		<artifactId>junit-platform-runner</artifactId>
- 			<version>1.4.1</version>
+ 			<version>${junit.platform.version}</version>
 		</dependency>
 
 		<!-- AssertJ rather than Hamcrest -->

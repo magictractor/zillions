@@ -11,9 +11,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<junit.jupiter.version>5.4.1</junit.jupiter.version>
-		<!-- <junit.platform.version>1.0.0-M2</junit.platform.version> // for surefire 
-			plugin -->
 	</properties>
 	
   <dependencies>
@@ -33,23 +30,13 @@
       <optional>true</optional>
     </dependency>
 
-<dependency>
+	<dependency>
       <groupId>uk.co.magictractor</groupId>
       <artifactId>zillions-testbed</artifactId>
       <version>0.1-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
-  <!-- 
-<dependency>
-      <groupId>uk.co.magictractor</groupId>
-      <artifactId>artifactId</artifactId>
-      <classifier>zillions-core</classifier>
-      <type>test-jar</type>
-      <version>0.1-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-     -->
-		
+
   </dependencies>
 
   <build>

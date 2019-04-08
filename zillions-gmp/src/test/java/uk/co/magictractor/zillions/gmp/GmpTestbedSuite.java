@@ -15,13 +15,9 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import org.junit.runners.Suite.SuiteClasses;
-
 import uk.co.magictractor.zillions.testbed.TestbedSuite;
-import uk.co.magictractor.zillions.testbed.bits.XorTest;
 
-// TODO! provide convenient way to test just one or two ops - overridding @SuiteClasses does not work
-@SuiteClasses(XorTest.class)
+//@SelectClasses(XorTest.class)
 public class GmpTestbedSuite extends TestbedSuite {
 	// Nothing here. Full test suite is inherited from testbed parent suite.
 }

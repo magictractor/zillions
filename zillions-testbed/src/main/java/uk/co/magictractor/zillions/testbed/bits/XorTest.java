@@ -15,6 +15,7 @@
  */
 package uk.co.magictractor.zillions.testbed.bits;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
@@ -46,4 +47,16 @@ public class XorTest extends OpTestBigIntParam {
 		check(-10, -3, 11);
 	}
 
+	// For checking behaviour with dynamic test suite
+	@Test
+	@Disabled
+	public void disabled() {
+		check(-10, -3, 11);
+	}
+	
+	// For checking behaviour with dynamic test suite
+	@Test
+	public void fails() {
+		check(-10, -3, 999);
+	}
 }

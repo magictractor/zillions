@@ -15,13 +15,8 @@
  */
 package uk.co.magictractor.zillions.testbed.object;
 
-import org.junit.platform.runner.JUnitPlatform;
 import org.junit.platform.suite.api.SelectClasses;
-import org.junit.runner.RunWith;
 
-@RunWith(JUnitPlatform.class)
-//@RunWith(ReuseSuite.class)
-//@SuiteClasses({ToStringTest.class, EqualsTest.class, HashCodeTest.class})
 @SelectClasses({ ToStringTest.class, EqualsTest.class, HashCodeTest.class })
 public class ObjectSuite {
 	// This class is left intentionally blank.
