@@ -58,4 +58,36 @@ public interface GmpLib {
 
 	void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
 
+	// Set rop to the one’s complement of op.
+	// void mpz_com (mpz_t rop, mpz_t op);
+
+	// Set bit bit_index in rop.
+	// void mpz_setbit (mpz_t rop, mp_bitcnt_t bit_index);
+
+	// Clear bit bit_index in rop.
+	// void mpz_clrbit (mpz_t rop, mp_bitcnt_t bit_index);
+
+	// Complement bit bit_index in rop.
+	// void mpz_combit (mpz_t rop, mp_bitcnt_t bit_index);
+
+	// Test bit bit_index in op and return 0 or 1 accordingly.
+	// int mpz_tstbit (mpz_t op, mp_bitcnt_t bit_index);
+
+	/**
+	 * Set rop to op1 times 2 raised to op2. This operation can also be defined as a
+	 * left shift by op2 bits.
+	 */
+	void mpz_mul_2exp(mpz_t rop, mpz_t op1, mp_bitcnt_t op2);
+
+	/**
+	 * From https://gmplib.org/manual/Integer-Division.html#Integer-Division
+	 * 
+	 * For positive n both mpz_fdiv_q_2exp and mpz_tdiv_q_2exp are simple bitwise
+	 * right shifts. For negative n, mpz_fdiv_q_2exp is effectively an arithmetic
+	 * right shift treating n as twos complement the same as the bitwise logical
+	 * functions do, whereas mpz_tdiv_q_2exp effectively treats n as sign and
+	 * magnitude.
+	 */
+	void mpz_fdiv_q_2exp(mpz_t q, mpz_t n, mp_bitcnt_t b);
+
 }

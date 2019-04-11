@@ -74,4 +74,7 @@ public class JnaGmpLib implements GmpLib, Library {
 
 	public native void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
 
+	public native void mpz_mul_2exp(mpz_t rop, mpz_t op1, mp_bitcnt_t b);
+
+	public native void mpz_fdiv_q_2exp (mpz_t q, mpz_t n, mp_bitcnt_t b);
 }

@@ -42,6 +42,9 @@ public abstract class OpTestSingleParam<PARAM, RESULT> {
 		Object result;
 		if (BigInt.class.equals(targetClass)) {
 			result = BigIntFactory.from(value);
+		} else if (Integer.class.equals(targetClass)) {
+			// TODO! range assertions
+			result = Integer.valueOf((int) value);
 		} else {
 			throw new IllegalStateException("Code needs modified to convert long to " + targetClass.getSimpleName());
 		}

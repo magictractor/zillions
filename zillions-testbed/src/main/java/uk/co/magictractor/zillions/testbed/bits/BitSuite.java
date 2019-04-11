@@ -23,7 +23,7 @@ import org.junit.platform.suite.api.SelectClasses;
 
 import uk.co.magictractor.zillions.testbed.DynamicSuite;
 
-@SelectClasses({ AndTest.class, OrTest.class, XorTest.class })
+@SelectClasses({ AndTest.class, OrTest.class, XorTest.class, ShiftLeftTest.class })
 public class BitSuite {
 
 	@TestFactory

@@ -94,6 +94,18 @@ public class GmpJnaBigInt implements BigInt {
 		return this;
 	}
 
+	@Override
+	public BigInt negate() {
+		_lib.mpz_neg(_mpz, _mpz);
+		return this;
+	}
+
+	@Override
+	public BigInt abs() {
+		_lib.mpz_abs(_mpz, _mpz);
+		return this;
+	}
+
 	public BigInt and(BigInt y) {
 		_lib.mpz_and(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
@@ -110,14 +122,22 @@ public class GmpJnaBigInt implements BigInt {
 	}
 
 	@Override
-	public BigInt negate() {
-		_lib.mpz_neg(_mpz, _mpz);
+	public BigInt shiftLeft(int n) {
+		if (n > 0) {
+			_lib.mpz_mul_2exp(_mpz, _mpz, new mp_bitcnt_t(n));
+		} else {
+			_lib.mpz_fdiv_q_2exp(_mpz, _mpz, new mp_bitcnt_t(-n));
+		}
 		return this;
 	}
 
 	@Override
-	public BigInt abs() {
-		_lib.mpz_abs(_mpz, _mpz);
+	public BigInt shiftRight(int n) {
+		if (n > 0) {
+			_lib.mpz_fdiv_q_2exp(_mpz, _mpz, new mp_bitcnt_t(n));
+		} else {
+			_lib.mpz_mul_2exp(_mpz, _mpz, new mp_bitcnt_t(-n));
+		}
 		return this;
 	}
 

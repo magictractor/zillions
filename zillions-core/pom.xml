@@ -115,16 +115,6 @@
           </dependency>
         </dependencies>
       </plugin>
-
-      <!-- Generate JNA classes. Run using "mvn jnaerator:generate". Config 
-        in src/main/jnaerator/config.jnaerator See https://code.google.com/p/jnaerator/wiki/Maven 
-        https://code.google.com/p/jnaerator/wiki/CommandLineOptionsAndEnvironmentVariables -->
-        <!-- 
-      <plugin>
-        <groupId>com.nativelibs4java</groupId>
-        <artifactId>maven-jnaerator-plugin</artifactId>
-        <version>0.11</version>
-      </plugin>  -->
     </plugins>
   </build>
 

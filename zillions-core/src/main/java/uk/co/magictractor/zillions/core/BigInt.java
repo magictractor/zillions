@@ -48,16 +48,26 @@ public interface BigInt extends EnhancedComparable<BigInt> {
 
 	BigInt multiply(long y);
 
+	/** Negate value. */
+	BigInt negate();
+
+	/** Absolute value. */
+	BigInt abs();
+	
+	// Bit operations.
+	
 	BigInt or(BigInt y);
 
 	BigInt and(BigInt y);
 
 	BigInt xor(BigInt y);
 
-	/** Negate value. */
-	BigInt negate();
-
-	/** Absolute value. */
-	BigInt abs();
+	// also not() and andNot() in BigInteger
+	
+	// setBit(), clearBit() and flipBit()
+	
+	BigInt shiftLeft(int n);
+	
+	BigInt shiftRight(int n);
 
 }

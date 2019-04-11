@@ -89,6 +89,18 @@ public class NumptyBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt shiftLeft(int n) {
+		_x = _x << n;
+		return this;
+	}
+
+	@Override
+	public BigInt shiftRight(int n) {
+		_x = _x >> n;
+		return this;
+	}
+
+	@Override
 	public int compareTo(BigInt other) {
 		long y = ((NumptyBigInt) other)._x;
 		if (_x == y) {

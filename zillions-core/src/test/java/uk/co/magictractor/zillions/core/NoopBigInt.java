@@ -64,6 +64,16 @@ public class NoopBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt shiftLeft(int n) {
+		return this;
+	}
+
+	@Override
+	public BigInt shiftRight(int n) {
+		return this;
+	}
+
+	@Override
 	public int compareTo(BigInt o) {
 		return 0;
 	}

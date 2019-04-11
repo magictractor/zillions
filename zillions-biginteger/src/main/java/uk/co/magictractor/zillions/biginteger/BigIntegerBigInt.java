@@ -65,6 +65,18 @@ public class BigIntegerBigInt implements BigInt {
 		return this;
 	}
 
+	@Override
+	public BigInt negate() {
+		_bigInteger = _bigInteger.negate();
+		return this;
+	}
+
+	@Override
+	public BigInt abs() {
+		_bigInteger = _bigInteger.abs();
+		return this;
+	}
+
 	public BigInt and(BigInt y) {
 		_bigInteger = _bigInteger.and(((BigIntegerBigInt) y)._bigInteger);
 		return this;
@@ -81,14 +93,14 @@ public class BigIntegerBigInt implements BigInt {
 	}
 
 	@Override
-	public BigInt negate() {
-		_bigInteger = _bigInteger.negate();
+	public BigInt shiftLeft(int n) {
+		_bigInteger = _bigInteger.shiftLeft(n);
 		return this;
 	}
 
 	@Override
-	public BigInt abs() {
-		_bigInteger = _bigInteger.abs();
+	public BigInt shiftRight(int n) {
+		_bigInteger = _bigInteger.shiftRight(n);
 		return this;
 	}
 

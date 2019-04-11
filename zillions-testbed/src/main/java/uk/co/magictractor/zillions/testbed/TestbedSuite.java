@@ -37,6 +37,8 @@ import uk.co.magictractor.zillions.testbed.arithmetic.NegateTest;
 import uk.co.magictractor.zillions.testbed.arithmetic.SubtractTest;
 import uk.co.magictractor.zillions.testbed.bits.AndTest;
 import uk.co.magictractor.zillions.testbed.bits.OrTest;
+import uk.co.magictractor.zillions.testbed.bits.ShiftLeftTest;
+import uk.co.magictractor.zillions.testbed.bits.ShiftRightTest;
 import uk.co.magictractor.zillions.testbed.bits.XorTest;
 import uk.co.magictractor.zillions.testbed.object.CompareTest;
 import uk.co.magictractor.zillions.testbed.object.EqualsTest;
@@ -52,7 +54,7 @@ import uk.co.magictractor.zillions.testbed.random.RandomTest;
 
 @SelectClasses({ ToStringTest.class, EqualsTest.class, CompareTest.class, HashCodeTest.class, AddTest.class,
 		SubtractTest.class, MultiplyTest.class, NegateTest.class, AbsTest.class, AndTest.class, OrTest.class,
-		XorTest.class, RandomTest.class })
+		XorTest.class, ShiftLeftTest.class, ShiftRightTest.class, RandomTest.class })
 public abstract class TestbedSuite {
 
 	@TestFactory
