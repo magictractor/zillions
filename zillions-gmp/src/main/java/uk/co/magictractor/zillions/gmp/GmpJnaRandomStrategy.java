@@ -17,31 +17,31 @@ package uk.co.magictractor.zillions.gmp;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.create.RandomStrategy;
+import uk.co.magictractor.zillions.core.environment.Init;
+import uk.co.magictractor.zillions.gmp.struct.gmp_randstate_t;
+import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
 
-public class GmpJnaRandomStrategy implements RandomStrategy {
+public class GmpJnaRandomStrategy implements RandomStrategy, Init {
+
+	private final gmp_randstate_t _state = new gmp_randstate_t();
+	private final GmpJnaBigInt _rop  = new GmpJnaBigInt();
+
+	@Override
+	public void init() throws Exception {
+		System.err.println("init");
+		GmpLibInstance.__lib.gmp_randinit_default(_state);
+		System.err.println("init done");
+	}
 
 	@Override
 	public void setSeed(long seed) {
-		throw new UnsupportedOperationException("not yet implemented");
+		//throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	@Override
 	public BigInt random(int numBits) {
-		throw new UnsupportedOperationException("not yet implemented");
+		GmpLibInstance.__lib.mpz_urandomb(_rop.getInternalValue(), _state, new mp_bitcnt_t(numBits));
+		return _rop;
 	}
 
-	// Hmm. Might want to try JNAerator again?
-	// https://github.com/nativelibs4java/JNAerator/wiki/Command-Line-Options-And-Environment-Variables
-
-	// From randmt.h - THIS ISN'T gmp_randstate_t?
-//	/* State structure for MT.  */
-//	typedef struct
-//	{
-//	  gmp_uint_least32_t mt[N];    /* State array.  */
-//	  int mti;                     /* Index of current value.  */
-//	} gmp_rand_mt_struct;
-
-// gmp_uint_least32_t
-
-	// mp_bitcnt_t
 }

@@ -1,4 +1,4 @@
-package uk.co.magictractor.zillions.gmp;
+package uk.co.magictractor.zillions.gmp.struct;
 
 import com.sun.jna.NativeLong;
 
@@ -9,6 +9,8 @@ import com.sun.jna.NativeLong;
  * </pre>
  */
 public class mp_bitcnt_t extends NativeLong {
+
+	private static final long serialVersionUID = 1L;
 
 	// JNA needs a no-args constructor
 	public mp_bitcnt_t() {

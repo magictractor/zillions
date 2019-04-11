@@ -17,15 +17,18 @@ package uk.co.magictractor.zillions.gmp;
 
 import com.sun.jna.Memory;
 
+import uk.co.magictractor.zillions.gmp.struct.gmp_randstate_t;
+import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
+import uk.co.magictractor.zillions.gmp.struct.mpz_t;
+
 // https://gmplib.org/manual/Integer-Arithmetic.html
 // https://gmplib.org/manual/Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling
 // https://gmplib.org/manual/Integer-Random-Numbers.html#Integer-Random-Numbers
 public interface GmpLib {
 
+	// https://gmplib.org/manual/Initializing-Integers.html#Initializing-Integers
 	void mpz_init(mpz_t x);
-
 	void mpz_init_set_si(mpz_t rop, long op);
-
 	int mpz_init_set_str(mpz_t rop, String str, int base);
 
 	void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
@@ -90,4 +93,20 @@ public interface GmpLib {
 	 */
 	void mpz_fdiv_q_2exp(mpz_t q, mpz_t n, mp_bitcnt_t b);
 
+	/**
+	 * Generate a uniformly distributed random integer in the range 0 to 2^n-1,
+	 * inclusive.
+	 */
+	void mpz_urandomb(mpz_t rop, gmp_randstate_t state, mp_bitcnt_t n);
+
+	/**
+	 * Initialize state with a default algorithm. This will be a compromise between
+	 * speed and randomness, and is recommended for applications with no special
+	 * requirements. Currently this is gmp_randinit_mt.
+	 */
+	// https://gmplib.org/manual/Random-State-Initialization.html#Random-State-Initialization
+	void gmp_randinit_default(gmp_randstate_t state);
+	
+	// https://gmplib.org/manual/Random-State-Seeding.html#Random-State-Seeding
+	void gmp_randseed (gmp_randstate_t state, mpz_t seed);
 }

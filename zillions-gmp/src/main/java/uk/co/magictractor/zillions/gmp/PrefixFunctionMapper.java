@@ -25,7 +25,13 @@ public class PrefixFunctionMapper implements FunctionMapper
 
   @Override
   public String getFunctionName(NativeLibrary library, Method method) {
-    return "__g" + method.getName();
+	  String methodName = method.getName();
+	  if (methodName.startsWith("gmp_")) {
+		  return "__" + methodName;
+	  } else {
+		  // mpz_ functions
+		  return "__g" + methodName;
+  }
   }
 
 }

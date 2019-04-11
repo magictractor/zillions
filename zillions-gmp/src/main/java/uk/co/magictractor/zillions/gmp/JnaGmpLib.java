@@ -24,6 +24,10 @@ import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Platform;
 
+import uk.co.magictractor.zillions.gmp.struct.gmp_randstate_t;
+import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
+import uk.co.magictractor.zillions.gmp.struct.mpz_t;
+
 public class JnaGmpLib implements GmpLib, Library {
 
 	// passing NativeLibrary.getInstance(libName, options)
@@ -61,7 +65,7 @@ public class JnaGmpLib implements GmpLib, Library {
 	public native void mpz_neg(mpz_t rop, mpz_t op);
 
 	public native void mpz_abs(mpz_t rop, mpz_t op);
-	
+
 	public native String mpz_get_str(Memory mem, int base, mpz_t op);
 
 	public native int mpz_cmp(mpz_t op1, mpz_t op2);
@@ -74,7 +78,19 @@ public class JnaGmpLib implements GmpLib, Library {
 
 	public native void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
 
+	// For shift left
 	public native void mpz_mul_2exp(mpz_t rop, mpz_t op1, mp_bitcnt_t b);
 
-	public native void mpz_fdiv_q_2exp (mpz_t q, mpz_t n, mp_bitcnt_t b);
+	// For shift right`
+	public native void mpz_fdiv_q_2exp(mpz_t q, mpz_t n, mp_bitcnt_t b);
+
+	// Random
+	// https://gmplib.org/manual/Integer-Random-Numbers.html#Integer-Random-Numbers
+	public native void mpz_urandomb(mpz_t rop, gmp_randstate_t state, mp_bitcnt_t n);
+
+	// https://gmplib.org/manual/Random-State-Initialization.html#Random-State-Initialization
+	public native void gmp_randinit_default(gmp_randstate_t state);
+
+	// https://gmplib.org/manual/Random-State-Seeding.html#Random-State-Seeding
+	public native void gmp_randseed(gmp_randstate_t state, mpz_t seed);
 }

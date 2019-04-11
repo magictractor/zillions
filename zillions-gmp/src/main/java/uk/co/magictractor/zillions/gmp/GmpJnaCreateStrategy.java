@@ -20,39 +20,18 @@ import uk.co.magictractor.zillions.core.create.CreateStrategy;
 
 public class GmpJnaCreateStrategy implements CreateStrategy {
 
-	private static GmpLib __lib;
-
-	// private static final boolean IS_AVAILABLE;
-
-	static {
-		// TODO! make more robust
-		// TODO! also make libraries optional (jna?)
-		try {
-			init();
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-	}
-
-	private static void init() {
-		__lib = new JnaGmpLib();
-	}
-
 	public boolean isAvailable() {
 		// There was a problem loading the native library.
-		return (__lib != null);
+		// TODO! if there's a problem, __lib could be a fallback proxy
+		return (GmpLibInstance.__lib != null);
 	}
 
 	public BigInt fromString(String decimal) {
-		return new GmpJnaBigInt(decimal, __lib);
+		return new GmpJnaBigInt(decimal);
 	}
 
 	public BigInt fromLong(long value) {
-		return new GmpJnaBigInt(value, __lib);
-	}
-
-	public BigInt copy(BigInt other) {
-		return new GmpJnaBigInt(other, __lib);
+		return new GmpJnaBigInt(value);
 	}
 
 }

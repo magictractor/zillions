@@ -15,33 +15,35 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
+import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
+
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
+import uk.co.magictractor.zillions.gmp.struct.mpz_t;
 
 public class GmpJnaBigInt implements BigInt {
 
-	// TODO! Why not use a static instance? - ah! could have JNA and JNI bindings
-	// for the lib.
-	// But would not have both at the same same - so static lib should be fine
-	private final GmpLib _lib;
-
+	// default so it may be accessed by strategy implementations
 	private mpz_t _mpz = new mpz_t();
 
-	public GmpJnaBigInt(String decimal, GmpLib lib) {
-		int ok = lib.mpz_init_set_str(_mpz, decimal, 10);
+	public GmpJnaBigInt(String decimal) {
+		int ok = __lib.mpz_init_set_str(_mpz, decimal, 10);
 		if (ok != 0) {
 			throw new IllegalArgumentException("Not a decimal string: " + decimal);
 		}
-		_lib = lib;
 	}
 
-	public GmpJnaBigInt(long x, GmpLib lib) {
-		lib.mpz_init_set_si(_mpz, x);
-		_lib = lib;
+	public GmpJnaBigInt(long x) {
+		__lib.mpz_init_set_si(_mpz, x);
 	}
 
-	public GmpJnaBigInt(BigInt other, GmpLib lib) {
-		_lib = lib;
-		throw new UnsupportedOperationException("not yet implemented");
+	/**
+	 * Constructor for an initialised mpz_t with unspecified value (is zero).
+	 * 
+	 * For use by Gmp strategy implementations to create a blank initialised mpz_t.
+	 */
+	public GmpJnaBigInt() {
+		__lib.mpz_init(_mpz);
 	}
 
 	// https://gmplib.org/manual/Initializing-Integers.html#Initializing-Integers
@@ -51,29 +53,29 @@ public class GmpJnaBigInt implements BigInt {
 	 */
 
 	public BigInt add(BigInt y) {
-		_lib.mpz_add(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
+		__lib.mpz_add(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
 	}
 
 	public BigInt add(long y) {
 		if (y >= 0) {
-			_lib.mpz_add_ui(_mpz, _mpz, y);
+			__lib.mpz_add_ui(_mpz, _mpz, y);
 		} else {
-			_lib.mpz_sub_ui(_mpz, _mpz, -y);
+			__lib.mpz_sub_ui(_mpz, _mpz, -y);
 		}
 		return this;
 	}
 
 	public BigInt subtract(BigInt y) {
-		_lib.mpz_sub(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
+		__lib.mpz_sub(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
 	}
 
 	public BigInt subtract(long y) {
 		if (y >= 0) {
-			_lib.mpz_sub_ui(_mpz, _mpz, y);
+			__lib.mpz_sub_ui(_mpz, _mpz, y);
 		} else {
-			_lib.mpz_add_ui(_mpz, _mpz, -y);
+			__lib.mpz_add_ui(_mpz, _mpz, -y);
 		}
 		return this;
 	}
@@ -85,48 +87,48 @@ public class GmpJnaBigInt implements BigInt {
 	// Slightly wasteful on memory, but more efficient if multiplying a lot (like
 	// simple factorial calc)
 	public BigInt multiply(BigInt y) {
-		_lib.mpz_mul(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
+		__lib.mpz_mul(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
 	}
 
 	public BigInt multiply(long y) {
-		_lib.mpz_mul_si(_mpz, _mpz, y);
+		__lib.mpz_mul_si(_mpz, _mpz, y);
 		return this;
 	}
 
 	@Override
 	public BigInt negate() {
-		_lib.mpz_neg(_mpz, _mpz);
+		__lib.mpz_neg(_mpz, _mpz);
 		return this;
 	}
 
 	@Override
 	public BigInt abs() {
-		_lib.mpz_abs(_mpz, _mpz);
+		__lib.mpz_abs(_mpz, _mpz);
 		return this;
 	}
 
 	public BigInt and(BigInt y) {
-		_lib.mpz_and(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
+		__lib.mpz_and(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
 	}
 
 	public BigInt or(BigInt y) {
-		_lib.mpz_ior(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
+		__lib.mpz_ior(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
 	}
 
 	public BigInt xor(BigInt y) {
-		_lib.mpz_xor(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
+		__lib.mpz_xor(_mpz, _mpz, ((GmpJnaBigInt) y)._mpz);
 		return this;
 	}
 
 	@Override
 	public BigInt shiftLeft(int n) {
 		if (n > 0) {
-			_lib.mpz_mul_2exp(_mpz, _mpz, new mp_bitcnt_t(n));
+			__lib.mpz_mul_2exp(_mpz, _mpz, new mp_bitcnt_t(n));
 		} else {
-			_lib.mpz_fdiv_q_2exp(_mpz, _mpz, new mp_bitcnt_t(-n));
+			__lib.mpz_fdiv_q_2exp(_mpz, _mpz, new mp_bitcnt_t(-n));
 		}
 		return this;
 	}
@@ -134,9 +136,9 @@ public class GmpJnaBigInt implements BigInt {
 	@Override
 	public BigInt shiftRight(int n) {
 		if (n > 0) {
-			_lib.mpz_fdiv_q_2exp(_mpz, _mpz, new mp_bitcnt_t(n));
+			__lib.mpz_fdiv_q_2exp(_mpz, _mpz, new mp_bitcnt_t(n));
 		} else {
-			_lib.mpz_mul_2exp(_mpz, _mpz, new mp_bitcnt_t(-n));
+			__lib.mpz_mul_2exp(_mpz, _mpz, new mp_bitcnt_t(-n));
 		}
 		return this;
 	}
@@ -147,7 +149,7 @@ public class GmpJnaBigInt implements BigInt {
 	}
 
 	private int compareTo0(GmpJnaBigInt other) {
-		return _lib.mpz_cmp(_mpz, other._mpz);
+		return __lib.mpz_cmp(_mpz, other._mpz);
 	}
 
 	public boolean equals(Object other) {
@@ -159,12 +161,16 @@ public class GmpJnaBigInt implements BigInt {
 	}
 
 	public int hashCode() {
-		long leastSignificantLong = _lib.mpz_get_si(_mpz);
+		long leastSignificantLong = __lib.mpz_get_si(_mpz);
 		return (int) (leastSignificantLong ^ (leastSignificantLong >>> 32));
 	}
 
 	public String toString() {
-		return _lib.mpz_get_str(null, 10, _mpz);
+		return __lib.mpz_get_str(null, 10, _mpz);
 	}
 
+	/** For use by Gmp specific strategy implementations. */
+	public mpz_t getInternalValue() {
+		return _mpz;
+	}
 }
