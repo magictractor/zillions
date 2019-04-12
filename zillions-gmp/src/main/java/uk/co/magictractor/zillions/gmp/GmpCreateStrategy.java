@@ -15,23 +15,25 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
+import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
+
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 
-public class GmpJnaCreateStrategy implements CreateStrategy {
+public class GmpCreateStrategy implements CreateStrategy {
 
 	public boolean isAvailable() {
 		// There was a problem loading the native library.
 		// TODO! if there's a problem, __lib could be a fallback proxy
-		return (GmpLibInstance.__lib != null);
+		return (__lib != null);
 	}
 
 	public BigInt fromString(String decimal) {
-		return new GmpJnaBigInt(decimal);
+		return new GmpBigInt(decimal);
 	}
 
 	public BigInt fromLong(long value) {
-		return new GmpJnaBigInt(value);
+		return new GmpBigInt(value);
 	}
 
 }

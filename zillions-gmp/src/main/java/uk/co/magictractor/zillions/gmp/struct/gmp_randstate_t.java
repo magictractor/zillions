@@ -5,7 +5,7 @@ import com.sun.jna.Structure.FieldOrder;
 import com.sun.jna.Union;
 import com.sun.jna.ptr.PointerByReference;
 
-import uk.co.magictractor.zillions.gmp.GmpJnaBigInt;
+import uk.co.magictractor.zillions.gmp.GmpBigInt;
 
 /**
  * Random state structure.
@@ -30,28 +30,36 @@ typedef enum
 } gmp_randalg_t;
  * </pre>
  */
-@FieldOrder({ "_mp_seed", "_mp_alg", "_mp_algdata" })
+@FieldOrder({ "_mp_seed", "_mp_alg" /*, "_mp_algdata" */})
 //@FieldOrder({ "_mp_seed" })
 public class gmp_randstate_t extends Structure {
 	// public mpz_t _mp_seed = new mpz_t();
 	// TODO! does ths need to be initialized??
-	public mpz_t _mp_seed = new GmpJnaBigInt().getInternalValue();
+	//public mpz_t _mp_seed = new GmpJnaBigInt().getInternalValue();
+	public mpz_t _mp_seed = new mpz_t();
 
+	/**
+	 * From https://github.com/java-native-access/jna/blob/master/www/Mappings.md
+	 * <p><cite>
+	 * C enums are usually interchangeable with "int".
+	 * </cite>
+	 */
 	// https://www.embedded.fm/blog/2016/6/28/how-big-is-an-enum
 	// int for enum
 	// https://stackoverflow.com/questions/1157817/how-to-map-enum-in-jna
 	//public byte _mp_alg;
-	public short _mp_alg;
+	//public short _mp_alg;
 	//public int _mp_alg;
-	//public long _mp_alg;
+	public int _mp_alg;
 
 	// public Pointer _mp_algdata;
-	public mp_algdata _mp_algdata = new mp_algdata();
+	//private mp_algdata _mp_algdata = new mp_algdata();
 
-	public static final class mp_algdata extends Union {
-		public mp_algdata() {
-			setType(PointerByReference.class);
-		}
-		public PointerByReference _mp_algdata = new PointerByReference();
-	}
+//	public static final class mp_algdata extends Union {
+//		public mp_algdata() {
+//			setType(PointerByReference.class);
+//		}
+//		//public PointerByReference _mp_algdata = new PointerByReference();
+//		public PointerByReference _mp_algdata = null; //= new PointerByReference();
+//	}
 }
