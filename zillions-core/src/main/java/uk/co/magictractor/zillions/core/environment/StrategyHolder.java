@@ -64,6 +64,18 @@ public class StrategyHolder<S> {
 		unavailable(reason, cause);
 	}
 
+	public int getPriority() {
+		return _priority;
+	}
+
+	public boolean isAvailable() {
+		return _unavailableReason == null;
+	}
+
+	public Throwable getUnavailableCause() {
+		return _unavailableCause;
+	}
+
 	private void setStrategy(S strategy, StrategyOption... options) {
 		if (strategy instanceof Init) {
 			safeInit((Init) strategy);
@@ -166,14 +178,6 @@ public class StrategyHolder<S> {
 			throw new IllegalStateException("No strategy found, there should have been a reason");
 		}
 		return _strategy;
-	}
-
-	public boolean isAvailable() {
-		return _unavailableReason == null;
-	}
-
-	public int getPriority() {
-		return _priority;
 	}
 
 	@Override

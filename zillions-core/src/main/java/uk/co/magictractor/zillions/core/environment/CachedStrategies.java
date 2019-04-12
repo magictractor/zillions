@@ -74,12 +74,7 @@ public class CachedStrategies<S> implements Strategies<S> {
 		_logger.debug("Added {}", strategyHolder);
 	}
 
-	// TODO! improve this - should add a holder?
 	public void addStrategyUnavailable(String reason, Throwable cause) {
-//    if (cause == null) {
-//      throw new IllegalArgumentException("cause parameter must not be null");
-//    }
-//    _logger.error("Strategy is unavailable", cause);
 		addStrategyHolder(new StrategyHolder<>(reason, cause));
 	}
 

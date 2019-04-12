@@ -15,8 +15,6 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
-
 import com.google.common.base.MoreObjects;
 
 import uk.co.magictractor.zillions.core.BigInt;
