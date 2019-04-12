@@ -4,11 +4,6 @@ import uk.co.magictractor.zillions.core.create.CreateStrategy;
 
 public class NoopCreateStrategy implements CreateStrategy {
 
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
-
 	// TODO! decimal is a bad name - fix everywhere
 	@Override
 	public BigInt fromString(String decimal) {

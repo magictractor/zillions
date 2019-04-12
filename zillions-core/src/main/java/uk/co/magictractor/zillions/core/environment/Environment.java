@@ -63,17 +63,24 @@ public final class Environment {
 		}
 	}
 
-	private static BootstrapStrategy loadBootstrapClass(String bootstrapClassName) throws ReflectiveOperationException  {
+	private static BootstrapStrategy loadBootstrapClass(String bootstrapClassName) throws ReflectiveOperationException {
 		Class<?> bootstrapClass = Class.forName(bootstrapClassName);
 		return (BootstrapStrategy) bootstrapClass.newInstance();
 	}
 
-	public static <S> S getImplementation(Class<S> apiClass) {
-		return getStrategyList(apiClass).firstAvailable();
+	public static <S> S getBestAvailableImplementation(Class<S> apiClass) {
+		return getStrategyList(apiClass).bestAvailable();
 	}
 
-	public static <S> List<S> getAvailableImplementations(Class<S> apiClass) {
-		return getStrategyList(apiClass).allAvailable();
+//	public static <S> List<S> getAvailableImplementations(Class<S> apiClass) {
+//		return getStrategyList(apiClass).allAvailable();
+//	}
+
+	// TODO! bin or move
+	public static void debugImplementations(Class<?> apiClass) {
+		System.err.println("All implementations of " + apiClass.getSimpleName());
+		getStrategyList(apiClass).strategyHolders().forEach(System.err::println);
+		System.err.println("-------------------------");
 	}
 
 	public static <S> Strategies<S> getStrategyList(Class<S> apiClass) {

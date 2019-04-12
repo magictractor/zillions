@@ -18,6 +18,8 @@ package uk.co.magictractor.zillions.biginteger;
 import java.math.BigInteger;
 import java.util.Random;
 
+import com.google.common.base.MoreObjects;
+
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.create.RandomStrategy;
 
@@ -43,4 +45,8 @@ public class BigIntegerRandomStrategy implements RandomStrategy {
 		return _randomNumberGenerator;
 	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).toString();
+	}
 }

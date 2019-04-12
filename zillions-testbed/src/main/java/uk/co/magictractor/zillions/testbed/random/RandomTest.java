@@ -24,7 +24,7 @@ public class RandomTest {
 
 	@Test
 	public void testRandomSeed() {
-		RandomStrategy randomStrategy = Environment.getImplementation(RandomStrategy.class);
+		RandomStrategy randomStrategy = Environment.getBestAvailableImplementation(RandomStrategy.class);
 
 		randomStrategy.setSeed(1);
 		BigInt random1 = BigIntFactory.random(20);
@@ -51,7 +51,7 @@ public class RandomTest {
 
 	private void checkRandomRange(int numBits, int repeat) {
 		// Use seed for tests to prevent theoretical intermittent test failures.
-		Environment.getImplementation(RandomStrategy.class).setSeed(0);
+		Environment.getBestAvailableImplementation(RandomStrategy.class).setSeed(0);
 
 		BigInt lowestActual = BigIntFactory.random(numBits);
 		BigInt highestActual = lowestActual;

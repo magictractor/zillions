@@ -23,6 +23,7 @@ package uk.co.magictractor.zillions.core.environment;
  * StrategyList, which will mark the strategy as unavailable if init() throws an
  * Exception.
  */
+@FunctionalInterface
 public interface Init
 {
 

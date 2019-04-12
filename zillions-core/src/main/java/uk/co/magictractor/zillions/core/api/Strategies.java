@@ -21,8 +21,7 @@ import uk.co.magictractor.zillions.core.environment.StrategyHolder;
 
 public interface Strategies<S> {
 
-	// TODO! first or best?
-	S firstAvailable();
+	S bestAvailable();
 
 	List<S> allAvailable();
 

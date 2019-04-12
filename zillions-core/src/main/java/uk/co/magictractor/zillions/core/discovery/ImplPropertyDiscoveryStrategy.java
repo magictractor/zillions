@@ -15,6 +15,8 @@
  */
 package uk.co.magictractor.zillions.core.discovery;
 
+import com.google.common.base.MoreObjects;
+
 import uk.co.magictractor.zillions.core.environment.CachedStrategies;
 import uk.co.magictractor.zillions.core.environment.Environment;
 import uk.co.magictractor.zillions.core.property.PropertyDecorator;
@@ -53,4 +55,8 @@ public class ImplPropertyDiscoveryStrategy implements DiscoveryStrategy
     return result;
   }
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).toString();
+	}
 }

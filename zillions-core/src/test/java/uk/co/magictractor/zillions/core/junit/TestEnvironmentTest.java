@@ -61,7 +61,7 @@ public class TestEnvironmentTest {
 	public void t2() {
 
 		_textContextRule.addImplementation(new NoopCreateStrategy());
-		CreateStrategy strategy = Environment.getImplementation(CreateStrategy.class);
+		CreateStrategy strategy = Environment.getBestAvailableImplementation(CreateStrategy.class);
 		if (!Proxy.isProxyClass(strategy.getClass())) {
 			fail("Strategy implementation should be a proxy for unit tests: " + strategy.getClass().getSimpleName());
 		}

@@ -15,23 +15,28 @@
  */
 package uk.co.magictractor.zillions.biginteger;
 
+import com.google.common.base.MoreObjects;
+
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 
-public class BigIntegerCreateStrategy implements CreateStrategy
-{
+public class BigIntegerCreateStrategy implements CreateStrategy {
 
-  public BigInt fromString(String decimal) {
-    return new BigIntegerBigInt(decimal);
-  }
+	public BigInt fromString(String decimal) {
+		return new BigIntegerBigInt(decimal);
+	}
 
-  public boolean isAvailable() {
-    return true;
-  }
+	public boolean isAvailable() {
+		return true;
+	}
 
-  @Override
-  public BigInt fromLong(long value) {
-    return new BigIntegerBigInt(value);
-  }
+	@Override
+	public BigInt fromLong(long value) {
+		return new BigIntegerBigInt(value);
+	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).toString();
+	}
 }

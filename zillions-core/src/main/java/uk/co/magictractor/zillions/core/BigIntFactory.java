@@ -23,8 +23,8 @@ public final class BigIntFactory {
 
 	// TODO! always have a proxy which will be the fallback if nothing else is
 	// registered
-	private static final CreateStrategy CREATE = Environment.getImplementation(CreateStrategy.class);
-	private static final RandomStrategy RANDOM = Environment.getImplementation(RandomStrategy.class);
+	private static final CreateStrategy CREATE = Environment.getBestAvailableImplementation(CreateStrategy.class);
+	private static final RandomStrategy RANDOM = Environment.getBestAvailableImplementation(RandomStrategy.class);
 
 	private BigIntFactory() {
 	}

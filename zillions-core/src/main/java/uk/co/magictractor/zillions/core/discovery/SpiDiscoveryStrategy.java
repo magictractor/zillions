@@ -19,6 +19,8 @@ import java.util.Iterator;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
+import com.google.common.base.MoreObjects;
+
 import uk.co.magictractor.zillions.core.environment.CachedStrategies;
 
 public class SpiDiscoveryStrategy implements DiscoveryStrategy {
@@ -49,4 +51,8 @@ public class SpiDiscoveryStrategy implements DiscoveryStrategy {
 		return implementations;
 	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).toString();
+	}
 }

@@ -17,16 +17,20 @@ package uk.co.magictractor.zillions.gmp;
 
 import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 
+import com.google.common.base.MoreObjects;
+
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 
 public class GmpCreateStrategy implements CreateStrategy {
 
-	public boolean isAvailable() {
-		// There was a problem loading the native library.
-		// TODO! if there's a problem, __lib could be a fallback proxy
-		return (__lib != null);
-	}
+	// TODO! Init or Available interface to check whether __lib is OK
+	
+//	public boolean isAvailable() {
+//		// There was a problem loading the native library.
+//		// TODO! if there's a problem, __lib could be a fallback proxy
+//		return (__lib != null);
+//	}
 
 	public BigInt fromString(String decimal) {
 		return new GmpBigInt(decimal);
@@ -36,4 +40,8 @@ public class GmpCreateStrategy implements CreateStrategy {
 		return new GmpBigInt(value);
 	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).toString();
+	}
 }

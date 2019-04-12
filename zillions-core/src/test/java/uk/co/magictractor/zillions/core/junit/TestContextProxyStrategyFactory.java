@@ -15,11 +15,13 @@
  */
 package uk.co.magictractor.zillions.core.junit;
 
-public class TestContextProxyStrategyFactory extends AbstractProxyStrategyFactory
+import uk.co.magictractor.zillions.core.proxy.AbstractDelegatingStrategyFactory;
+
+public class TestContextProxyStrategyFactory extends AbstractDelegatingStrategyFactory
 {
 
   @Override
-  <S> S findDelegate(Class<S> apiClass) {
+  protected <S> S findDelegate(Class<S> apiClass) {
 	  // add debug statements?
     return TestContext.getInstance().getTestImplementation(apiClass);
   }

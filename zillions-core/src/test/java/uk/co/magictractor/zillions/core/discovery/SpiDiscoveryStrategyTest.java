@@ -34,7 +34,7 @@ public class SpiDiscoveryStrategyTest {
 
 		// assertEquals(1, discovered.allAvailable().size());
 		assertThat(discovered.allAvailable()).hasSize(1);
-		assertThat(discovered.firstAvailable()).isExactlyInstanceOf(NumptyCreateStrategy.class);
+		assertThat(discovered.bestAvailable()).isExactlyInstanceOf(NumptyCreateStrategy.class);
 		// ClassAssert.assertType(GmpJnaCreateStrategy.class,
 		// discovered.firstAvailable());
 	}

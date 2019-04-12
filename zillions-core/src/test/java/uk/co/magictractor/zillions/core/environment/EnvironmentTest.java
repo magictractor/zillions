@@ -56,7 +56,7 @@ public class EnvironmentTest {
 	@Test
 	public void testSpiFromJavaLibDirectory() {
 		// TODO! need to turn off proxies
-		CurrencyNameProvider impl = Environment.getImplementation(CurrencyNameProvider.class);
+		CurrencyNameProvider impl = Environment.getBestAvailableImplementation(CurrencyNameProvider.class);
 		// Assert.assertNotNull(impl);
 		assertThat(impl).isNotNull();
 	}
@@ -70,14 +70,14 @@ public class EnvironmentTest {
 
 	@Test
 	public void testSpiFromJavaLibExtDirectory() {
-		FileSystemProvider impl = Environment.getImplementation(FileSystemProvider.class);
+		FileSystemProvider impl = Environment.getBestAvailableImplementation(FileSystemProvider.class);
 		assertThat(impl).isNotNull();
 	}
 
 	@Test
 	public void testSpiFromThisProject() {
 		// TODO! bad test - this is a proxy rather than a proper SPI service load.
-		CreateStrategy impl = Environment.getImplementation(CreateStrategy.class);
+		CreateStrategy impl = Environment.getBestAvailableImplementation(CreateStrategy.class);
 		assertThat(impl).isNotNull();
 	}
 
@@ -90,7 +90,7 @@ public class EnvironmentTest {
 		// testee.getImplementation(FileSystemProvider.class);
 		System.setProperty("com.sun.nio.zipfs.ZipFileSystemProvider.disabled", "true");
 
-		FileSystemProvider actual = Environment.getImplementation(FileSystemProvider.class);
+		FileSystemProvider actual = Environment.getBestAvailableImplementation(FileSystemProvider.class);
 		// Assert.assertEquals(null, actual);
 		assertThat(actual).isNull();
 	}

@@ -17,23 +17,28 @@ package uk.co.magictractor.zillions.core.property;
 
 import java.util.Properties;
 
-public class SystemPropertyStrategy implements PropertyStrategy
-{
+import com.google.common.base.MoreObjects;
 
-  private Properties _properties;
+public class SystemPropertyStrategy implements PropertyStrategy {
 
-  public SystemPropertyStrategy() {
-    _properties = System.getProperties();
-  }
+	private Properties _properties;
 
-  @Override
-  public boolean containsKey(String key) {
-    return _properties.containsKey(key);
-  }
+	public SystemPropertyStrategy() {
+		_properties = System.getProperties();
+	}
 
-  @Override
-  public String get(String key) {
-    return _properties.getProperty(key);
-  }
+	@Override
+	public boolean containsKey(String key) {
+		return _properties.containsKey(key);
+	}
 
+	@Override
+	public String get(String key) {
+		return _properties.getProperty(key);
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).toString();
+	}
 }

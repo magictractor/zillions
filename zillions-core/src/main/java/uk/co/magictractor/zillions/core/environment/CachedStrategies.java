@@ -23,102 +23,110 @@ import org.slf4j.LoggerFactory;
 
 import uk.co.magictractor.zillions.core.api.Strategies;
 
-public class CachedStrategies<S> implements Strategies<S>
-{
-  private final Logger _logger = LoggerFactory.getLogger(getClass());
+public class CachedStrategies<S> implements Strategies<S> {
+	private final Logger _logger = LoggerFactory.getLogger(getClass());
 
-  // API class is used only for logging. It cannot be determined at runtime using
-  // generics.
-  private Class<S> _apiClass;
-  private List<StrategyHolder<S>> _strategyHolders = new ArrayList<StrategyHolder<S>>();
-  private List<S> _available;
+	// API class is used only for logging. It cannot be determined at runtime using
+	// generics.
+	private Class<S> _apiClass;
+	private List<StrategyHolder<S>> _strategyHolders = new ArrayList<StrategyHolder<S>>();
+	private List<S> _available;
+	private S _bestAvailable;
 
-  public CachedStrategies(Class<S> apiClass) {
-    _apiClass = apiClass;
-  }
+	public CachedStrategies(Class<S> apiClass) {
+		_apiClass = apiClass;
+	}
 
-  public void addStrategyClass(String strategyClassName, StrategyOption... options) {
-    if (strategyClassName == null) {
-      throw new IllegalArgumentException("strategyClassName parameter must not be null");
-    }
-    addStrategyHolder(new StrategyHolder<S>(strategyClassName, options));
-  }
+	public void addStrategyClass(String strategyClassName, StrategyOption... options) {
+		if (strategyClassName == null) {
+			throw new IllegalArgumentException("strategyClassName parameter must not be null");
+		}
+		addStrategyHolder(new StrategyHolder<S>(strategyClassName, options));
+	}
 
-  public void addStrategyClass(Class<S> strategyClass, StrategyOption... options) {
-    if (strategyClass == null) {
-      throw new IllegalArgumentException("strategyClass parameter must not be null");
-    }
-    addStrategyHolder(new StrategyHolder<S>(strategyClass, options));
-  }
+	public void addStrategyClass(Class<S> strategyClass, StrategyOption... options) {
+		if (strategyClass == null) {
+			throw new IllegalArgumentException("strategyClass parameter must not be null");
+		}
+		addStrategyHolder(new StrategyHolder<S>(strategyClass, options));
+	}
 
-  public void addStrategyImplementation(S strategy, StrategyOption... options) {
-    if (strategy == null) {
-      throw new IllegalArgumentException("strategy parameter must not be null");
-    }
-    addStrategyHolder(new StrategyHolder<S>(strategy, options));
-  }
+	public void addStrategyImplementation(S strategy, StrategyOption... options) {
+		if (strategy == null) {
+			throw new IllegalArgumentException("strategy parameter must not be null");
+		}
+		addStrategyHolder(new StrategyHolder<S>(strategy, options));
+	}
 
-  public void addStrategies(Strategies<S> strategies) {
-    if (strategies == null) {
-      throw new IllegalArgumentException("strategies parameter must not be null");
-    }
+	public void addStrategies(Strategies<S> strategies) {
+		if (strategies == null) {
+			throw new IllegalArgumentException("strategies parameter must not be null");
+		}
 
-    for (StrategyHolder<S> strategyHolder : strategies.strategyHolders()) {
-      addStrategyHolder(strategyHolder);
-    }
-  }
+		for (StrategyHolder<S> strategyHolder : strategies.strategyHolders()) {
+			addStrategyHolder(strategyHolder);
+		}
+	}
 
-  public void addStrategyHolder(StrategyHolder<S> strategyHolder) {
-    _strategyHolders.add(strategyHolder);
-    clearCache();
-    _logger.debug("Added {}", strategyHolder);
-  }
-
+	public void addStrategyHolder(StrategyHolder<S> strategyHolder) {
+		_strategyHolders.add(strategyHolder);
+		clearCache();
+		_logger.debug("Added {}", strategyHolder);
+	}
 
 	// TODO! improve this - should add a holder?
-  public void addStrategyUnavailable(String reason, Throwable cause) {
+	public void addStrategyUnavailable(String reason, Throwable cause) {
 //    if (cause == null) {
 //      throw new IllegalArgumentException("cause parameter must not be null");
 //    }
 //    _logger.error("Strategy is unavailable", cause);
-	  addStrategyHolder(new StrategyHolder<>(reason, cause));
-  } 
+		addStrategyHolder(new StrategyHolder<>(reason, cause));
+	}
 
-  // TODO! should this instead throw an error if _available is not null?
-  private void clearCache() {
-    _available = null;
-  }
+	// TODO! should this instead throw an error if _best is not null? - maybe check for marker on best
+	private void clearCache() {
+		_bestAvailable = null;
+		_available = null;
+	}
 
-  @Override
-  public S firstAvailable() {
-    List<S> available = allAvailable();
-    if (available.isEmpty()) {
-      _logger.error("There are no available implementations of {}", _apiClass);
-    }
-    return available.isEmpty() ? null : allAvailable().get(0);
-  }
+	@Override
+	public S bestAvailable() {
+		if (_bestAvailable == null) {
+			initAvailable();
+		}
+		return _bestAvailable;
+	}
 
-  @Override
-  public List<S> allAvailable() {
-    if (_available == null) {
-      _available = findAvailableStrategies();
-    }
-    return _available;
-  }
+	@Override
+	public List<S> allAvailable() {
+		if (_available == null) {
+			initAvailable();
+		}
+		return _available;
+	}
 
-  private List<S> findAvailableStrategies() {
-    List<S> available = new ArrayList<S>();
-    for (StrategyHolder<S> description : _strategyHolders) {
-      if (description.isAvailable()) {
-        available.add(description.getStrategy());
-      }
-    }
-    return available;
-  }
+	private void initAvailable() {
+		_available = new ArrayList<>();
+		// Assignment here only to satisfy compiler.
+		int bestPriority = Integer.MAX_VALUE;
+		boolean first = true;
+		for (StrategyHolder<S> holder : _strategyHolders) {
+			if (holder.isAvailable()) {
+				_available.add(holder.getStrategy());
+				if (first || holder.getPriority() > bestPriority) {
+					// TODO! guard against multiple strategies with the same priority
+					bestPriority = holder.getPriority();
+					_bestAvailable = holder.getStrategy();
+					System.err.println("setting best: " + _bestAvailable);
+					first = false;
+				}
+			}
+		}
+	}
 
-  @Override
-  public List<StrategyHolder<S>> strategyHolders() {
-    return _strategyHolders;
-  }
+	@Override
+	public List<StrategyHolder<S>> strategyHolders() {
+		return _strategyHolders;
+	}
 
 }

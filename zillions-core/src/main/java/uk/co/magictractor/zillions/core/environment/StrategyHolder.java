@@ -15,10 +15,15 @@
  */
 package uk.co.magictractor.zillions.core.environment;
 
+import static org.junit.jupiter.api.DynamicTest.stream;
+
 import java.lang.reflect.Constructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects.ToStringHelper;
 
 import uk.co.magictractor.zillions.core.property.PropertyDecorator;
 import uk.co.magictractor.zillions.core.property.PropertyStrategy;
@@ -33,6 +38,9 @@ public class StrategyHolder<S> {
 	private final Logger _logger = LoggerFactory.getLogger(getClass());
 
 	private S _strategy;
+	private int _priority = Priority.DEFAULT;
+	// TODO! there could be multiple reasons for being unavailable, all should be
+	// reported
 	private String _unavailableReason;
 	private Throwable _unavailableCause;
 
@@ -59,6 +67,9 @@ public class StrategyHolder<S> {
 	private void setStrategy(S strategy, StrategyOption... options) {
 		if (strategy instanceof Init) {
 			safeInit((Init) strategy);
+		}
+		if (strategy instanceof Priority) {
+			safeSetPriority((Priority) strategy);
 		}
 		// TODO! marker interface for cannot disable (only SystemPropertyStrategy)?
 		// or ask the strategy itself when props is null?
@@ -118,6 +129,15 @@ public class StrategyHolder<S> {
 		}
 	}
 
+	private void safeSetPriority(Priority strategy) {
+		try {
+			_priority = strategy.getPriority();
+			System.err.println("*** priority: " + _priority);
+		} catch (Throwable e) {
+			unavailable("Error in getPriority()", e);
+		}
+	}
+
 	private S constructStrategy(Class<S> strategyClass) throws Exception {
 		Constructor<S> constructor = strategyClass.getConstructor();
 		return constructor.newInstance();
@@ -152,22 +172,16 @@ public class StrategyHolder<S> {
 		return _unavailableReason == null;
 	}
 
+	public int getPriority() {
+		return _priority;
+	}
+
 	@Override
 	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("{");
-		// TODO! for SPI failure, pass in the API class - or strip it from the
-		// exception?
-		if (_strategy != null) {
-			stringBuilder.append(_strategy.getClass().getSimpleName());
-		}
-		if (!isAvailable()) {
-			stringBuilder.append(" unavailable because ");
-			stringBuilder.append(_unavailableReason);
-		}
-		stringBuilder.append("}");
-
-		return stringBuilder.toString();
+		ToStringHelper toStringHelper = MoreObjects.toStringHelper(this);
+		toStringHelper.add("strategy", _strategy);
+		toStringHelper.add("priority", _priority);
+		return toStringHelper.toString();
 	}
 
 }
