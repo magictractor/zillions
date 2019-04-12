@@ -33,9 +33,10 @@ public class BigIntegerRandomStrategy implements RandomStrategy {
 	}
 
 	@Override
-	public BigInt random(int numBits) {
-		BigInteger x = new BigInteger(numBits, getRandomNumberGenerator());
-		return new BigIntegerBigInt(x);
+	public BigInt randomise(BigInt rop, int numBits) {
+		BigInteger random = new BigInteger(numBits, getRandomNumberGenerator());
+		((BigIntegerBigInt) rop).setInternalValue(random);
+		return rop;
 	}
 
 	private Random getRandomNumberGenerator() {

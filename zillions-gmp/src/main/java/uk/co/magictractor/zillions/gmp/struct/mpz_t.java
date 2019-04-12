@@ -16,7 +16,6 @@
 package uk.co.magictractor.zillions.gmp.struct;
 
 import com.sun.jna.Structure;
-import com.sun.jna.Structure.ByReference;
 import com.sun.jna.Structure.FieldOrder;
 import com.sun.jna.ptr.NativeLongByReference;
 
@@ -33,8 +32,8 @@ import com.sun.jna.ptr.NativeLongByReference;
 } __mpz_struct;
 </pre>
  */
-@FieldOrder({"_mp_alloc", "_mp_size", "_mp_d"})
-public class mpz_t extends Structure implements ByReference
+@FieldOrder({"_mp_alloc" , "_mp_size" , "_mp_d"})
+public class mpz_t extends Structure
 {
   /**
    * Number of *limbs* allocated and pointed<br> to by the _mp_d field.

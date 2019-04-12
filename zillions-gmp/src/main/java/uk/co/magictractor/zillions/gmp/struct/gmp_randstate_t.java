@@ -31,7 +31,7 @@ typedef enum
 @FieldOrder({ "_mp_seed", "_mp_alg", "_mp_algdata" })
 public class gmp_randstate_t extends Structure {
 	
-	public mpz_t _mp_seed = new mpz_t();
+	public mpz_t _mp_seed;
 	public int _mp_alg;
 	public _mp_algdata_union _mp_algdata;
 

@@ -37,9 +37,15 @@ public final class BigIntFactory {
 		return CREATE.fromLong(value);
 	}
 
-	/** @return a uniformly random BigInt in the range 0 to 2^n-1 (inclusive) */
+	/**
+	 * If working with many random numbers, it will be more performant to use
+	 * {@link RandomStrategy#randomise} to allow memory space occupied by random
+	 * numbers to be recycled.
+	 * 
+	 * @return a uniformly random BigInt in the range 0 to 2^n-1 (inclusive)
+	 */
 	public static BigInt random(int numBits) {
-		return RANDOM.random(numBits);
+		return RANDOM.randomise(from(0), numBits);
 	}
 
 }

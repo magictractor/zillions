@@ -104,6 +104,14 @@ public class BigIntegerBigInt implements BigInt {
 		return this;
 	}
 
+	public BigInteger getInternalValue() {
+		return _bigInteger;
+	}
+
+	public void setInternalValue(BigInteger bigInteger) {
+		_bigInteger = bigInteger;
+	}
+
 	@Override
 	public int compareTo(BigInt other) {
 		return _bigInteger.compareTo(((BigIntegerBigInt) other)._bigInteger);

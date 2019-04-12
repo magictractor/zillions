@@ -16,7 +16,8 @@ public interface RandomStrategy {
 
 	/**
 	 * <p>
-	 * Create a uniformly random BigInt with the given number of bits
+	 * Modify and return the given BigInt with a uniformly random value up to the
+	 * given number of bits
 	 * <p>
 	 * Note that the most significant bits may be zero. If creating a test which
 	 * requires a very large random number, this can be combined with setBit() to
@@ -24,6 +25,6 @@ public interface RandomStrategy {
 	 * 
 	 * @return a uniformly random BigInt in the range 0 to 2^n-1 (inclusive)
 	 */
-	BigInt random(int numBits);
+	BigInt randomise(BigInt rop, int numBits);
 
 }
