@@ -1,0 +1,14 @@
+// See
+// https://code.google.com/p/jnaerator/wiki/Maven 
+// https://code.google.com/p/jnaerator/wiki/CommandLineOptionsAndEnvironmentVariables
+
+src/main/jnaerator/gmp.h
+
+// enum Choose target runtime library
+-runtime JNA
+
+-skipStructs ^__mp[fq].*
+
+// fieldCount Maximum number of fields allowed for structure fields constructors.
+// If a struct has more fields, it will only get a default constructor.
+-maxConstrFields 0

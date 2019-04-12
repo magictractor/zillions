@@ -75,16 +75,13 @@
         </dependencies>
       </plugin>
 
-      <!-- bin this? haven't got it working -->
       <!-- Generate JNA classes. Run using "mvn jnaerator:generate". Config 
-        in src/main/jnaerator/config.jnaerator See https://code.google.com/p/jnaerator/wiki/Maven 
-        https://code.google.com/p/jnaerator/wiki/CommandLineOptionsAndEnvironmentVariables -->
-        <!-- 
+        in src/main/jnaerator/config.jnaerator  -->
       <plugin>
         <groupId>com.nativelibs4java</groupId>
         <artifactId>maven-jnaerator-plugin</artifactId>
         <version>0.12</version>
-      </plugin> -->
+      </plugin>
     </plugins>
   </build>
 
