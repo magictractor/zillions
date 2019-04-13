@@ -144,6 +144,30 @@ public class GmpBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt setBit(int n) {
+		__lib.mpz_setbit(_mpz, mp_bitcnt_t.forPositiveBitNum(n));
+		return this;
+	}
+
+	@Override
+	public BigInt clearBit(int n) {
+		__lib.mpz_clrbit(_mpz, mp_bitcnt_t.forPositiveBitNum(n));
+		return this;
+	}
+
+	@Override
+	public BigInt flipBit(int n) {
+		__lib.mpz_combit(_mpz, mp_bitcnt_t.forPositiveBitNum(n));
+		return this;
+	}
+
+	@Override
+	public boolean testBit(int n) {
+		// returns 0 or 1
+		return __lib.mpz_tstbit(_mpz, mp_bitcnt_t.forPositiveBitNum(n)) != 0;
+	}
+
+	@Override
 	public int compareTo(BigInt other) {
 		return compareTo0((GmpBigInt) other);
 	}

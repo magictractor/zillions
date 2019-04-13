@@ -99,6 +99,27 @@ public class NumptyBigInt implements BigInt {
 		_x = _x >> n;
 		return this;
 	}
+	
+	// TODO! implement these - or (more likely) bin this class
+	@Override
+	public BigInt setBit(int n) {
+		throw new UnsupportedOperationException("not implemented");
+	}
+
+	@Override
+	public BigInt clearBit(int n) {
+		throw new UnsupportedOperationException("not implemented");
+	}
+
+	@Override
+	public BigInt flipBit(int n) {
+		throw new UnsupportedOperationException("not implemented");
+	}
+
+	@Override
+	public boolean testBit(int n) {
+		throw new UnsupportedOperationException("not implemented");
+	}
 
 	@Override
 	public int compareTo(BigInt other) {

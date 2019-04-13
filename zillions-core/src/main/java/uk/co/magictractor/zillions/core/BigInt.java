@@ -53,9 +53,9 @@ public interface BigInt extends EnhancedComparable<BigInt> {
 
 	/** Absolute value. */
 	BigInt abs();
-	
+
 	// Bit operations.
-	
+
 	BigInt or(BigInt y);
 
 	BigInt and(BigInt y);
@@ -63,11 +63,23 @@ public interface BigInt extends EnhancedComparable<BigInt> {
 	BigInt xor(BigInt y);
 
 	// also not() and andNot() in BigInteger
+
+	/**
+	 * For these ops, bit 0 is the least significant bit. Big operations should act
+	 * on a 2's complement representation of the number.
+	 * https://en.wikipedia.org/wiki/Two%27s_complement
+	 */
 	
-	// setBit(), clearBit() and flipBit()
-	
+	BigInt setBit(int n);
+
+	BigInt clearBit(int n);
+
+	BigInt flipBit(int n);
+
+	boolean testBit(int n);
+
 	BigInt shiftLeft(int n);
-	
+
 	BigInt shiftRight(int n);
 
 }

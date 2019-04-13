@@ -28,6 +28,10 @@ public abstract class OpTestSingleParam<PARAM, RESULT> {
 		check(BigIntFactory.from(x), from(_paramClass, y), from(_resultClass, expected));
 	}
 
+	protected void check(long x, long y, boolean expected) {
+		check(BigIntFactory.from(x), from(_paramClass, y), from(_resultClass, expected));
+	}
+
 	protected <T> T from(Class<T> targetClass, String value) {
 		Object result;
 		if (BigInt.class.equals(targetClass)) {
@@ -47,6 +51,16 @@ public abstract class OpTestSingleParam<PARAM, RESULT> {
 			result = Integer.valueOf((int) value);
 		} else {
 			throw new IllegalStateException("Code needs modified to convert long to " + targetClass.getSimpleName());
+		}
+		return (T) result;
+	}
+
+	protected <T> T from(Class<T> targetClass, boolean value) {
+		Object result;
+		if (Boolean.class.equals(targetClass)) {
+			result = Boolean.valueOf(value);
+		} else {
+			throw new IllegalStateException("Code needs modified to convert boolean to " + targetClass.getSimpleName());
 		}
 		return (T) result;
 	}

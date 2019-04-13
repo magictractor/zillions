@@ -13,23 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.bits;
+package uk.co.magictractor.zillions.gmp;
 
-import java.util.stream.Stream;
+import uk.co.magictractor.zillions.testbed.arithmetic.ArithmeticSuite;
 
-import org.junit.jupiter.api.DynamicNode;
-import org.junit.jupiter.api.TestFactory;
-import org.junit.platform.suite.api.SelectClasses;
-
-import uk.co.magictractor.zillions.testbed.DynamicSuite;
-
-@SelectClasses({ AndTest.class, OrTest.class, XorTest.class, ShiftLeftTest.class, ShiftRightTest.class, 
-	SetBitTest.class, ClearBitTest.class, FlipBitTest.class, TestBitTest.class })
-public class BitSuite {
-
-	@TestFactory
-	public Stream<DynamicNode> suiteFactory() {
-		return new DynamicSuite(this).stream();
-	}
-
+// temp
+public class GmpArithmeticSuite extends ArithmeticSuite {
+	// Nothing here. Full test suite is inherited from testbed parent suite.
 }
