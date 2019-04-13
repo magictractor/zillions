@@ -74,6 +74,26 @@ public class NoopBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt setBit(int n) {
+		return this;
+	}
+
+	@Override
+	public BigInt clearBit(int n) {
+		return this;
+	}
+
+	@Override
+	public BigInt flipBit(int n) {
+		return this;
+	}
+
+	@Override
+	public boolean testBit(int n) {
+		return false;
+	}
+
+	@Override
 	public int compareTo(BigInt o) {
 		return 0;
 	}

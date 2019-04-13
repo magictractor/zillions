@@ -83,6 +83,12 @@ public class JnaGmpLib implements GmpLib, Library {
 
 	// For shift right`
 	public native void mpz_fdiv_q_2exp(mpz_t q, mpz_t n, mp_bitcnt_t b);
+	
+	// Set, clear, flip and test bit.
+	public native void mpz_setbit(mpz_t rop, mp_bitcnt_t bit_index);
+	public native void mpz_clrbit(mpz_t rop, mp_bitcnt_t bit_index);
+	public native void mpz_combit(mpz_t rop, mp_bitcnt_t bit_index);
+	public native int mpz_tstbit(mpz_t op, mp_bitcnt_t bit_index);
 
 	// Random
 	// https://gmplib.org/manual/Integer-Random-Numbers.html#Integer-Random-Numbers

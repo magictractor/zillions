@@ -28,7 +28,9 @@ public interface GmpLib {
 
 	// https://gmplib.org/manual/Initializing-Integers.html#Initializing-Integers
 	void mpz_init(mpz_t x);
+
 	void mpz_init_set_si(mpz_t rop, long op);
+
 	int mpz_init_set_str(mpz_t rop, String str, int base);
 
 	void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
@@ -65,16 +67,16 @@ public interface GmpLib {
 	// void mpz_com (mpz_t rop, mpz_t op);
 
 	// Set bit bit_index in rop.
-	// void mpz_setbit (mpz_t rop, mp_bitcnt_t bit_index);
+	void mpz_setbit(mpz_t rop, mp_bitcnt_t bit_index);
 
 	// Clear bit bit_index in rop.
-	// void mpz_clrbit (mpz_t rop, mp_bitcnt_t bit_index);
+	void mpz_clrbit(mpz_t rop, mp_bitcnt_t bit_index);
 
 	// Complement bit bit_index in rop.
-	// void mpz_combit (mpz_t rop, mp_bitcnt_t bit_index);
+	void mpz_combit(mpz_t rop, mp_bitcnt_t bit_index);
 
 	// Test bit bit_index in op and return 0 or 1 accordingly.
-	// int mpz_tstbit (mpz_t op, mp_bitcnt_t bit_index);
+	int mpz_tstbit(mpz_t op, mp_bitcnt_t bit_index);
 
 	/**
 	 * Set rop to op1 times 2 raised to op2. This operation can also be defined as a
@@ -106,7 +108,7 @@ public interface GmpLib {
 	 */
 	// https://gmplib.org/manual/Random-State-Initialization.html#Random-State-Initialization
 	void gmp_randinit_default(gmp_randstate_t state);
-	
+
 	// https://gmplib.org/manual/Random-State-Seeding.html#Random-State-Seeding
-	void gmp_randseed (gmp_randstate_t state, mpz_t seed);
+	void gmp_randseed(gmp_randstate_t state, mpz_t seed);
 }

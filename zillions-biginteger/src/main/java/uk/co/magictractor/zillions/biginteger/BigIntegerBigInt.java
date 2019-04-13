@@ -104,6 +104,29 @@ public class BigIntegerBigInt implements BigInt {
 		return this;
 	}
 
+	@Override
+	public BigInt setBit(int n) {
+		_bigInteger = _bigInteger.setBit(n);
+		return this;
+	}
+
+	@Override
+	public BigInt clearBit(int n) {
+		_bigInteger = _bigInteger.clearBit(n);
+		return this;
+	}
+
+	@Override
+	public BigInt flipBit(int n) {
+		_bigInteger = _bigInteger.flipBit(n);
+		return this;
+	}
+
+	@Override
+	public boolean testBit(int n) {
+		return _bigInteger.testBit(n);
+	}
+
 	public BigInteger getInternalValue() {
 		return _bigInteger;
 	}
