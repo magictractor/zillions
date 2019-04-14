@@ -1,4 +1,4 @@
-package uk.co.magictractor.zillions.testbed.bits;
+package uk.co.magictractor.zillions.testbed.bits.shift;
 
 import org.junit.jupiter.api.Test;
 

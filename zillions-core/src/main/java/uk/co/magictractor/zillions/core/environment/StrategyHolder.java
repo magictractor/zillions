@@ -144,7 +144,6 @@ public class StrategyHolder<S> {
 	private void safeSetPriority(Priority strategy) {
 		try {
 			_priority = strategy.getPriority();
-			System.err.println("*** priority: " + _priority);
 		} catch (Throwable e) {
 			unavailable("Error in getPriority()", e);
 		}

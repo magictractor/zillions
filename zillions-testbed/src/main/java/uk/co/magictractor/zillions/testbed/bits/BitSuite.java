@@ -22,8 +22,9 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.SelectClasses;
 
 import uk.co.magictractor.zillions.testbed.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.bits.shift.BitShiftSuite;
 
-@SelectClasses({ AndTest.class, OrTest.class, XorTest.class, ShiftLeftTest.class, ShiftRightTest.class, 
+@SelectClasses({ AndTest.class, OrTest.class, XorTest.class, BitShiftSuite.class, 
 	SetBitTest.class, ClearBitTest.class, FlipBitTest.class, TestBitTest.class })
 public class BitSuite {
 
