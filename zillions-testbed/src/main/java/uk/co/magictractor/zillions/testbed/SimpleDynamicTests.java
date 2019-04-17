@@ -33,11 +33,9 @@ public class SimpleDynamicTests {
 	}
 	
 	private void pass() {
-		System.err.println("pass");
 	}
 
 	private void fail() {
-		System.err.println("fail");
 		Assertions.fail("dynamic test fail");
 	}
 }

@@ -112,7 +112,7 @@ public class CachedStrategies<S> implements Strategies<S> {
 					// TODO! guard against multiple strategies with the same priority
 					bestPriority = holder.getPriority();
 					_bestAvailable = holder.getStrategy();
-					System.err.println("setting best: " + _bestAvailable);
+					System.out.println("setting best: " + _bestAvailable);
 					first = false;
 				}
 			}
