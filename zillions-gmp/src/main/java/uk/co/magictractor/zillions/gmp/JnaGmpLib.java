@@ -23,6 +23,7 @@ import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Platform;
+import com.sun.jna.Pointer;
 
 import uk.co.magictractor.zillions.gmp.struct.gmp_randstate_t;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
@@ -45,12 +46,14 @@ public class JnaGmpLib implements GmpLib, Library {
 	}
 
 	public native void mpz_init(mpz_t x);
-	
+
 	public native void mpz_init_set(mpz_t rop, mpz_t op);
 
 	public native void mpz_init_set_si(mpz_t rop, long op);
 
 	public native int mpz_init_set_str(mpz_t rop, String str, int base);
+
+	public native void mpz_clear(mpz_t x);
 
 	public native void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
 
@@ -79,24 +82,27 @@ public class JnaGmpLib implements GmpLib, Library {
 	public native void mpz_ior(mpz_t rop, mpz_t op1, mpz_t op2);
 
 	public native void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
-	
-	public native void mpz_com (mpz_t rop, mpz_t op);
-	
+
+	public native void mpz_com(mpz_t rop, mpz_t op);
+
 	// For shift left
 	public native void mpz_mul_2exp(mpz_t rop, mpz_t op1, mp_bitcnt_t b);
 
 	// For shift right`
 	public native void mpz_fdiv_q_2exp(mpz_t q, mpz_t n, mp_bitcnt_t b);
-	
+
 	// Set, clear, flip and test bit.
 	public native void mpz_setbit(mpz_t rop, mp_bitcnt_t bit_index);
+
 	public native void mpz_clrbit(mpz_t rop, mp_bitcnt_t bit_index);
+
 	public native void mpz_combit(mpz_t rop, mp_bitcnt_t bit_index);
+
 	public native int mpz_tstbit(mpz_t op, mp_bitcnt_t bit_index);
 
 	// Import
-	public native void mpz_import (mpz_t rop, int count, int order, int size, int endian, int nails, Memory op);
-	
+	public native void mpz_import(mpz_t rop, int count, int order, int size, int endian, int nails, Pointer bytes);
+
 	// Random
 	// https://gmplib.org/manual/Integer-Random-Numbers.html#Integer-Random-Numbers
 	public native void mpz_urandomb(mpz_t rop, gmp_randstate_t state, mp_bitcnt_t n);

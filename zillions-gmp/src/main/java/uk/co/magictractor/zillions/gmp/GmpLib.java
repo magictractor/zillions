@@ -16,6 +16,7 @@
 package uk.co.magictractor.zillions.gmp;
 
 import com.sun.jna.Memory;
+import com.sun.jna.Pointer;
 
 import uk.co.magictractor.zillions.gmp.struct.gmp_randstate_t;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
@@ -35,6 +36,8 @@ public interface GmpLib {
 	void mpz_init_set_si(mpz_t rop, long op);
 
 	int mpz_init_set_str(mpz_t rop, String str, int base);
+
+	void mpz_clear(mpz_t x);
 
 	void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
 
@@ -117,6 +120,6 @@ public interface GmpLib {
 	void gmp_randseed(gmp_randstate_t state, mpz_t seed);
 
 	// size_t is int
-	void mpz_import(mpz_t rop, int count, int order, int size, int endian, int nails, Memory op);
+	void mpz_import(mpz_t rop, int count, int order, int size, int endian, int nails, Pointer bytes);
 
 }

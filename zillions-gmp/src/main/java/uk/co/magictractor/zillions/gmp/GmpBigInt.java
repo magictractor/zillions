@@ -211,4 +211,14 @@ public class GmpBigInt implements BigInt {
 		return _mpz;
 	}
 
+	// TODO! does discard() also belong on the interface?
+	public void discard() {
+		__lib.mpz_clear(_mpz);
+		_mpz = null;
+	}
+
+	@Override
+	public void finalize() {
+		discard();
+	}
 }

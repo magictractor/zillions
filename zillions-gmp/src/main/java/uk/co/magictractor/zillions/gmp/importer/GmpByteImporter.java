@@ -5,6 +5,7 @@ import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 import com.sun.jna.Memory;
 
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
 import uk.co.magictractor.zillions.core.importer.ByteImporter;
 import uk.co.magictractor.zillions.gmp.GmpBigInt;
@@ -17,34 +18,22 @@ public class GmpByteImporter implements ByteImporter {
 
 	@Override
 	public BigInt signedFrom(BigInt rop, byte[] bytes) {
-		return from(true, rop, bytes);
+		unsignedFrom(rop, bytes);
+
+		if (BitUtils.isNegative(bytes)) {
+			rop.subtract(BigIntFactory.from(1).shiftLeft(bytes.length * 8));
+		}
+
+		return rop;
 	}
 
 	@Override
 	public BigInt unsignedFrom(BigInt rop, byte[] bytes) {
-		return from(false, rop, bytes);
-	}
-
-	private BigInt from(boolean isSigned, BigInt rop, byte[] bytes) {
-
 		Memory memory = new Memory(bytes.length);
-
-		// GMP imports unsigned values, check and adjust if negative
-		boolean isNegative = isSigned && BitUtils.isNegative(bytes);
-		if (!isNegative) {
-			memory.write(0, bytes, 0, bytes.length);
-		} else {
-			for (int i = 0; i < bytes.length; i++) {
-				memory.setByte(i, (byte) ~bytes[i]);
-			}
-		}
+		memory.write(0, bytes, 0, bytes.length);
 
 		mpz_t mpz = ((GmpBigInt) rop).getInternalValue();
 		__lib.mpz_import(mpz, bytes.length, 1, 1, 1, 0, memory);
-
-		if (isNegative) {
-			__lib.mpz_com(mpz, mpz);
-		}
 
 		return rop;
 	}
