@@ -45,13 +45,15 @@ public class GmpBigInt implements BigInt {
 	public GmpBigInt() {
 		__lib.mpz_init(_mpz);
 	}
+	
+	private GmpBigInt(GmpBigInt other) {
+		__lib.mpz_init_set(_mpz, other._mpz);
+	}
 
-	// https://gmplib.org/manual/Initializing-Integers.html#Initializing-Integers
-	/*
-	 * private GmpBigInt(GmpLib lib) { this.lib = lib; mpz = new mpz_t();
-	 * lib.__gmpz_init(mpz); }
-	 */
-
+	public BigInt copy() {
+		return new GmpBigInt(this);
+	}
+	
 	public BigInt add(BigInt y) {
 		__lib.mpz_add(_mpz, _mpz, ((GmpBigInt) y)._mpz);
 		return this;
@@ -123,6 +125,12 @@ public class GmpBigInt implements BigInt {
 		return this;
 	}
 
+	@Override
+	public BigInt not() {
+		__lib.mpz_com(_mpz, _mpz);
+		return this;
+	}
+	
 	@Override
 	public BigInt shiftLeft(int n) {
 		if (n > 0) {
@@ -197,4 +205,5 @@ public class GmpBigInt implements BigInt {
 	public mpz_t getInternalValue() {
 		return _mpz;
 	}
+
 }

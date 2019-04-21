@@ -29,6 +29,9 @@ public interface GmpLib {
 	// https://gmplib.org/manual/Initializing-Integers.html#Initializing-Integers
 	void mpz_init(mpz_t x);
 
+	// for copy
+	void mpz_init_set(mpz_t rop, mpz_t op);
+
 	void mpz_init_set_si(mpz_t rop, long op);
 
 	int mpz_init_set_str(mpz_t rop, String str, int base);
@@ -64,7 +67,8 @@ public interface GmpLib {
 	void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
 
 	// Set rop to the one’s complement of op.
-	// void mpz_com (mpz_t rop, mpz_t op);
+	// Used when importing negative numbers.
+	void mpz_com(mpz_t rop, mpz_t op);
 
 	// Set bit bit_index in rop.
 	void mpz_setbit(mpz_t rop, mp_bitcnt_t bit_index);
@@ -111,4 +115,8 @@ public interface GmpLib {
 
 	// https://gmplib.org/manual/Random-State-Seeding.html#Random-State-Seeding
 	void gmp_randseed(gmp_randstate_t state, mpz_t seed);
+
+	// size_t is int
+	void mpz_import(mpz_t rop, int count, int order, int size, int endian, int nails, Memory op);
+
 }

@@ -55,6 +55,9 @@ import com.google.common.collect.Iterables;
  * 
  * TODO! filters should apply to nested suites too
  * 
+ * TODO! registered extension should apply to nested suites too (see extension
+ * in Attic)
+ * 
  * TODO! fix dynamic test node URI. Requires JUnit enhancement. Have raised
  * https://github.com/junit-team/junit5/issues/1850
  */
@@ -411,6 +414,7 @@ public class DynamicSuite {
 
 		Predicate<Class<?>> getClassPredicate() {
 			if (_excludeClassNamePatterns != null) {
+				// TODO! should this be name or simple name?
 				return c -> _excludeClassNamePatterns.apply(c.getName()).included();
 			} else {
 				// No filter.

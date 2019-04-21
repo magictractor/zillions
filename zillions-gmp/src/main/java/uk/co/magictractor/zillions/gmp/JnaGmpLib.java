@@ -45,6 +45,8 @@ public class JnaGmpLib implements GmpLib, Library {
 	}
 
 	public native void mpz_init(mpz_t x);
+	
+	public native void mpz_init_set(mpz_t rop, mpz_t op);
 
 	public native void mpz_init_set_si(mpz_t rop, long op);
 
@@ -77,7 +79,9 @@ public class JnaGmpLib implements GmpLib, Library {
 	public native void mpz_ior(mpz_t rop, mpz_t op1, mpz_t op2);
 
 	public native void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
-
+	
+	public native void mpz_com (mpz_t rop, mpz_t op);
+	
 	// For shift left
 	public native void mpz_mul_2exp(mpz_t rop, mpz_t op1, mp_bitcnt_t b);
 
@@ -90,6 +94,9 @@ public class JnaGmpLib implements GmpLib, Library {
 	public native void mpz_combit(mpz_t rop, mp_bitcnt_t bit_index);
 	public native int mpz_tstbit(mpz_t op, mp_bitcnt_t bit_index);
 
+	// Import
+	public native void mpz_import (mpz_t rop, int count, int order, int size, int endian, int nails, Memory op);
+	
 	// Random
 	// https://gmplib.org/manual/Integer-Random-Numbers.html#Integer-Random-Numbers
 	public native void mpz_urandomb(mpz_t rop, gmp_randstate_t state, mp_bitcnt_t n);

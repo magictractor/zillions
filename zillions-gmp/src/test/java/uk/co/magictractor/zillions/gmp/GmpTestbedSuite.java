@@ -15,8 +15,11 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
+import org.junit.platform.suite.api.ExcludeClassNamePatterns;
+
 import uk.co.magictractor.zillions.testbed.TestbedSuite;
 
+@ExcludeClassNamePatterns({"^.*BitLengthTest$", "^.*BitCountTest$"})
 public class GmpTestbedSuite extends TestbedSuite {
 	// Nothing here. Full test suite is inherited from testbed parent suite.
 }

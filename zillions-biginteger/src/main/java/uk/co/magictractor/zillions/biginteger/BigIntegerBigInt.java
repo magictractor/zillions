@@ -93,6 +93,12 @@ public class BigIntegerBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt not() {
+		_bigInteger = _bigInteger.not();
+		return this;
+	}
+
+	@Override
 	public BigInt shiftLeft(int n) {
 		_bigInteger = _bigInteger.shiftLeft(n);
 		return this;

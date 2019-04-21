@@ -75,6 +75,12 @@ public class NumptyBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt not() {
+		_x = ~_x;
+		return this;
+	}
+
+	@Override
 	public BigInt negate() {
 		_x = -_x;
 		return this;

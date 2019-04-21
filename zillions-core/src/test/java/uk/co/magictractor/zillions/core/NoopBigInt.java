@@ -54,6 +54,11 @@ public class NoopBigInt implements BigInt {
 	}
 
 	@Override
+	public BigInt not() {
+		return this;
+	}
+
+	@Override
 	public BigInt negate() {
 		return this;
 	}

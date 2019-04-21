@@ -62,14 +62,17 @@ public interface BigInt extends EnhancedComparable<BigInt> {
 
 	BigInt xor(BigInt y);
 
-	// also not() and andNot() in BigInteger
+	// 1's complement
+	BigInt not();
+
+	// also andNot() in BigInteger
 
 	/**
 	 * For these ops, bit 0 is the least significant bit. Big operations should act
 	 * on a 2's complement representation of the number.
 	 * https://en.wikipedia.org/wiki/Two%27s_complement
 	 */
-	
+
 	BigInt setBit(int n);
 
 	BigInt clearBit(int n);
