@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.core.api.bits.BigIntBitCount;
-import uk.co.magictractor.zillions.core.environment.Environment;
 
 public class BitCountTest /*extends OpTestNoParam*/ {
 

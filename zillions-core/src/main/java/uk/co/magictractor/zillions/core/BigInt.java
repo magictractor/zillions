@@ -53,6 +53,8 @@ public interface BigInt extends EnhancedComparable<BigInt> {
 
 	/** Absolute value. */
 	BigInt abs();
+	
+	int signum();
 
 	// Bit operations.
 
@@ -85,4 +87,5 @@ public interface BigInt extends EnhancedComparable<BigInt> {
 
 	BigInt shiftRight(int n);
 
+	BigInt copy();
 }

@@ -20,6 +20,10 @@ public class NumptyBigInt implements BigInt {
 		this._x = n;
 	}
 
+	public NumptyBigInt copy() {
+		return new NumptyBigInt(_x);
+	}
+
 	@Override
 	public BigInt add(BigInt y) {
 		_x += ((NumptyBigInt) y)._x;
@@ -95,6 +99,17 @@ public class NumptyBigInt implements BigInt {
 	}
 
 	@Override
+	public int signum() {
+		if (_x == 0) {
+			return 0;
+		} else if (_x > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
+	@Override
 	public BigInt shiftLeft(int n) {
 		_x = _x << n;
 		return this;
@@ -105,7 +120,7 @@ public class NumptyBigInt implements BigInt {
 		_x = _x >> n;
 		return this;
 	}
-	
+
 	// TODO! implement these - or (more likely) bin this class
 	@Override
 	public BigInt setBit(int n) {

@@ -45,7 +45,7 @@ public class GmpBigInt implements BigInt {
 	public GmpBigInt() {
 		__lib.mpz_init(_mpz);
 	}
-	
+
 	private GmpBigInt(GmpBigInt other) {
 		__lib.mpz_init_set(_mpz, other._mpz);
 	}
@@ -53,7 +53,7 @@ public class GmpBigInt implements BigInt {
 	public BigInt copy() {
 		return new GmpBigInt(this);
 	}
-	
+
 	public BigInt add(BigInt y) {
 		__lib.mpz_add(_mpz, _mpz, ((GmpBigInt) y)._mpz);
 		return this;
@@ -110,6 +110,11 @@ public class GmpBigInt implements BigInt {
 		return this;
 	}
 
+	@Override
+	public int signum() {
+		return _mpz.mpz_sgn();
+	}
+
 	public BigInt and(BigInt y) {
 		__lib.mpz_and(_mpz, _mpz, ((GmpBigInt) y)._mpz);
 		return this;
@@ -130,7 +135,7 @@ public class GmpBigInt implements BigInt {
 		__lib.mpz_com(_mpz, _mpz);
 		return this;
 	}
-	
+
 	@Override
 	public BigInt shiftLeft(int n) {
 		if (n > 0) {

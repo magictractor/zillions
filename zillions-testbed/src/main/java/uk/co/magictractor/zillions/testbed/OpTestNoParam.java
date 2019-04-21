@@ -1,32 +1,35 @@
 package uk.co.magictractor.zillions.testbed;
 
-import static uk.co.magictractor.zillions.core.BigIntFactory.from;
-
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.assertj.core.api.Assertions;
 
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.core.BigIntFactory;
 
-// TODO! generics and RESULT - like OpTestSingleParam
-public class OpTestNoParam {
+public class OpTestNoParam<RESULT> extends OpTest<RESULT> {
 
-	private final Consumer<BigInt> _op;
+	private final Function<BigInt, RESULT> _op;
 
-	protected OpTestNoParam(Consumer<BigInt> op) {
+	protected OpTestNoParam(Class<RESULT> resultClass, Function<BigInt, RESULT> op) {
+		super(resultClass);
 		_op = op;
 	}
 
 	protected void check(long x, long expected) {
-		check(from(x), from(expected));
+		check(BigIntFactory.from(x), resultFrom(expected));
+	}
+
+	protected void check(BigInt x, long expected) {
+		check(x, resultFrom(expected));
 	}
 
 	protected void check(String x, String expected) {
-		check(from(x), from(expected));
+		check(BigIntFactory.from(x), resultFrom(expected));
 	}
 
-	protected void check(BigInt x, BigInt expected) {
-		_op.accept(x);
-		Assertions.assertThat(x).isEqualTo(expected);
+	protected void check(BigInt x, RESULT expected) {
+		RESULT actual = _op.apply(x);
+		Assertions.assertThat(actual).isEqualTo(expected);
 	}
 }

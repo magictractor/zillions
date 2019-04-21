@@ -6,6 +6,9 @@ public abstract class AbstractDelegatingStrategyFactory extends AbstractProxyStr
 
 	protected final Object handle(Class<?> apiClass, Method method, Object[] args) throws Throwable {
 		Object delegate = findDelegate(apiClass);
+		if (delegate == null) {
+			throw new IllegalStateException("No delegate found for API class " + apiClass + " in " + this);
+		}
 		return method.invoke(delegate, args);
 	}
 

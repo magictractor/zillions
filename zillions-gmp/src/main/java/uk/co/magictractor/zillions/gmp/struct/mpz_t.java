@@ -49,4 +49,9 @@ public class mpz_t extends Structure
    */
   public NativeLongByReference _mp_d;
 
+  // Mimic the macro used to implement mpz_sgn
+  // #define mpz_sgn(Z) ((Z)->_mp_size < 0 ? -1 : (Z)->_mp_size > 0)
+  public int mpz_sgn() {
+	  return _mp_size == 0 ? 0 : (_mp_size > 0 ? 1 : -1); 
+  }
 }

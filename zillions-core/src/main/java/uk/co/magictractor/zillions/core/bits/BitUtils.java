@@ -1,8 +1,32 @@
 package uk.co.magictractor.zillions.core.bits;
 
+import uk.co.magictractor.zillions.core.BigInt;
+
 public final class BitUtils {
 
 	private BitUtils() {
+	}
+
+	/**
+	 * Determines whether the bytes represent a negative number, assuming that the
+	 * bytes are a 2's complement representation with the most significant byte
+	 * first.
+	 */
+	public static boolean isNegative(byte[] bytes) {
+		return (bytes[0] & 0x80) != 0;
+	}
+
+	public static byte[] intsToBytes(int... bytesAsInts) {
+		byte[] bytes = new byte[bytesAsInts.length];
+		for (int i = 0; i < bytes.length; i++) {
+			int byteAsInt = bytesAsInts[i];
+			if ((byteAsInt & 0xffffff00) > 0) {
+				throw new IllegalArgumentException();
+			}
+			bytes[i] = (byte) byteAsInt;
+		}
+
+		return bytes;
 	}
 
 	// Based on Java's Bits class.

@@ -20,10 +20,10 @@ import org.junit.jupiter.api.Test;
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.testbed.OpTestNoParam;
 
-public class AbsTest extends OpTestNoParam {
+public class AbsTest extends OpTestNoParam<BigInt> {
 
 	public AbsTest() {
-		super(BigInt::abs);
+		super(BigInt.class, BigInt::abs);
 	}
 
 	@Test

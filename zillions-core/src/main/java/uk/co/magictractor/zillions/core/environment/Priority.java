@@ -18,6 +18,18 @@ public interface Priority {
 	public final static int DEFAULT = 0;
 
 	/**
+	 * Not recommendend for general use, there should be better implementations
+	 * available.
+	 * 
+	 * Services with this priority often require application code to specifically
+	 * set a property to choose the service implementation.
+	 * 
+	 * Used for a random strategy which is preferred for unit and benchmark tests,
+	 * but is otherwise not recommended.
+	 */
+	public final static int SPECIFIC_USE = -200000;
+
+	/**
 	 * A simple implementation, which is likely to perform badly, especially with
 	 * larger numbers. Often applicable across all BigInt implementations.
 	 * 

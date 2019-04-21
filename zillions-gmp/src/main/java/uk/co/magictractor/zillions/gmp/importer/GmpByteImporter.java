@@ -2,12 +2,10 @@ package uk.co.magictractor.zillions.gmp.importer;
 
 import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
 import com.sun.jna.Memory;
 
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.core.bits.BitUtils;
 import uk.co.magictractor.zillions.core.importer.ByteImporter;
 import uk.co.magictractor.zillions.gmp.GmpBigInt;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;
@@ -17,12 +15,22 @@ import uk.co.magictractor.zillions.gmp.struct.mpz_t;
 
 public class GmpByteImporter implements ByteImporter {
 
-	public BigInt from(BigInt rop, byte[] bytes) {
+	@Override
+	public BigInt signedFrom(BigInt rop, byte[] bytes) {
+		return from(true, rop, bytes);
+	}
+
+	@Override
+	public BigInt unsignedFrom(BigInt rop, byte[] bytes) {
+		return from(false, rop, bytes);
+	}
+
+	private BigInt from(boolean isSigned, BigInt rop, byte[] bytes) {
 
 		Memory memory = new Memory(bytes.length);
 
 		// GMP imports unsigned values, check and adjust if negative
-		boolean isNegative = (bytes[0] & 0x80) != 0;
+		boolean isNegative = isSigned && BitUtils.isNegative(bytes);
 		if (!isNegative) {
 			memory.write(0, bytes, 0, bytes.length);
 		} else {

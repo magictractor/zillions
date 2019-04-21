@@ -35,6 +35,10 @@ public class BigIntegerBigInt implements BigInt {
 		_bigInteger = bigInteger;
 	}
 
+	public BigIntegerBigInt copy() {
+		return new BigIntegerBigInt(_bigInteger);
+	}
+
 	public BigInt add(BigInt y) {
 		_bigInteger = _bigInteger.add(((BigIntegerBigInt) y)._bigInteger);
 		return this;
@@ -75,6 +79,11 @@ public class BigIntegerBigInt implements BigInt {
 	public BigInt abs() {
 		_bigInteger = _bigInteger.abs();
 		return this;
+	}
+
+	@Override
+	public int signum() {
+		return _bigInteger.signum();
 	}
 
 	public BigInt and(BigInt y) {

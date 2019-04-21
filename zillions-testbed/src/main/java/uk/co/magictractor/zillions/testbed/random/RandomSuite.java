@@ -23,7 +23,7 @@ import org.junit.platform.suite.api.SelectClasses;
 
 import uk.co.magictractor.zillions.testbed.DynamicSuite;
 
-@SelectClasses({ RandomTest.class })
+@SelectClasses({ DefaultRandomStrategyTest.class, JavaRandomStrategyTest.class })
 public class RandomSuite {
 	
 	@TestFactory

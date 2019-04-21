@@ -18,13 +18,13 @@ package uk.co.magictractor.zillions.core;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 import uk.co.magictractor.zillions.core.create.RandomStrategy;
 import uk.co.magictractor.zillions.core.environment.Environment;
+import uk.co.magictractor.zillions.core.importer.ByteImporter;
 
 public final class BigIntFactory {
 
-	// TODO! always have a proxy which will be the fallback if nothing else is
-	// registered
 	private static final CreateStrategy CREATE = Environment.getBestAvailableImplementation(CreateStrategy.class);
 	private static final RandomStrategy RANDOM = Environment.getBestAvailableImplementation(RandomStrategy.class);
+	private static final ByteImporter BYTE_IMPORTER = Environment.getBestAvailableImplementation(ByteImporter.class);
 
 	private BigIntFactory() {
 	}
@@ -35,6 +35,10 @@ public final class BigIntFactory {
 
 	public static BigInt from(long value) {
 		return CREATE.fromLong(value);
+	}
+
+	public static BigInt from(byte[] bytes) {
+		return BYTE_IMPORTER.signedFrom(from(0), bytes);
 	}
 
 	/**

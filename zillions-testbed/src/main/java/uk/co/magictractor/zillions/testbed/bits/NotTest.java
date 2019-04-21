@@ -13,32 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.arithmetic;
+package uk.co.magictractor.zillions.testbed.bits;
 
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.testbed.OpTestNoParam;
 
-public class NegateTest extends OpTestNoParam<BigInt> {
+public class NotTest extends OpTestNoParam<BigInt> {
 
-	public NegateTest() {
-		super(BigInt.class, BigInt::negate);
+	public NotTest() {
+		super(BigInt.class, BigInt::not);
 	}
 
 	@Test
-	public void testNegateSmallPositiveNumber() {
-		check(10, -10);
+	public void testNotPositive() {
+		check(10, -11);
 	}
 
 	@Test
-	public void testNegateSmallNegativeNumber() {
-		check(-10, 10);
+	public void testNotNegative() {
+		check(-10, 9);
 	}
 
 	@Test
-	public void testNegateZero() {
-		check(0, 0);
+	public void testNotLargePositive() {
+		// TODO! truncated?
+		// check(772866488294L, -772866488294L);
+		check("772866488294", "-772866488295");
+	}
+
+	@Test
+	public void testNotLargeNegative() {
+		check("-772866488294", "772866488293");
+	}
+
+	@Test
+	public void testNotZero() {
+		check(0, -1);
+	}
+
+	@Test
+	public void testNotMimimumPositive() {
+		check(1, -2);
+	}
+
+	@Test
+	public void testNotMinimumNegative() {
+		check(-1, 0);
 	}
 
 }

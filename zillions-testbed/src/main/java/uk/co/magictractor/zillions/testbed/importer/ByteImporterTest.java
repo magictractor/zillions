@@ -1,74 +1,82 @@
 package uk.co.magictractor.zillions.testbed.importer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.magictractor.zillions.core.BigIntFactory.from;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.BigIntFactory;
-import uk.co.magictractor.zillions.core.environment.Environment;
+import uk.co.magictractor.zillions.core.bits.BitUtils;
 import uk.co.magictractor.zillions.core.importer.ByteImporter;
+import uk.co.magictractor.zillions.testbed.AbstractStrategyTest;
 
-public abstract class ByteImporterTest {
+public abstract class ByteImporterTest extends AbstractStrategyTest<ByteImporter> {
+
+	protected ByteImporterTest() {
+		super(ByteImporter.class);
+	}
 
 	@Test
 	public void testZero() {
-		BigInt v = from(0x00);
-		assertThat(v.toString()).isEqualTo("0");
+		check("0", 0x00);
 	}
 
 	@Test
 	public void testSingleSetBit() {
-		BigInt v = from(0x40, 0x00, 0x00, 0x00);
 		// 2^30
-		assertThat(v.toString()).isEqualTo("1073741824");
+		check("1073741824", 0x40, 0x00, 0x00, 0x00);
 	}
 
 	@Test
 	public void testOne() {
-		BigInt v = from(0x01);
-		assertThat(v.toString()).isEqualTo("1");
+		check("1", 0x01);
 	}
 
 	@Test
 	public void testMinusOneSingleByte() {
-		BigInt v = from(0xff);
-		assertThat(v.toString()).isEqualTo("-1");
+		check("-1", 0xff, 0xff, 0xff);
 	}
-	
+
 	@Test
 	public void testMinusOneMultipleBytes() {
-		BigInt v = from(0xff, 0xff, 0xff);
-		assertThat(v.toString()).isEqualTo("-1");
+		check("-1", 0xff, 0xff, 0xff);
 	}
-	
+
 	@Test
 	public void testMinusOneFourBytes() {
-		BigInt v = from(0xff, 0xff, 0xff, 0xff);
-		assertThat(v.toString()).isEqualTo("-1");
+		check("-1", 0xff, 0xff, 0xff, 0xff);
 	}
-	
+
 	@Test
 	public void testNegativeByte() {
-		BigInt v = from(0x88);
-		assertThat(v.toString()).isEqualTo("-120");
+		// 136 unsigned
+		check("-120", 0x88);
 	}
 
-	private BigInt from(int... bytesAsInts) {
-		byte[] bytes = new byte[bytesAsInts.length];
-		for (int i = 0; i < bytes.length; i++) {
-			int byteAsInt = bytesAsInts[i];
-			if ((byteAsInt & 0xffffff00) > 0) {
-				throw new IllegalArgumentException();
-			}
-			bytes[i] = (byte) byteAsInt;
+	private void check(String expectedSignedString, int... bytesAsInts) {
+		byte[] bytes = BitUtils.intsToBytes(bytesAsInts);
+
+		BigInt expectedSigned = BigIntFactory.from(expectedSignedString);
+		BigInt expectedUnsigned;
+		if (expectedSigned.signum() >= 0) {
+			expectedUnsigned = expectedSigned;
+		} else {
+			expectedUnsigned = from(1).shiftLeft(bytesAsInts.length * 8).add(expectedSigned);
 		}
 
-		// StrategiesUtil.dumpStrategyInfo(Importer.class);
+		Assertions.assertAll(() -> checkSigned(expectedSigned, bytes), () -> checkUnsigned(expectedUnsigned, bytes));
+	}
 
-		ByteImporter importer = Environment.getBestAvailableImplementation(ByteImporter.class);
-		BigInt rop = BigIntFactory.from(999);
-		return importer.from(rop, bytes);
+	private void checkSigned(BigInt expectedSigned, byte[] bytes) {
+		BigInt actualSigned = getImpl().signedFrom(from(0), bytes);
+		assertThat(actualSigned).isEqualTo(expectedSigned);
+	}
+
+	private void checkUnsigned(BigInt expectedUnsigned, byte[] bytes) {
+		BigInt actualUnsigned = getImpl().unsignedFrom(from(0), bytes);
+		assertThat(actualUnsigned).isEqualTo(expectedUnsigned);
 	}
 
 }

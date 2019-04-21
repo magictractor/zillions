@@ -18,27 +18,42 @@ package uk.co.magictractor.zillions.testbed.arithmetic;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.testbed.OpTestNoParam;
 
-public class NegateTest extends OpTestNoParam<BigInt> {
+public class SignumTest extends OpTestNoParam<Integer> {
 
-	public NegateTest() {
-		super(BigInt.class, BigInt::negate);
+	public SignumTest() {
+		super(Integer.class, BigInt::signum);
 	}
 
 	@Test
-	public void testNegateSmallPositiveNumber() {
-		check(10, -10);
+	public void testSignumSmallPositiveNumber() {
+		check(10, 1);
 	}
 
 	@Test
-	public void testNegateSmallNegativeNumber() {
-		check(-10, 10);
+	public void testSignumSmallNegativeNumber() {
+		check(-10, -1);
 	}
 
 	@Test
-	public void testNegateZero() {
+	public void testSignumZero() {
 		check(0, 0);
 	}
 
+	@Test
+	public void testZeroAfterArithmetic() {
+		BigInt x = BigIntFactory.from(7);
+		x.subtract(x);
+		check(x, 0);
+	}
+	
+	@Test
+	public void testNegativeAfterArithmetic() {
+		BigInt x = BigIntFactory.from(7);
+		BigInt y = BigIntFactory.from(99);
+		x.subtract(y);
+		check(x, -1);
+	}
 }

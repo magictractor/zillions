@@ -8,6 +8,10 @@ package uk.co.magictractor.zillions.core;
  */
 public class NoopBigInt implements BigInt {
 
+	public NoopBigInt copy() {
+		return new NoopBigInt();
+	}
+
 	@Override
 	public BigInt add(BigInt y) {
 		return this;
@@ -66,6 +70,11 @@ public class NoopBigInt implements BigInt {
 	@Override
 	public BigInt abs() {
 		return this;
+	}
+
+	@Override
+	public int signum() {
+		return 0;
 	}
 
 	@Override
