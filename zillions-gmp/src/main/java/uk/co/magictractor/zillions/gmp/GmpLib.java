@@ -95,6 +95,9 @@ public interface GmpLib {
 	// https://gmplib.org/manual/Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions
 	int mpz_sizeinbase(mpz_t op, int base);
 
+	// For bit count
+	mp_bitcnt_t mpz_popcount(mpz_t op);
+
 	/**
 	 * Set rop to op1 times 2 raised to op2. This operation can also be defined as a
 	 * left shift by op2 bits.

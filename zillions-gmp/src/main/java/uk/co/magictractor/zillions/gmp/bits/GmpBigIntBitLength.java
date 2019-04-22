@@ -16,9 +16,7 @@ public class GmpBigIntBitLength implements BigIntBitLength {
 		// x < 0
 		if (mpz._mp_size < 0) {
 			mpz_t alt = ((GmpBigInt) x).getAlternateInternalValue();
-			// Add one to adjust for 2's complement.
-			__lib.mpz_add_ui(alt, mpz, 1);
-			// Use the incremented value for mpz_sizeinbase
+			__lib.mpz_com(alt, mpz);
 			mpz = alt;
 		}
 
@@ -28,7 +26,6 @@ public class GmpBigIntBitLength implements BigIntBitLength {
 			return 0;
 		}
 
-		// x > 0
 		return __lib.mpz_sizeinbase(mpz, 2);
 	}
 

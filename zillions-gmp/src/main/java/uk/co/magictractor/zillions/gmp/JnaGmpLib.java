@@ -90,6 +90,8 @@ public class JnaGmpLib implements GmpLib, Library {
 	public native void mpz_com(mpz_t rop, mpz_t op);
 
 	public native int mpz_sizeinbase(mpz_t op, int base);
+	
+	public native mp_bitcnt_t mpz_popcount(mpz_t op);
 
 	// For shift left
 	public native void mpz_mul_2exp(mpz_t rop, mpz_t op1, mp_bitcnt_t b);
