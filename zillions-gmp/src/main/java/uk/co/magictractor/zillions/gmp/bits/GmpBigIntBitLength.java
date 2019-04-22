@@ -13,24 +13,21 @@ public class GmpBigIntBitLength implements BigIntBitLength {
 	public int bitLength(BigInt x) {
 		mpz_t mpz = ((GmpBigInt) x).getInternalValue();
 
-		// x == 0
-		if (mpz._mp_size == 0) {
-			// mpz_sizeinbase would say 1
-			return 0;
-		}
-
 		// x < 0
 		if (mpz._mp_size < 0) {
 			mpz_t alt = ((GmpBigInt) x).getAlternateInternalValue();
 			// Add one to adjust for 2's complement.
 			__lib.mpz_add_ui(alt, mpz, 1);
-			if (alt._mp_size == 0) {
-				// x == -1
-				return 0;
-			}
-			return __lib.mpz_sizeinbase(alt, 2);
+			// Use the incremented value for mpz_sizeinbase
+			mpz = alt;
 		}
-		
+
+		// x == 0 or -1
+		if (mpz._mp_size == 0) {
+			// mpz_sizeinbase would say 1
+			return 0;
+		}
+
 		// x > 0
 		return __lib.mpz_sizeinbase(mpz, 2);
 	}
