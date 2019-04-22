@@ -23,8 +23,9 @@ import uk.co.magictractor.zillions.gmp.struct.mpz_t;
 
 public class GmpBigInt implements BigInt {
 
-	// default so it may be accessed by strategy implementations
 	private mpz_t _mpz = new mpz_t();
+	// null unless getAlternateInternalValue() or swap() is called
+	private mpz_t _alt;
 
 	public GmpBigInt(String decimal) {
 		int ok = __lib.mpz_init_set_str(_mpz, decimal, 10);
@@ -82,19 +83,15 @@ public class GmpBigInt implements BigInt {
 		return this;
 	}
 
-	// TODO! multiply will be more efficient if the result has a distinct
-	// destination
-	// See "In-Place Operations" in https://gmplib.org/manual/Efficiency.html
-	// perhaps add swap() which will init a second _mpz
-	// Slightly wasteful on memory, but more efficient if multiplying a lot (like
-	// simple factorial calc)
 	public BigInt multiply(BigInt y) {
-		__lib.mpz_mul(_mpz, _mpz, ((GmpBigInt) y)._mpz);
+		swap();
+		__lib.mpz_mul(_mpz, _alt, ((GmpBigInt) y)._mpz);
 		return this;
 	}
 
 	public BigInt multiply(long y) {
-		__lib.mpz_mul_si(_mpz, _mpz, y);
+		swap();
+		__lib.mpz_mul_si(_mpz, _alt, y);
 		return this;
 	}
 
@@ -211,10 +208,34 @@ public class GmpBigInt implements BigInt {
 		return _mpz;
 	}
 
+	public mpz_t getAlternateInternalValue() {
+		if (_alt == null) {
+			_alt = new mpz_t();
+			__lib.mpz_init(_alt);
+		}
+
+		return _alt;
+	}
+
+	// TODO! doc
+	// See "In-Place Operations" in https://gmplib.org/manual/Efficiency.html
+	// Uses a more memory, but more efficient if multiplying a lot (like
+	// simple factorial calc)
+	private void swap() {
+		mpz_t swap = getAlternateInternalValue();
+		_alt = _mpz;
+		_mpz = swap;
+	}
+
 	// TODO! does discard() also belong on the interface?
 	public void discard() {
 		__lib.mpz_clear(_mpz);
 		_mpz = null;
+
+		if (_alt != null) {
+			__lib.mpz_clear(_alt);
+			_alt = null;
+		}
 	}
 
 	@Override

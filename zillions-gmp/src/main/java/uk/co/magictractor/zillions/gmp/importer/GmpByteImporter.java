@@ -5,10 +5,10 @@ import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 import com.sun.jna.Memory;
 
 import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
 import uk.co.magictractor.zillions.core.importer.ByteImporter;
 import uk.co.magictractor.zillions.gmp.GmpBigInt;
+import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;
 
 // TODO! can we avoid copying the bytes?
@@ -21,7 +21,13 @@ public class GmpByteImporter implements ByteImporter {
 		unsignedFrom(rop, bytes);
 
 		if (BitUtils.isNegative(bytes)) {
-			rop.subtract(BigIntFactory.from(1).shiftLeft(bytes.length * 8));
+			GmpBigInt x = (GmpBigInt) rop;
+			mpz_t mpz = x.getInternalValue();
+			// Use the alternate value to prevent creating and throwing away an mpz_t.
+			mpz_t alt = x.getAlternateInternalValue();
+			__lib.mpz_set_si(alt, 1L);
+			__lib.mpz_mul_2exp(alt, alt, new mp_bitcnt_t(bytes.length * 8));
+			__lib.mpz_sub(mpz, mpz, alt);
 		}
 
 		return rop;

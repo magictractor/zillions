@@ -37,6 +37,8 @@ public interface GmpLib {
 
 	int mpz_init_set_str(mpz_t rop, String str, int base);
 
+	void mpz_set_si(mpz_t rop, long op);
+
 	void mpz_clear(mpz_t x);
 
 	void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
