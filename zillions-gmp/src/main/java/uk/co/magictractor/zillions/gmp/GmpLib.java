@@ -25,6 +25,8 @@ import uk.co.magictractor.zillions.gmp.struct.mpz_t;
 // https://gmplib.org/manual/Integer-Arithmetic.html
 // https://gmplib.org/manual/Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling
 // https://gmplib.org/manual/Integer-Random-Numbers.html#Integer-Random-Numbers
+//
+// size_t implemented as int
 public interface GmpLib {
 
 	// https://gmplib.org/manual/Initializing-Integers.html#Initializing-Integers
@@ -36,6 +38,8 @@ public interface GmpLib {
 	void mpz_init_set_si(mpz_t rop, long op);
 
 	int mpz_init_set_str(mpz_t rop, String str, int base);
+
+	void mpz_set(mpz_t rop, mpz_t op);
 
 	void mpz_set_si(mpz_t rop, long op);
 
@@ -86,6 +90,10 @@ public interface GmpLib {
 
 	// Test bit bit_index in op and return 0 or 1 accordingly.
 	int mpz_tstbit(mpz_t op, mp_bitcnt_t bit_index);
+
+	// Used to find higest set bit (base 2)
+	// https://gmplib.org/manual/Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions
+	int mpz_sizeinbase(mpz_t op, int base);
 
 	/**
 	 * Set rop to op1 times 2 raised to op2. This operation can also be defined as a

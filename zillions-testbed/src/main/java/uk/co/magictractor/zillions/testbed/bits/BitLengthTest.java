@@ -29,10 +29,15 @@ public class BitLengthTest {
 	public void testMinusOne() {
 		check(-1, 0);
 	}
-	
+
 	@Test
 	public void testMinimumNegative() {
 		check(-2, 1);
+	}
+
+	@Test
+	public void testPositive() {
+		check(240, 8);
 	}
 
 	@Test
@@ -43,6 +48,11 @@ public class BitLengthTest {
 	@Test
 	public void testAboveBoundaryPositive() {
 		check(256, 9);
+	}
+
+	@Test
+	public void testNegative() {
+		check(-240, 8);
 	}
 
 	@Test

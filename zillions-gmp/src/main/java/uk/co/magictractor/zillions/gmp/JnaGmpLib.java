@@ -53,6 +53,8 @@ public class JnaGmpLib implements GmpLib, Library {
 
 	public native int mpz_init_set_str(mpz_t rop, String str, int base);
 
+	public native void mpz_set(mpz_t rop, mpz_t op);
+
 	public native void mpz_set_si(mpz_t rop, long op);
 
 	public native void mpz_clear(mpz_t x);
@@ -86,6 +88,8 @@ public class JnaGmpLib implements GmpLib, Library {
 	public native void mpz_xor(mpz_t rop, mpz_t op1, mpz_t op2);
 
 	public native void mpz_com(mpz_t rop, mpz_t op);
+
+	public native int mpz_sizeinbase(mpz_t op, int base);
 
 	// For shift left
 	public native void mpz_mul_2exp(mpz_t rop, mpz_t op1, mp_bitcnt_t b);
