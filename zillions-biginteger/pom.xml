@@ -1,115 +1,33 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>uk.co.magictractor</groupId>
-  <artifactId>zillions-biginteger</artifactId>
-  <version>0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>Zillions - fast large integer arithmetic</name>
-  <description>Zillions - fast large integer arithmetic</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>zillions-biginteger</artifactId>
+	<packaging>jar</packaging>
+	<name>Zillions - reference BigInt implementation using java.math.BigInteger</name>
+	<description>Zillions - fast large integer arithmetic</description>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
-		<!-- <junit.platform.version>1.0.0-M2</junit.platform.version> // for surefire 
-			plugin -->
-	</properties>
-	
-  <dependencies>
-  
-    <dependency>
-      <groupId>uk.co.magictractor</groupId>
-      <artifactId>zillions-core</artifactId>
-      <version>0.1-SNAPSHOT</version>
-    </dependency>
-    
+	<parent>
+		<groupId>uk.co.magictractor</groupId>
+		<artifactId>zillions-parent</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
-    
-    <dependency>
-      <groupId>net.java.dev.jna</groupId>
-      <artifactId>jna</artifactId>
-      <version>5.2.0</version>
-      <optional>true</optional>
-    </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>uk.co.magictractor</groupId>
+			<artifactId>zillions-core</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
 
-<dependency>
-      <groupId>uk.co.magictractor</groupId>
-      <artifactId>zillions-testbed</artifactId>
-      <version>0.1-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-  <!-- 
-<dependency>
-      <groupId>uk.co.magictractor</groupId>
-      <artifactId>artifactId</artifactId>
-      <classifier>zillions-core</classifier>
-      <type>test-jar</type>
-      <version>0.1-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-     -->
-		
-  </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-        <source>${java.version}</source>
-		<target>${java.version}</target>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.14</version>
-        <configuration>
-          <configLocation>config/common/magic_tractor_checks.xml</configLocation>
-          <propertyExpansion>basedir=${basedir}</propertyExpansion>
-          <enableRulesSummary>false</enableRulesSummary>
-          <!-- <sourceDirectories> <sourceDirectory>${basedir}</sourceDirectory> 
-            <source>ookook</source> <sourceDirectorie>baa</sourceDirectorie> </sourceDirectories> -->
-
-          <sourceDirectory>.</sourceDirectory>
-          <includes>**\/*.*</includes>
-          <!-- <resourceIncludes>**\/*.*</resourceIncludes> -->
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>6.3</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-
-      <!-- Generate JNA classes. Run using "mvn jnaerator:generate". Config 
-        in src/main/jnaerator/config.jnaerator See https://code.google.com/p/jnaerator/wiki/Maven 
-        https://code.google.com/p/jnaerator/wiki/CommandLineOptionsAndEnvironmentVariables -->
-        <!-- 
-      <plugin>
-        <groupId>com.nativelibs4java</groupId>
-        <artifactId>maven-jnaerator-plugin</artifactId>
-        <version>0.11</version>
-      </plugin>  -->
-    </plugins>
-  </build>
-
-  <licenses>
-    <license>
-      <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <!-- <distribution>repo</distribution> <comments>A business-friendly 
-        OSS license</comments> -->
-    </license>
-  </licenses>
-
-  <scm>
-    <!-- TODO! -->
-  </scm>
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>uk.co.magictractor</groupId>
+			<artifactId>zillions-testbed</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>

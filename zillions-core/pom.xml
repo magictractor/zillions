@@ -1,49 +1,31 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>uk.co.magictractor</groupId>
-  <artifactId>zillions-core</artifactId>
-  <version>0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>Zillions - fast large integer arithmetic</name>
-  <description>Zillions - fast large integer arithmetic</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>zillions-core</artifactId>
+	<packaging>jar</packaging>
+	<name>Zillions - core classes</name>
+	<description>Zillions - fast large integer arithmetic</description>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
-		<junit.jupiter.version>5.4.2</junit.jupiter.version>
-	</properties>
-	
-  <dependencies>
+	<parent>
+		<groupId>uk.co.magictractor</groupId>
+		<artifactId>zillions-parent</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.26</version>
-    </dependency>
-
-	<!-- Guava for utils, including Iterables. -->
-	<dependency>
-		<groupId>com.google.guava</groupId>
-		<artifactId>guava</artifactId>
-		<version>27.0.1-jre</version>
-	</dependency>
-
-
-	<!-- test dependencies -->
-		
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
-      <scope>test</scope>
-    </dependency>
-
+	<dependencies>
+		<!-- Guava for utils, including Iterables. -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>${junit.jupiter.version}</version>
-			<!-- TODO! maybe split up into even more projects so that TestContextExtension can be used in z-core and z-testbed -->
+			<!-- TODO! maybe split up into even more projects so that TestContextExtension 
+				can be used in z-core and z-testbed -->
 			<!-- <scope>test</scope> -->
 		</dependency>
 		<dependency>
@@ -52,88 +34,6 @@
 			<version>${junit.jupiter.version}</version>
 			<!-- <scope>test</scope> -->
 		</dependency>
-
-		<!-- <dependency> <groupId>org.hamcrest</groupId> <artifactId>hamcrest-library</artifactId> 
-			<version>1.3</version> <scope>test</scope> </dependency> -->
-
-		<!-- AssertJ rather than Hamcrest -->
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.11.1</version>
-			<scope>test</scope>
-		</dependency>
-		
-  </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-        <source>${java.version}</source>
-		<target>${java.version}</target>
-        </configuration>
-      </plugin>
-
-<!--  https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.1</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.14</version>
-        <configuration>
-          <configLocation>config/common/magic_tractor_checks.xml</configLocation>
-          <propertyExpansion>basedir=${basedir}</propertyExpansion>
-          <enableRulesSummary>false</enableRulesSummary>
-          <!-- <sourceDirectories> <sourceDirectory>${basedir}</sourceDirectory> 
-            <source>ookook</source> <sourceDirectorie>baa</sourceDirectorie> </sourceDirectories> -->
-
-          <sourceDirectory>.</sourceDirectory>
-          <includes>**\/*.*</includes>
-          <!-- <resourceIncludes>**\/*.*</resourceIncludes> -->
-        </configuration>
-         <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>6.3</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
-  </build>
-
-  <licenses>
-    <license>
-      <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <!-- <distribution>repo</distribution> <comments>A business-friendly 
-        OSS license</comments> -->
-    </license>
-  </licenses>
-
-  <scm>
-    <!-- TODO! -->
-  </scm>
+	</dependencies>
 
 </project>
