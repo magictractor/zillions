@@ -22,8 +22,6 @@
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
-			<version>5.2.0</version>
-			<optional>true</optional>
 		</dependency>
 
 		<!-- Test dependencies -->
@@ -41,7 +39,6 @@
 			<plugin>
 				<groupId>com.nativelibs4java</groupId>
 				<artifactId>maven-jnaerator-plugin</artifactId>
-				<version>0.12</version>
 			</plugin>
 		</plugins>
 	</build>
