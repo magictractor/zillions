@@ -14,6 +14,10 @@
 		<java.version>1.8</java.version>
 		<junit.jupiter.version>5.4.2</junit.jupiter.version>
 		<junit.platform.version>1.4.1</junit.platform.version>
+		<slf4j.version>1.7.26</slf4j.version>
+		<logback.version>1.2.3</logback.version>
+		<guava.version>27.0.1-jre</guava.version>
+		<assertj.version>3.11.1</assertj.version>
 	</properties>
 
 	<modules>
@@ -27,14 +31,14 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.26</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 
 		<!-- test dependencies -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
+			<version>${logback.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -54,7 +58,7 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.11.1</version>
+			<version>${assertj.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -65,7 +69,7 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>27.0.1-jre</version>
+				<version>${guava.version}</version>
 			</dependency>
 
 			<dependency>
