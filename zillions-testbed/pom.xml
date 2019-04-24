@@ -19,7 +19,6 @@
 		<dependency>
 			<groupId>uk.co.magictractor</groupId>
 			<artifactId>zillions-core</artifactId>
-			<version>0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

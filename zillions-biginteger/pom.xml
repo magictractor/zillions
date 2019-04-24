@@ -18,14 +18,12 @@
 		<dependency>
 			<groupId>uk.co.magictractor</groupId>
 			<artifactId>zillions-core</artifactId>
-			<version>0.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>uk.co.magictractor</groupId>
 			<artifactId>zillions-testbed</artifactId>
-			<version>0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
