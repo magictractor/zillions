@@ -19,6 +19,10 @@
 		<guava.version>27.0.1-jre</guava.version>
 		<jna.version>5.2.0</jna.version>
 		<assertj.version>3.11.1</assertj.version>
+		<compiler.plugin.version>3.1</compiler.plugin.version>
+		<surefire.plugin.version>2.22.1</surefire.plugin.version>
+		<checkstyle.plugin.version>2.14</checkstyle.plugin.version>
+		<checkstyle.version>6.3</checkstyle.version>
 		<jnaerator.plugin.version>0.12</jnaerator.plugin.version>
 	</properties>
 
@@ -100,7 +104,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>${compiler.plugin.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -114,13 +118,13 @@
 
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.1</version>
+				<version>${surefire.plugin.version}</version>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.14</version>
+				<version>${checkstyle.plugin.version}</version>
 				<configuration>
 					<configLocation>config/common/magic_tractor_checks.xml</configLocation>
 					<propertyExpansion>basedir=${basedir}</propertyExpansion>
@@ -136,7 +140,7 @@
 					<dependency>
 						<groupId>com.puppycrawl.tools</groupId>
 						<artifactId>checkstyle</artifactId>
-						<version>6.3</version>
+						<version>${checkstyle.plugin.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
