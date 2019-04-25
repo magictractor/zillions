@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
+  <!--
+    This configuration file was written by the eclipse-cs plugin configuration editor
+  -->
+  <!--
+    Checkstyle-Configuration: Magic Tractor Checks
+    Description: none
+-->
+<module name="Checker">
+  <metadata name="uk.co.magictractor.checkstyle.sunCheck" value="true" />
+  <metadata name="uk.co.magictractor.checkstyle.group" value="Other" />
+  <property name="severity" value="warning" />
+  <module name="TreeWalker">
+    <metadata name="uk.co.magictractor.checkstyle.sunCheck" value="true" />
+    <metadata name="uk.co.magictractor.checkstyle.group" value="Other" />
+    <module name="AvoidNestedBlocks">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Finds nested blocks." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="EmptyBlock">
+      <property name="option" value="text" />
+      <property name="tokens"
+        value="LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,STATIC_INIT,LITERAL_TRY,LITERAL_WHILE" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Comment is sufficient" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for empty blocks." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun.tokens" value="added" />
+      <metadata name="uk.co.magictractor.sun.option" value="added" />
+    </module>
+    <module name="LeftCurly">
+      <property name="option" value="eol" />
+      <property name="tokens" value="ANNOTATION_DEF, CTOR_DEF, ENUM_DEF, ENUM_CONSTANT_DEF, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, METHOD_DEF" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks the placement of left curly braces on types, methods and other blocks:" />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun.option" value="added" />
+    </module>
+    <module name="LeftCurly">
+      <property name="option" value="nl" />
+      <property name="tokens" value="CLASS_DEF, INTERFACE_DEF" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks the placement of left curly braces on types, methods and other blocks:" />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun.option" value="added" />
+    </module>
+    <module name="NeedBraces">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for braces around code blocks." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="RightCurly">
+      <property name="option" value="same" />
+      <property name="tokens" value="LITERAL_TRY, LITERAL_IF" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="On same line" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks the placement of right curly braces." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun.option" value="added" />
+    </module>
+    <module name="RightCurly">
+      <property name="option" value="alone" />
+      <property name="tokens" value="CLASS_DEF, METHOD_DEF, LITERAL_ELSE, LITERAL_CATCH, LITERAL_FINALLY, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO, STATIC_INIT, INSTANCE_INIT" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="On new line" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks the placement of right curly braces." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun.option" value="added" />
+    </module>
+    <module name="ArrayTypeStyle">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks the style of array type definitions." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="DescendantToken">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for restricted tokens beneath other tokens." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="FinalParameters">
+      <property name="severity" value="ignore" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Dropped. Prefer ParameterAssignment" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Check that method/constructor/catch/foreach parameters are final." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="The sentiment of this test is correct. It is bad style to change parameter values. However, it is a pain to have to specify every parameter as final. We prefer the test ParameterAssignment which checks the usage of the parameter, rather than requiring the final modifier." />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="\s+$" />
+      <property name="ignoreComments" value="true" />
+      <property name="message" value="Line has trailing spaces." />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Line has trailing spaces" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="A generic check for code problems, the user can search for any pattern." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun.ignoreComments" value="added" />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="System\.(out|err)" />
+      <property name="ignoreComments" value="true" />
+      <property name="message" value="Do not use System.out or System.err" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment"
+        value="System output streams can be useful during early stages of development, but should not be used in production code. Uses of System.out and System.err should be removed or replaced by a logger." />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="A generic check for code problems, the user can search for any pattern." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="\sthis\." />
+      <property name="ignoreComments" value="true" />
+      <property name="message" value="Avoid use of ''this.''" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Avoid use of 'this.'" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="A generic check for code problems, the user can search for any pattern." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We use an underscore prefix for member names, and only for member names. Therefore we never need 'this' to differentiate between local and member variables. Using 'this' for referring to methods is never neccessary, so we have eliminated the need to use 'this'. This check is most useful when refactoring existing code." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="new\s+RuntimeException\(" />
+      <property name="ignoreComments" value="true" />
+      <property name="message" value="Vague throw: use a specific RuntimeException" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="new RuntimeException" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="A generic check for code problems, the user can search for any pattern." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Use more meaningful Exception. Typically IllegalStateException, IllegalArgumentException, or custom NotYetImplementedException. To downgrade checked Exception to RuntimeException use custom ForcedRuntimeException." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="new\s+Exception\(" />
+      <property name="ignoreComments" value="true" />
+      <property name="message" value="Vague throw: use a specific Exception" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Vague throw" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="A generic check for code problems, the user can search for any pattern." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Use more meaningful Exception. Typically IllegalStateException, IllegalArgumentException, or custom NotYetImplementedException. To downgrade checked Exception to RuntimeException use custom ForcedRuntimeException." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="new\s+Throwable\(" />
+      <property name="ignoreComments" value="true" />
+      <property name="message" value="Vague throw: use a specific Throwable" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Vague throw" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="A generic check for code problems, the user can search for any pattern." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Use more meaningful Exception. Typically IllegalStateException, IllegalArgumentException, or custom NotYetImplementedException. To downgrade checked Exception to RuntimeException use custom ForcedRuntimeException." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="%\d+[^\$]" />
+      <property name="message"
+        value="Format string contains potentially invalid parameter - use '$' after %&lt;num&gt;" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Invalid formatting parameter" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="A generic check for code problems, the user can search for any pattern." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Avoids arguments like %1 being passed to String.format() which results in an error." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="Indentation">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks correct indentation of Java Code." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Insufficient to test all of our formatting rules. Notably, when class declarations are wrapped, we indent with a double tab." />
+    </module>
+    <module name="TodoComment">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="A check for TODO comments." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="TrailingComment">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="The check to ensure that requires that comments be the only thing on a line." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="Comments are more legible when above the code, not after." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="UncommentedMain">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Detects uncommented main methods." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="This does not do what casual inspection suggests. Any main method with fail this check, even with Javadoc, unless the Class name is added to the the excluded classes parameter. That is no use to use to us, since we want our checks to be generic." />
+    </module>
+    <module name="UpperEll">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that long constants are defined with an upper ell." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Using 'L' instead of 'l' to denote longs is absolutely preferable." />
+    </module>
+    <module name="Regexp">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="A check that makes sure that a specified pattern exists (or not) in the file." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="AvoidInlineConditionals">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Detects inline conditionals." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Inline conditions have their place, but should be used sparingly." />
+    </module>
+    <module name="CovariantEquals">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that if a class defines a covariant method equals, then it defines method equals(java.lang.Object)." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We have never had code flagged by this check, but it appears to be prudent." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="DefaultComesLast">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Check that the default is after all the cases in a switch statement." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Absolutely. Placing a default in the middle of a switch statement is barefaced obfuscation." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="DeclarationOrder">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that the parts of a class or interface declaration appear in the order suggested by the Code Conventions for the Java Programming Language." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="EmptyStatement">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Detects empty statements (standalone ';')." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="EqualsHashCode">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that classes that override equals() also override hashCode()." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="ExplicitInitialization">
+      <property name="severity" value="ignore" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="NO" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks if any class or object member explicitly initialized to default for its type value (null for object references, zero for numeric types and char and false for boolean." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="FallThrough">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks for fall through in switch statements Finds locations where a case contains Java code - but lacks a break, return, throw or continue statement." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="The logic of switch blocks is clearer if fall through is never used." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="FinalLocalVariable">
+      <property name="severity" value="ignore" />
+      <property name="tokens" value="PARAMETER_DEF,VARIABLE_DEF" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Ensures that local variables that never get their values changed, must be declared final." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Although IDEs can automatically add the 'final' keyword, it adds clutter to code." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="HiddenField">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that a local variable or a parameter does not shadow a field that is defined in the same class." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We use underscores as a prefix for member variables, making this check almost redundant for code which complies with our standards. However, it is very useful when refactoring existing code to meet out standards." />
+    </module>
+    <module name="IllegalInstantiation">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks for illegal instantiations where a factory method is preferred." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="IllegalCatch">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Catching java.lang.Exception, java.lang.Error or java.lang.RuntimeException is almost never acceptable." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="It is generally bad practise to catch Exceptions or RuntimeExceptions. However, there are cases when it is the correct thing to do, for example, to ensure that any unexpected exceptions are caught and logged." />
+    </module>
+    <module name="IllegalThrows">
+      <property name="illegalClassNames" value="java.lang.Error, java.lang.RuntimeException" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Throwing java.lang.Error or java.lang.RuntimeException is almost never acceptable." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Dropped Throwable, because it is required in some JUnit code. We have introduced a GenericRegexp to catch new Throwable etc." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="IllegalToken">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for illegal tokens." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="IllegalTokenText">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for illegal token text." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="IllegalType">
+      <property name="severity" value="ignore" />
+      <property name="tokens" value="METHOD_DEF,PARAMETER_DEF,VARIABLE_DEF" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="NO Spring AbstractUrlBasedView" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that particular class are never used as types in variable declarations, return values or parameters." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="InnerAssignment">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks for assignments in subexpressions, such as in String s = Integer.toString(i = 2);." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <!-- 
+    <module name="JUnitTestCase">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Ensures that the setUp(), tearDown()methods are named correctly, have no arguments, return void and are either public or protected." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="Useful checks on JUnit classes." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module> -->
+    <module name="MagicNumber">
+      <property name="severity" value="ignore" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Dropped" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for magic numbers." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We don't agree with this check. We have too much code which does not comply with this, and would not benefit from refactoring. FIXME! example" />
+      <metadata name="uk.co.magictractor.sun" value="dropped" />
+    </module>
+    <module name="MissingCtor">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that classes (except abstract one) explicitly define a constructor." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Creating empty default constructors does not improve code quality." />
+    </module>
+    <module name="MissingSwitchDefault">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that switch statement has &quot;default&quot; clause." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="Not unreasonable." />
+    </module>
+    <module name="ModifiedControlVariable">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Check for ensuring that for loop control variables are not modified inside the for block." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Checks for variables used in for loops are not modified within the loop." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="MultipleStringLiterals">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks for multiple occurrences of the same string literal within a single file." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="We don't agree with this. FIXME! example" />
+    </module>
+    <module name="MultipleVariableDeclarations">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that each variable declaration is in its own statement and on its own line." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="NestedIfDepth">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Restricts nested if-else blocks to a specified depth (default = 1)." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="NestedTryDepth">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Restricts nested try-catch-finally blocks to a specified depth (default = 1)." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Nested try statements are horrible and should always be refactored. Jakarta Commons IO includes IOUtils.closeQuietly() which can be helpful for tidying streams elegantly." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="PackageDeclaration">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Ensures there is a package declaration." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="Checks that every class has a package declaration." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="ParameterAssignment">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Disallows assignment of parameters." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Checks that parameters are not modified without the clutter of 'final' modifiers." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="RequireThis">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that code doesn't rely on the &quot;this&quot; default." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We use an underscore prefix for member varaible names, which means that 'this' is never required. See FIXME!" />
+    </module>
+    <module name="ReturnCount">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Restricts return statements to a specified count (default = 2)." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="SimplifyBooleanExpression">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for overly complicated boolean expressions." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="SimplifyBooleanReturn">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for overly complicated boolean return statements." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="StringLiteralEquality">
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity"
+        value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that string literals are not used with == or !=." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="String equality is a potential hazard, and should be avoided." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="SuperClone">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that an overriding clone() method invokes super.clone()." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="It is good practice to always call super.clone()." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="SuperFinalize">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that an overriding finalize() method invokes super.finalize()." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="It is good practice to always call super.finalize(). We are unlikely to ever write a finalize() method. FIXME! reference" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="ArrayTrailingComma">
+      <property name="severity" value="ignore" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity"
+        value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks if array initialization contains optional trailing comma." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Leaving trailing commas on arrays is a horrible idea. This unusual syntax might be misinterpreted as defining a trailing null value in the array. We would rather check so ensure that there were never trailing commas in the array." />
+    </module>
+    <module name="UnnecessaryParentheses">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks if unnecessary parentheses are used in a statement or expression." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="There are cases when a few extra parenthesis can emphasise the logic, making the code more legible which operator precedence might not be obvious." />
+    </module>
+    <module name="DesignForExtension">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that classes are designed for inheritance." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="This check can provide useful information, but flags cases like subclasses of writer which implement write() and close(). It does not make sense to make these final when ancestors trust implementors to invoke super methods. We do suggest using the check occassionally, as it often identifies classes and methods which should be made final." />
+      <metadata name="uk.co.magictractor.sun" value="dropped" />
+    </module>
+    <module name="FinalClass">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that class which has only private ctors is declared as final." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Useful for spotting utility classes which contain only static methods and should be declared as final." />
+    </module>
+    <module name="HideUtilityClassConstructor">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Make sure that utility classes (classes that contain only static methods) do not have a public constructor." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Useful for spotting utility classes which contain only static methods but have a default constructor. These classes should be given a private constructor to ensure that they are never instantiated." />
+    </module>
+    <module name="InterfaceIsType">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Implements Bloch, Effective Java, Item 17 - Use Interfaces only to define types." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We agree with Bloch that this is bad style. FIXME! reference" />
+    </module>
+    <module name="MutableException">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Ensures that exceptions (defined as any class name conforming to some regular expression) are immutable." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="This is a very defensive check against what be a rather weird subclass of Exception." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="ThrowsCount">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Restricts throws statements to a specified count (default = 1)." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We agree that a host of Exceptions on public classes and interfaces is undesirable. However, there are cases when a number of Exceptions is correct, such as in private methods, where Exceptions are handled by a calling class. It's common for the private class to declare multiple exceptions, such as DOMException and IOException." />
+    </module>
+    <module name="VisibilityModifier">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks visibility of class members." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Yes, instance variables should be private with accessor methods if required" />
+    </module>
+    <module name="AvoidStarImport">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Check that finds import statements that use the * notation." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Eclipse allows stars to be replaced by class names (Organize Imports)." />
+    </module>
+    <module name="IllegalImport">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for imports from a set of illegal packages." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Blocks imports like sun.*." />
+    </module>
+    <module name="ImportOrder">
+      <property name="groups" value="java,javax,com,antlr,de,junit,org,uk,uk.co.magictractor" />
+      <property name="option" value="top" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Class to check the ordering/grouping of imports." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Eclipse allows imports to be automatically sorted (Organize Imports)." />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="RedundantImport">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for imports that are redundant." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Eclipse can be configured to remove unused imports on save, but that can be annoying if briefly removing a line and restoring it needs the import to be recreated." />
+    </module>
+    <module name="UnusedImports">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for unused import statements." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Unused imports are useless, except when developing if the class might be used shortly. Redundant imports should not be committed." />
+    </module>
+    <module name="ImportControl">
+      <property name="file" value="${config_loc}/import-control.xml" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Check that controls what packages can be imported in each package." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="JavadocMethod">
+      <property name="severity" value="info" />
+      <property name="scope" value="public" />
+      <property name="allowUndeclaredRTE" value="true" />
+      <property name="logLoadErrors" value="true" />
+      <property name="suppressLoadErrors" value="true" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks the Javadoc of a method or constructor." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Documentation should be written to a high level, but this can usually only be done later in development, when methods are stable. Javadoc is not optional. The high level number is simply to reduce noise noise in early stages of development." />
+      <metadata name="uk.co.magictractor.sun.scope" value="added" />
+      <metadata name="uk.co.magictractor.sun.allowUndeclaredRTE" value="added" />
+    </module>
+    <module name="JavadocStyle">
+      <property name="severity" value="info" />
+      <property name="scope" value="public" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Custom Checkstyle Check to validate Javadoc." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Documentation should be written to a high level, but this can usually only be done later in development, when methods are stable. Javadoc is not optional. The high level number is simply to reduce noise noise in early stages of development." />
+      <metadata name="uk.co.magictractor.sun.scope" value="added" />
+    </module>
+    <module name="JavadocType">
+      <property name="severity" value="info" />
+      <property name="scope" value="public" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks the Javadoc of a type." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Documentation should be written to a high level, but this can usually only be done later in development, when methods are stable. Javadoc is not optional. The high level number is simply to reduce noise noise in early stages of development." />
+      <metadata name="uk.co.magictractor.sun.scope" value="added" />
+    </module>
+    <module name="JavadocVariable">
+      <property name="severity" value="info" />
+      <property name="scope" value="public" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that a variable has Javadoc comment." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Documentation should be written to a high level, but this can usually only be done later in development, when methods are stable. Javadoc is not optional. The high level number is simply to reduce noise noise in early stages of development." />
+      <metadata name="uk.co.magictractor.sun.scope" value="added" />
+    </module>
+    <module name="BooleanExpressionComplexity">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Restricts nested boolean operators (&amp;&amp;, || and ^) to a specified depth (default = 3)." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="ClassDataAbstractionCoupling">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="This metric measures the number of instantiations of other classes within the given class." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="ClassFanOutComplexity">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="The number of other classes a given class relies on." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="CyclomaticComplexity">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks cyclomatic complexity against a specified limit." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="JavaNCSS">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="This check calculates the Non Commenting Source Statements (NCSS) metric for java source files and methods." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="NPathComplexity">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks the npath complexity against a specified limt (default = 200)." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="ModifierOrder">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that the order of modifiers conforms to the suggestions in the Java Language specification, sections 8.1.1, 8.3.1 and 8.4.3." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="RedundantModifier">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks for redundant modifiers in interface and annotation definitions." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="AbstractClassName">
+      <property name="format" value="^Abstract.*$" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Ensures that the names of abstract classes conforming to some regular expression." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="ConstantName">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that constant names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="LocalFinalVariableName">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that local final variable names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="LocalVariableName">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that local, non-final variable names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="MemberName">
+      <property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Modified. Underscore prefix" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that instance variable names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We have adopted a non-standard convention of prefixing member names with underscores. This avoids problems with the HiddenField check, which otherwise requires setters to have contrived parameter names which will not conflict with the member names. Using the underscore prefix only for member variables means that we never have to use the 'this' keyword." />
+      <metadata name="uk.co.magictractor.sun.format" value="added" />
+    </module>
+    <module name="MethodName">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that method names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="PackageName">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that package names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="ParameterName">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that parameter names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="StaticVariableName">
+      <property name="format" value="^__[a-z][a-zA-Z0-9]*$" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Like from Constant Names, but with leading underscore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that static, non-final variable names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun.format" value="added" />
+    </module>
+    <module name="TypeName">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that type names conform to a format specified by the format property." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="AnonInnerLength">
+      <property name="max" value="10" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Max down to 10" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for long anonymous inner classes." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="ExecutableStatementCount">
+      <property name="tokens" value="INSTANCE_INIT,STATIC_INIT,METHOD_DEF,CTOR_DEF" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Restricts the number of executable statements to a specified limit (default = 30)." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="LineLength">
+      <property name="severity" value="ignore" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Dropped. Use formatter" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity"
+        value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for long lines." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="Reformatting cannot fix every long line. They can be fixed manually, but we expect to frequently use automatic reformatting, and it would be a pain to fix these long lines frequently. We expect the Eclipse formatter will improve in future releases, in which case we might be able to reinstate this check." />
+      <metadata name="uk.co.magictractor.sun" value="dropped" />
+    </module>
+    <module name="MethodLength">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for long methods." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="ParameterNumber">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks the number of parameters that a method or constructor has." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="EmptyForInitializerPad">
+      <property name="severity" value="ignore" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks the padding of an empty for initializer; that is whether a space is required at an empty for initializer, or such spaces are forbidden." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="EmptyForIteratorPad">
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks the padding of an empty for iterator; that is whether a space is required at an empty for iterator, or such spaces are forbidden." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="NoWhitespaceAfter">
+      <property name="tokens" value="ARRAY_INIT,BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that there is no whitespace after a token." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun.tokens" value="added" />
+    </module>
+    <module name="NoWhitespaceBefore">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that there is no whitespace before a token." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="OperatorWrap">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks line wrapping for operators." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="MethodParamPad">
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Use formatter" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks the padding between the identifier of a method definition, constructor definition, method call, or constructor invocation; and the left parenthesis of the parameter list." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We can rely on automatic code formatting to comply with this check." />
+    </module>
+    <module name="ParenPad">
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Use formatter" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks the padding of parentheses; that is whether a space is required after a left parenthesis and before a right parenthesis, or such spaces are forbidden, with the exception that it does not check for padding of the right parenthesis at an empty for iterator." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We can rely on automatic code formatting to comply with this check." />
+    </module>
+    <module name="TypecastParenPad">
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks the padding of parentheses for typecasts." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    </module>
+    <module name="WhitespaceAfter">
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Use formatter" />
+      <metadata name="uk.co.magictractor.checkstyle.description"
+        value="Checks that a token is followed by whitespace, with the exception that it does not check for whitespace after the semicolon of an empty for iterator." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="We can rely on automatic code formatting to comply with this check." />
+    </module>
+    <module name="WhitespaceAround">
+      <property name="tokens"
+        value="ASSIGN,BAND,BAND_ASSIGN,BOR,BOR_ASSIGN,BSR,BSR_ASSIGN,BXOR,BXOR_ASSIGN,COLON,DIV,DIV_ASSIGN,EQUAL,GE,GT,LAND,LCURLY,LE,LITERAL_ASSERT,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,LOR,LT,MINUS,MINUS_ASSIGN,MOD,MOD_ASSIGN,NOT_EQUAL,PLUS,PLUS_ASSIGN,QUESTION,RCURLY,SL,SLIST,SL_ASSIGN,SR,SR_ASSIGN,STAR,STAR_ASSIGN,LITERAL_ASSERT,TYPE_EXTENSION_AND" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Modified. Removed generics" />
+      <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that a token is surrounded by whitespace." />
+      <metadata name="uk.co.magictractor.checkstyle.opinion"
+        value="The standard Sun checks require spaces around the angle braces and question mark used in generics. This is contrary to most coding examples, and is likely to be a problem with the sun_checks.xml supplied by the Checkstyle project, rather than reflecting Sun's standards. We have removed these symbols from this test." />
+      <metadata name="uk.co.magictractor.sun.tokens" value="added" />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="^\/\/" />
+      <property name="message" value="Comment to be removed" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Comment at start of line" />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="\/\/\/\/" />
+      <property name="message" value="Comment to be removed" />
+      <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Four slash comment" />
+      <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+      <metadata name="uk.co.magictractor.sun" value="added" />
+    </module>
+  </module>
+  <module name="Header">
+    <property name="headerFile" value="${config_loc}\header.txt" />
+    <property name="ignoreLines" value="2" />
+    <property name="fileExtensions" value="java" />
+    <metadata name="uk.co.magictractor.checkstyle.description" value="Checks the header of the source against a fixed header file." />
+    <metadata name="uk.co.magictractor.checkstyle.opinion" value="Apache 2.0 Licence" />
+    <metadata name="uk.co.magictractor.sun" value="added" />
+  </module>
+  <module name="RegexpHeader">
+    <property name="severity" value="ignore" />
+    <property name="header" value="^.*$" />
+    <property name="multiLines" value="1" />
+    <metadata name="uk.co.magictractor.checkstyle.description"
+      value="Checks the header of the source against a header file that contains a" />
+    <metadata name="uk.co.magictractor.checkstyle.opinion" value="Header check used for header." />
+  </module>
+  <module name="FileLength">
+    <metadata name="uk.co.magictractor.checkstyle.description" value="Checks for long source files." />
+    <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+  </module>
+  <module name="FileTabCharacter">
+    <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Use formatter" />
+    <metadata name="uk.co.magictractor.checkstyle.description" value="Reports tab characters ('\t') in the source code." />
+    <metadata name="uk.co.magictractor.checkstyle.opinion"
+      value="We can rely on automatic code formatting to comply with this check." />
+  </module>
+  <module name="NewlineAtEndOfFile">
+    <property name="lineSeparator" value="lf" />
+    <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Change separator from system" />
+    <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that there is a newline at the end of each file." />
+    <metadata name="uk.co.magictractor.checkstyle.opinion"
+      value="Avoid line separator issues when developing on multiple platforms by always using Unix newlines. Eclipse normally uses Unix newline, but default values for this check are flagged on Windows environments. FIXME! confirm" />
+    <metadata name="uk.co.magictractor.sun.lineSeparator" value="added" />
+  </module>
+  <module name="Translation">
+    <metadata name="uk.co.magictractor.checkstyle.description"
+      value="The TranslationCheck class helps to ensure the correct translation of code by checking property files for consistency regarding their keys." />
+    <metadata name="uk.co.magictractor.checkstyle.opinion"
+      value="Ensures that properties files for multiple languages contain the same keys. This seems perfectly sensible, although we have not used it yet." />
+  </module>
+  <!-- 
+  <module name="StrictDuplicateCode">
+    <property name="severity" value="ignore" />
+    <metadata name="uk.co.magictractor.checkstyle.description"
+      value="Performs a line-by-line comparison of all code lines and reports duplicate code if a sequence of lines differs only in indentation." />
+    <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+  </module> -->
+  <module name="RegexpMultiline">
+    <property name="format" value="[^\n][ \t]*\n[ \t]*\}\s*\Z" />
+    <property name="message" value="Expected an empty line before closing brace" />
+    <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Include an empty line before closing brace" />
+    <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    <metadata name="uk.co.magictractor.sun" value="added" />
+  </module>
+  <module name="RegexpMultiline">
+    <property name="format" value="\r" />
+    <property name="message" value="Unix style line separators (\n) should be used" />
+    <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Unix style line separators (\n) should be used" />
+    <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    <metadata name="uk.co.magictractor.sun" value="added" />
+  </module>
+  <module name="JavadocPackage">
+    <property name="severity" value="info" />
+    <metadata name="uk.co.magictractor.checkstyle.description" value="Checks that all packages have a package documentation." />
+    <metadata name="uk.co.magictractor.checkstyle.opinion"
+      value="Documentation should be written to a high level, but this can usually only be done later in development, when methods are stable. Javadoc is not optional. The high level number is simply to reduce noise noise in early stages of development. See http://java.sun.com/j2se/javadoc/writingdoccomments/#packagecomments" />
+  </module>
+  <module name="SuppressionFilter">
+    <property name="file" value="${config_loc}\checkstyle-suppressions.xml" />
+    <metadata name="uk.co.magictractor.checkstyle.opinion" value="FIXME!" />
+    <metadata name="uk.co.magictractor.sun" value="added" />
+  </module>
+</module>

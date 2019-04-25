@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE import-control PUBLIC
+    "-//Puppy Crawl//DTD Import Control 1.0//EN"
+    "http://www.puppycrawl.com/dtds/import_control_1_0.dtd">
+
+<import-control pkg="uk.co.magictractor.math">
+
+  <allow pkg="java.util" />
+  <allow pkg="org.junit" />
+  <allow pkg="org.slf4j" />
+  <!-- <allow class="*Test" /> -->
+
+  <!-- TODO! cross package imports should be tightened -->
+  <allow pkg="uk.co.magictractor.math" />
+
+  <!-- <allow pkg="uk.co.magictractor.core"/> <allow pkg="uk.co.magictractor.test"/> 
+    <allow pkg="java.lang"/> <allow pkg="java.io"/> -->
+
+  <subpackage name="big.gmp">
+    <subpackage name="jna">
+      <allow pkg="com.sun.jna" />
+    </subpackage>
+  </subpackage>
+
+  <subpackage name="big.biginteger">
+    <allow class="java.math.BigInteger" />
+  </subpackage>
+
+  <subpackage name="big.property">
+    <allow class="FilePropertyStrategy" pkg="java.io" />
+  </subpackage>
+  
+  <subpackage name="junit">
+    <allow class="ProxyStrategyFactory" pkg="java.lang.reflect" />
+  </subpackage>
+
+<!-- 
+  <subpackage name="reflect">
+    <allow pkg="uk.co.magictractor.core.exceptions" />
+    <allow pkg="java.lang.reflect" /> -->
+    <!-- FIXME! only used in an experimental class -->
+<!-- <allow pkg="sun.reflect" />
+  </subpackage>
+ -->
+</import-control>

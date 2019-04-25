@@ -11,7 +11,7 @@
 		<groupId>uk.co.magictractor</groupId>
 		<artifactId>zillions-parent</artifactId>
 		<version>0.1-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<dependencies>

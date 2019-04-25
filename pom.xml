@@ -11,6 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
 		<java.version>1.8</java.version>
 		<junit.jupiter.version>5.4.2</junit.jupiter.version>
 		<junit.platform.version>1.4.1</junit.platform.version>
@@ -19,11 +20,13 @@
 		<guava.version>27.0.1-jre</guava.version>
 		<jna.version>5.2.0</jna.version>
 		<assertj.version>3.11.1</assertj.version>
-		<compiler.plugin.version>3.1</compiler.plugin.version>
+		<compiler.plugin.version>3.8.0</compiler.plugin.version>
 		<surefire.plugin.version>2.22.1</surefire.plugin.version>
-		<checkstyle.plugin.version>2.14</checkstyle.plugin.version>
+		<checkstyle.plugin.version>3.0.0</checkstyle.plugin.version>
 		<checkstyle.version>6.3</checkstyle.version>
 		<jnaerator.plugin.version>0.12</jnaerator.plugin.version>
+
+		<parent.basedir>${basedir}</parent.basedir>
 	</properties>
 
 	<modules>
@@ -99,6 +102,21 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<profiles>
+		<profile>
+			<id>child_project</id>
+			<activation>
+				<file>
+					<exists>${basedir}/../../zillions</exists>
+				</file>
+			</activation>
+			<properties>
+				<!-- Checkstyle config is stored in the parent. https://stackoverflow.com/questions/1012402/maven2-property-that-indicates-the-parent-directory -->
+				<parent.basedir>${basedir}\..</parent.basedir>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -126,22 +144,23 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>${checkstyle.plugin.version}</version>
 				<configuration>
-					<configLocation>config/common/magic_tractor_checks.xml</configLocation>
-					<propertyExpansion>basedir=${basedir}</propertyExpansion>
+					<configLocation>src/checkstyle/magic_tractor_checks.xml</configLocation>
+					<!-- <propertyExpansion>basedir=${basedir}</propertyExpansion> -->
+					<propertyExpansion>config_loc=${parent.basedir}\src\checkstyle</propertyExpansion>
 					<enableRulesSummary>false</enableRulesSummary>
 					<!-- <sourceDirectories> <sourceDirectory>${basedir}</sourceDirectory> 
 						<source>ookook</source> <sourceDirectorie>baa</sourceDirectorie> </sourceDirectories> -->
 
-					<sourceDirectory>.</sourceDirectory>
+					<sourceDirectories>
+						<sourceDirectory>.</sourceDirectory>
+					</sourceDirectories>
+
 					<includes>**\/*.*</includes>
 					<!-- <resourceIncludes>**\/*.*</resourceIncludes> -->
 				</configuration>
 				<dependencies>
-					<dependency>
-						<groupId>com.puppycrawl.tools</groupId>
-						<artifactId>checkstyle</artifactId>
-						<version>${checkstyle.plugin.version}</version>
-					</dependency>
+					<!-- <dependency> <groupId>com.puppycrawl.tools</groupId> <artifactId>checkstyle</artifactId> 
+						<version>${checkstyle.version}</version> </dependency> -->
 				</dependencies>
 			</plugin>
 		</plugins>
