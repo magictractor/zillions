@@ -5,41 +5,37 @@
 
 <import-control pkg="uk.co.magictractor.math">
 
-  <allow pkg="java.util" />
-  <allow pkg="org.junit" />
-  <allow pkg="org.slf4j" />
-  <!-- <allow class="*Test" /> -->
+	<allow pkg="java.util" />
+	<allow pkg="org.junit" />
+	<allow pkg="org.slf4j" />
+	<!-- <allow class="*Test" /> -->
 
-  <!-- TODO! cross package imports should be tightened -->
-  <allow pkg="uk.co.magictractor.math" />
+	<!-- TODO! cross package imports should be tightened -->
+	<allow pkg="uk.co.magictractor.math" />
 
-  <!-- <allow pkg="uk.co.magictractor.core"/> <allow pkg="uk.co.magictractor.test"/> 
-    <allow pkg="java.lang"/> <allow pkg="java.io"/> -->
+	<!-- <allow pkg="uk.co.magictractor.core"/> <allow pkg="uk.co.magictractor.test"/> 
+		<allow pkg="java.lang"/> <allow pkg="java.io"/> -->
 
-  <subpackage name="big.gmp">
-    <subpackage name="jna">
-      <allow pkg="com.sun.jna" />
-    </subpackage>
-  </subpackage>
+	<subpackage name="big.gmp">
+		<subpackage name="jna">
+			<allow pkg="com.sun.jna" />
+		</subpackage>
+	</subpackage>
 
-  <subpackage name="big.biginteger">
-    <allow class="java.math.BigInteger" />
-  </subpackage>
+	<subpackage name="big.biginteger">
+		<allow class="java.math.BigInteger" />
+	</subpackage>
 
-  <subpackage name="big.property">
-    <allow class="FilePropertyStrategy" pkg="java.io" />
-  </subpackage>
-  
-  <subpackage name="junit">
-    <allow class="ProxyStrategyFactory" pkg="java.lang.reflect" />
-  </subpackage>
+	<subpackage name="big.property">
+		<allow class="FilePropertyStrategy" pkg="java.io" />
+	</subpackage>
 
-<!-- 
-  <subpackage name="reflect">
-    <allow pkg="uk.co.magictractor.core.exceptions" />
-    <allow pkg="java.lang.reflect" /> -->
-    <!-- FIXME! only used in an experimental class -->
-<!-- <allow pkg="sun.reflect" />
-  </subpackage>
- -->
+	<subpackage name="junit">
+		<allow class="ProxyStrategyFactory" pkg="java.lang.reflect" />
+	</subpackage>
+
+	<!-- <subpackage name="reflect"> <allow pkg="uk.co.magictractor.core.exceptions" 
+		/> <allow pkg="java.lang.reflect" /> -->
+	<!-- FIXME! only used in an experimental class -->
+	<!-- <allow pkg="sun.reflect" /> </subpackage> -->
 </import-control>

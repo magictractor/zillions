@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Ken Dobson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,40 +24,41 @@ import uk.co.magictractor.zillions.testbed.OpTestBigIntParam;
 
 public class XorTest extends OpTestBigIntParam {
 
-	public XorTest() {
-		super(BigInt::xor);
-	}
+    public XorTest() {
+        super(BigInt::xor);
+    }
 
-	@Test
-	public void testXorPositivePositive() {
-		check(10, 3, 9);
-	}
+    @Test
+    public void testXorPositivePositive() {
+        check(10, 3, 9);
+    }
 
-	@Test
-	public void testXorPositiveNegative() {
-		check(10, -3, -9);
-	}
+    @Test
+    public void testXorPositiveNegative() {
+        check(10, -3, -9);
+    }
 
-	@Test
-	public void testXorNegativePositive() {
-		check(-10, 3, -11);
-	}
+    @Test
+    public void testXorNegativePositive() {
+        check(-10, 3, -11);
+    }
 
-	@Test
-	public void testXorNegativeNegative() {
-		check(-10, -3, 11);
-	}
+    @Test
+    public void testXorNegativeNegative() {
+        check(-10, -3, 11);
+    }
 
-	// For checking behaviour with dynamic test suite
-	@Test
-	@Disabled
-	public void disabled() {
-		Assertions.fail("@Disabled tests in the suite should not be executed");
-	}
-	
-	// For checking behaviour with dynamic test suite
-	@Test
-	public void fails() {
-		check(-10, -3, 999);
-	}
+    // For checking behaviour with dynamic test suite
+    @Test
+    @Disabled
+    public void disabled() {
+        Assertions.fail("@Disabled tests in the suite should not be executed");
+    }
+
+    // For checking behaviour with dynamic test suite
+    @Test
+    public void fails() {
+        check(-10, -3, 999);
+    }
+
 }

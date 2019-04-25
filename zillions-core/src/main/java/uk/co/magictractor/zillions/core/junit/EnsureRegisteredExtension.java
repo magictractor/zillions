@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Ken Dobson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
- * 
+ *
  * Generally, setters should not change the environment immediately, unless
  * {@link #isWithinTest()} is true. Instead setters should store state, and the
  * {@link #before} implementation should change the environment. Doing so guards
@@ -37,77 +37,78 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 // See https://junit.org/junit5/docs/current/user-guide/#extensions-lifecycle-callbacks
 // I thought I must have missed something!!
 public abstract class EnsureRegisteredExtension implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback,
-		AfterEachCallback, BeforeTestExecutionCallback, AfterTestExecutionCallback {
+        AfterEachCallback, BeforeTestExecutionCallback, AfterTestExecutionCallback
+{
 
-	private boolean isRegistered;
-	// TODO! is there something in ExtensionContext which indicates whether the
-	// registered extension is static?
-	private boolean isStatic;
-	private boolean isWithinTest;
+    private boolean isRegistered;
+    // TODO! is there something in ExtensionContext which indicates whether the
+    // registered extension is static?
+    private boolean isStatic;
+    private boolean isWithinTest;
 
-	// can this be removed?
-	protected boolean isWithinTest() {
-		return isWithinTest;
-	}
+    // can this be removed?
+    protected boolean isWithinTest() {
+        return isWithinTest;
+    }
 
-	protected boolean isRegistered() {
-		return isRegistered;
-	}
+    protected boolean isRegistered() {
+        return isRegistered;
+    }
 
-	protected boolean isStatic() {
-		return isStatic;
-	}
+    protected boolean isStatic() {
+        return isStatic;
+    }
 
-	@Override
-	public final void beforeAll(ExtensionContext context) throws Exception {
-		System.err.println("beforeAll");
-		isStatic = true;
-		isRegistered = true;
-		before(true, context);
-	}
+    @Override
+    public final void beforeAll(ExtensionContext context) throws Exception {
+        System.err.println("beforeAll");
+        isStatic = true;
+        isRegistered = true;
+        before(true, context);
+    }
 
-	@Override
-	public final void beforeEach(ExtensionContext context) throws Exception {
-		System.err.println("beforeEach");
-		isRegistered = true;
-		isWithinTest = true;
-		// if (!all) {
-		before(false, context);
-		// }
-	}
+    @Override
+    public final void beforeEach(ExtensionContext context) throws Exception {
+        System.err.println("beforeEach");
+        isRegistered = true;
+        isWithinTest = true;
+        // if (!all) {
+        before(false, context);
+        // }
+    }
 
-	protected void ensureRegistered() {
-		if (isWithinTest && !isRegistered) {
-			throw new IllegalStateException(
-					"Extension is not registered, so will be torn down properly, and could cause later tests to fail.");
-		}
-	}
+    protected void ensureRegistered() {
+        if (isWithinTest && !isRegistered) {
+            throw new IllegalStateException(
+                "Extension is not registered, so will be torn down properly, and could cause later tests to fail.");
+        }
+    }
 
-	@Override
-	public final void afterEach(ExtensionContext context) throws Exception {
-		System.err.println("afterEach");
-		after(false, context);
-		isWithinTest = false;
-	}
+    @Override
+    public final void afterEach(ExtensionContext context) throws Exception {
+        System.err.println("afterEach");
+        after(false, context);
+        isWithinTest = false;
+    }
 
-	@Override
-	public final void afterAll(ExtensionContext context) throws Exception {
-		System.err.println("afterAll");
-		after(true, context);
-	}
+    @Override
+    public final void afterAll(ExtensionContext context) throws Exception {
+        System.err.println("afterAll");
+        after(true, context);
+    }
 
-	public abstract void before(boolean isBeforeAll, ExtensionContext context) throws Exception;
+    public abstract void before(boolean isBeforeAll, ExtensionContext context) throws Exception;
 
-	public abstract void after(boolean isAfterAll, ExtensionContext context) throws Exception;
+    public abstract void after(boolean isAfterAll, ExtensionContext context) throws Exception;
 
-	@Override
-	public void beforeTestExecution(ExtensionContext context) throws Exception {
-		System.err.println("beforeTestExecution");
-	}
+    @Override
+    public void beforeTestExecution(ExtensionContext context) throws Exception {
+        System.err.println("beforeTestExecution");
+    }
 
-	@Override
-	public void afterTestExecution(ExtensionContext context) throws Exception {
-		System.err.println("afterTestExecution");
-	}
+    @Override
+    public void afterTestExecution(ExtensionContext context) throws Exception {
+        System.err.println("afterTestExecution");
+    }
 
 }

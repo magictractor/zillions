@@ -6,9 +6,9 @@ import uk.co.magictractor.zillions.core.api.bits.BigIntBitCount;
 
 public class BigIntegerBigIntBitCount implements BigIntBitCount {
 
-	@Override
-	public int bitCount(BigInt x) {
-		return ((BigIntegerBigInt) x).getInternalValue().bitCount();
-	}
+    @Override
+    public int bitCount(BigInt x) {
+        return ((BigIntegerBigInt) x).getInternalValue().bitCount();
+    }
 
 }

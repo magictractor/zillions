@@ -12,110 +12,110 @@ import uk.co.magictractor.zillions.testbed.AbstractStrategyTest;
 
 public abstract class RandomStrategyTest extends AbstractStrategyTest<RandomStrategy> {
 
-	public RandomStrategyTest() {
-		super(RandomStrategy.class);
-	}
+    public RandomStrategyTest() {
+        super(RandomStrategy.class);
+    }
 
-	public RandomStrategyTest(Class<? extends RandomStrategy> implClass) {
-		super(implClass);
-	}
+    public RandomStrategyTest(Class<? extends RandomStrategy> implClass) {
+        super(implClass);
+    }
 
-	@Test
-	public void testRandom() {
-		// Lots of bits, so the chances of an intermittent failure are extremely
-		// small.
-		BigInt random1 = createRandom(1024);
-		BigInt random2 = createRandom(1024);
+    @Test
+    public void testRandom() {
+        // Lots of bits, so the chances of an intermittent failure are extremely
+        // small.
+        BigInt random1 = createRandom(1024);
+        BigInt random2 = createRandom(1024);
 
-		assertThat(random1).isNotEqualTo(random2);
-	}
+        assertThat(random1).isNotEqualTo(random2);
+    }
 
-	private BigInt createRandom(int numBits) {
-		BigInt random = getImpl().randomise(BigIntFactory.from(0), numBits);
-		assertThat(random.signum()).isGreaterThanOrEqualTo(0);
+    private BigInt createRandom(int numBits) {
+        BigInt random = getImpl().randomise(BigIntFactory.from(0), numBits);
+        assertThat(random.signum()).isGreaterThanOrEqualTo(0);
 
-		return random;
-	}
+        return random;
+    }
 
-	@Test
-	public void testRandomSeed() {
+    @Test
+    public void testRandomSeed() {
 
-		getImpl().setSeed(1);
-		BigInt random1 = createRandom(20);
-		getImpl().setSeed(1);
-		BigInt random2 = createRandom(20);
+        getImpl().setSeed(1);
+        BigInt random1 = createRandom(20);
+        getImpl().setSeed(1);
+        BigInt random2 = createRandom(20);
 
-		assertThat(random1).isEqualTo(random2);
-	}
+        assertThat(random1).isEqualTo(random2);
+    }
 
-	@Test
-	public void testRandomRange1Bit() {
-		checkRandomRangeHiLo(1, 10);
-	}
+    @Test
+    public void testRandomRange1Bit() {
+        checkRandomRangeHiLo(1, 10);
+    }
 
-	@Test
-	public void testRandomRange2Bit() {
-		checkRandomRangeHiLo(2, 30);
-	}
+    @Test
+    public void testRandomRange2Bit() {
+        checkRandomRangeHiLo(2, 30);
+    }
 
-	@Test
-	public void testRandomRange5Bit() {
-		checkRandomRangeHiLo(5, 100);
-	}
+    @Test
+    public void testRandomRange5Bit() {
+        checkRandomRangeHiLo(5, 100);
+    }
 
-	@Test
-	public void testRandomRange8Bit() {
-		checkRandomRangeBitFrequency(8, 100);
-	}
+    @Test
+    public void testRandomRange8Bit() {
+        checkRandomRangeBitFrequency(8, 100);
+    }
 
-	@Test
-	public void testRandomRange23Bit() {
-		checkRandomRangeBitFrequency(23, 100);
-	}
+    @Test
+    public void testRandomRange23Bit() {
+        checkRandomRangeBitFrequency(23, 100);
+    }
 
-	@Test
-	public void testRandomRange24Bit() {
-		checkRandomRangeBitFrequency(24, 100);
-	}
+    @Test
+    public void testRandomRange24Bit() {
+        checkRandomRangeBitFrequency(24, 100);
+    }
 
-	/*
-	 * For use with small numBits where the highest possible random value is almost
-	 * certain to be encountered.
-	 */
-	private void checkRandomRangeHiLo(int numBits, int repeat) {
-		// Use seed for tests to prevent theoretical intermittent test failures.
-		getImpl().setSeed(0);
+    /*
+     * For use with small numBits where the highest possible random value is almost
+     * certain to be encountered.
+     */
+    private void checkRandomRangeHiLo(int numBits, int repeat) {
+        // Use seed for tests to prevent theoretical intermittent test failures.
+        getImpl().setSeed(0);
 
-		BigInt lowestActual = createRandom(numBits);
-		BigInt highestActual = lowestActual;
-		for (int i = 0; i < repeat; i++) {
-			BigInt actual = createRandom(numBits);
-			if (actual.isLessThan(lowestActual)) {
-				lowestActual = actual;
-			}
-			if (actual.isGreaterThan(highestActual)) {
-				highestActual = actual;
-			}
-		}
+        BigInt lowestActual = createRandom(numBits);
+        BigInt highestActual = lowestActual;
+        for (int i = 0; i < repeat; i++) {
+            BigInt actual = createRandom(numBits);
+            if (actual.isLessThan(lowestActual)) {
+                lowestActual = actual;
+            }
+            if (actual.isGreaterThan(highestActual)) {
+                highestActual = actual;
+            }
+        }
 
-		BigInt expectedHighest = from(1).shiftLeft(numBits).subtract(1);
+        BigInt expectedHighest = from(1).shiftLeft(numBits).subtract(1);
 
-		assertThat(lowestActual).isEqualTo(from(0));
-		assertThat(highestActual).isEqualTo(expectedHighest);
-	}
+        assertThat(lowestActual).isEqualTo(from(0));
+        assertThat(highestActual).isEqualTo(expectedHighest);
+    }
 
-	private void checkRandomRangeBitFrequency(int numBits, int repeat) {
-		// Use seed for tests to prevent theoretical intermittent test failures.
-		getImpl().setSeed(0);
+    private void checkRandomRangeBitFrequency(int numBits, int repeat) {
+        // Use seed for tests to prevent theoretical intermittent test failures.
+        getImpl().setSeed(0);
 
-		BigInt allBitsSeen = from(0);
-		for (int i = 0; i < repeat; i++) {
-			BigInt actual = createRandom(numBits);
-			allBitsSeen.or(actual);
-		}
+        BigInt allBitsSeen = from(0);
+        for (int i = 0; i < repeat; i++) {
+            BigInt actual = createRandom(numBits);
+            allBitsSeen.or(actual);
+        }
 
-		BigInt expectedAllBitsSeen = from(1).shiftLeft(numBits).subtract(1);
-		assertThat(allBitsSeen.equals(expectedAllBitsSeen));
-	}
+        BigInt expectedAllBitsSeen = from(1).shiftLeft(numBits).subtract(1);
+        assertThat(allBitsSeen.equals(expectedAllBitsSeen));
+    }
 
 }

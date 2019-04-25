@@ -7,20 +7,20 @@ package uk.co.magictractor.zillions.core.environment;
  */
 public interface Available {
 
-	/**
-	 * <p>
-	 * A typical reason for not being available is that a required native library is
-	 * not available.
-	 * </p>
-	 * <p>
-	 * If this method returns false it is recommended that information is logged to
-	 * indicate the reason. The BigInt framework should only call this method once,
-	 * avoiding noise in logs.
-	 * </p>
-	 * 
-	 * @return true if is this strategy is available for use; false otherwise
-	 */
-	// TODO! return a reason rather than a flag
-	boolean isAvailable();
+    /**
+     * <p>
+     * A typical reason for not being available is that a required native library is
+     * not available.
+     * </p>
+     * <p>
+     * If this method returns false it is recommended that information is logged to
+     * indicate the reason. The BigInt framework should only call this method once,
+     * avoiding noise in logs.
+     * </p>
+     *
+     * @return true if is this strategy is available for use; false otherwise
+     */
+    // TODO! return a reason rather than a flag
+    boolean isAvailable();
 
 }

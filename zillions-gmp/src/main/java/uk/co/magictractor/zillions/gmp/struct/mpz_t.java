@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.co.magictractor.zillions.gmp.struct;
 
 import com.sun.jna.Structure;
@@ -32,26 +33,26 @@ import com.sun.jna.ptr.NativeLongByReference;
 } __mpz_struct;
 </pre>
  */
-@FieldOrder({"_mp_alloc" , "_mp_size" , "_mp_d"})
-public class mpz_t extends Structure
-{
-  /**
-   * Number of *limbs* allocated and pointed<br> to by the _mp_d field.
-   */
-  public int _mp_alloc;
-  /**
-   * abs(_mp_size) is the number of limbs the<br> last field points to. If _mp_size is<br>
-   * negative this is a negative number.
-   */
-  public int _mp_size;
-  /**
-   * Pointer to the limbs.<br> C type : mp_limb_t*
-   */
-  public NativeLongByReference _mp_d;
+@FieldOrder({ "_mp_alloc", "_mp_size", "_mp_d" })
+public class mpz_t extends Structure {
+    /**
+     * Number of *limbs* allocated and pointed<br> to by the _mp_d field.
+     */
+    public int _mp_alloc;
+    /**
+     * abs(_mp_size) is the number of limbs the<br> last field points to. If _mp_size is<br>
+     * negative this is a negative number.
+     */
+    public int _mp_size;
+    /**
+     * Pointer to the limbs.<br> C type : mp_limb_t*
+     */
+    public NativeLongByReference _mp_d;
 
-  // Mimic the macro used to implement mpz_sgn
-  // #define mpz_sgn(Z) ((Z)->_mp_size < 0 ? -1 : (Z)->_mp_size > 0)
-  public int mpz_sgn() {
-	  return _mp_size == 0 ? 0 : (_mp_size > 0 ? 1 : -1); 
-  }
+    // Mimic the macro used to implement mpz_sgn
+    // #define mpz_sgn(Z) ((Z)->_mp_size < 0 ? -1 : (Z)->_mp_size > 0)
+    public int mpz_sgn() {
+        return _mp_size == 0 ? 0 : (_mp_size > 0 ? 1 : -1);
+    }
+
 }

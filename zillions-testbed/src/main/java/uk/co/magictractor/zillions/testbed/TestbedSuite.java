@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Ken Dobson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,7 +41,6 @@ import uk.co.magictractor.zillions.testbed.object.CompareTest;
 import uk.co.magictractor.zillions.testbed.object.EqualsTest;
 import uk.co.magictractor.zillions.testbed.object.HashCodeTest;
 import uk.co.magictractor.zillions.testbed.object.ToStringTest;
-import uk.co.magictractor.zillions.testbed.random.RandomTest;
 
 // JUnit5 suite support coming.
 // See https://github.com/junit-team/junit5/issues/744.
@@ -50,20 +49,19 @@ import uk.co.magictractor.zillions.testbed.random.RandomTest;
 //@SelectClasses({ObjectSuite.class, ArithmeticSuite.class, BitSuite.class})
 
 @SelectClasses({ ToStringTest.class, EqualsTest.class, CompareTest.class, HashCodeTest.class, AddTest.class,
-		SubtractTest.class, MultiplyTest.class, NegateTest.class, AbsTest.class, AndTest.class, OrTest.class,
-		XorTest.class, ShiftLeftTest.class, ShiftRightTest.class, 
-		SetBitTest.class, ClearBitTest.class, FlipBitTest.class, TestBitTest.class, 
-		RandomTest.class })
+        SubtractTest.class, MultiplyTest.class, NegateTest.class, AbsTest.class, AndTest.class, OrTest.class,
+        XorTest.class, ShiftLeftTest.class, ShiftRightTest.class, SetBitTest.class, ClearBitTest.class,
+        FlipBitTest.class, TestBitTest.class })
 public abstract class TestbedSuite {
 
-	@TestFactory
-	public Stream<DynamicNode> suiteFactory() {
-		return new DynamicSuite(this).stream();
-	}
+    @TestFactory
+    public Stream<DynamicNode> suiteFactory() {
+        return new DynamicSuite(this).stream();
+    }
 
-	@Test
-	public void fail() {
-		Assertions.fail();
-	}
+    @Test
+    public void fail() {
+        Assertions.fail();
+    }
 
 }

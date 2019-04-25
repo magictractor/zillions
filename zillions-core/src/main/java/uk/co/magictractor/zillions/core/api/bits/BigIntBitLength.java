@@ -4,7 +4,7 @@ import uk.co.magictractor.zillions.core.BigInt;
 
 public interface BigIntBitLength {
 
-	// Behaviour like BigInteger.bitLength()
-	int bitLength(BigInt x);
-	
+    // Behaviour like BigInteger.bitLength()
+    int bitLength(BigInt x);
+
 }

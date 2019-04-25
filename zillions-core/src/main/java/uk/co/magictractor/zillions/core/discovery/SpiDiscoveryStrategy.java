@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.co.magictractor.zillions.core.discovery;
 
 import java.util.Iterator;
@@ -25,34 +26,37 @@ import uk.co.magictractor.zillions.core.environment.CachedStrategies;
 
 public class SpiDiscoveryStrategy implements DiscoveryStrategy {
 
-	@Override
-	public <T> CachedStrategies<T> discoverImplementations(Class<T> apiClass) {
-		ServiceLoader<T> serviceLoader = ServiceLoader.load(apiClass);
-		CachedStrategies<T> implementations = new CachedStrategies<T>(apiClass);
-		// TODO! handle exceptions and mark the failed service as unavailable
-		// for (T implementation : serviceLoader) {
-		// implementations.addStrategyImplementation(implementation);
-		// }
-		Iterator<T> serviceIterator = serviceLoader.iterator();
-		while (serviceIterator.hasNext()) {
-			try {
-				T strategy = serviceIterator.next();
-				implementations.addStrategyImplementation(strategy);
-				// TODO! subsequent strategies won't be loaded
-			} catch (ServiceConfigurationError e) {
-				// TODO! this should create a holder?
-				implementations.addStrategyUnavailable("SPI ServiceConfigurationError for " + apiClass.getName(), e.getCause());
-			} catch (Throwable e) {
-				// TODO! shouldn't happen? (just ServiceConfigurationError?)
-				//implementations.addStrategyUnavailable(e);
-				throw new IllegalStateException(e);
-			}
-		}
-		return implementations;
-	}
+    @Override
+    public <T> CachedStrategies<T> discoverImplementations(Class<T> apiClass) {
+        ServiceLoader<T> serviceLoader = ServiceLoader.load(apiClass);
+        CachedStrategies<T> implementations = new CachedStrategies<T>(apiClass);
+        // TODO! handle exceptions and mark the failed service as unavailable
+        // for (T implementation : serviceLoader) {
+        // implementations.addStrategyImplementation(implementation);
+        // }
+        Iterator<T> serviceIterator = serviceLoader.iterator();
+        while (serviceIterator.hasNext()) {
+            try {
+                T strategy = serviceIterator.next();
+                implementations.addStrategyImplementation(strategy);
+                // TODO! subsequent strategies won't be loaded
+            }
+            catch (ServiceConfigurationError e) {
+                // TODO! this should create a holder?
+                implementations.addStrategyUnavailable("SPI ServiceConfigurationError for " + apiClass.getName(),
+                    e.getCause());
+            }
+            catch (Throwable e) {
+                // TODO! shouldn't happen? (just ServiceConfigurationError?)
+                //implementations.addStrategyUnavailable(e);
+                throw new IllegalStateException(e);
+            }
+        }
+        return implementations;
+    }
 
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this).toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).toString();
+    }
 }

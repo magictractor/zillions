@@ -9,36 +9,36 @@ import uk.co.magictractor.zillions.testbed.OpTestSingleParam;
 
 public class TestBitTest extends OpTestSingleParam<Integer, Boolean> {
 
-	public TestBitTest() {
-		super(Integer.class, Boolean.class, BigInt::testBit);
-	}
+    public TestBitTest() {
+        super(Integer.class, Boolean.class, BigInt::testBit);
+    }
 
-	@Test
-	public void testPositiveNumber() {
-		check(9, 3, true);
-	}
+    @Test
+    public void testPositiveNumber() {
+        check(9, 3, true);
+    }
 
-	@Test
-	public void testPositiveNumberOffBit() {
-		check(9, 2, false);
-	}
+    @Test
+    public void testPositiveNumberOffBit() {
+        check(9, 2, false);
+    }
 
-	// -9 in binary is 111...1110111
-	
-	@Test
-	public void testNegativeNumberOnBit() {
-		check(-9, 2, true);
-	}
+    // -9 in binary is 111...1110111
 
-	@Test
-	public void testNegativeNumberOffBit() {
-		check(-9, 3, false);
-	}
-	
-	@Test
-	public void testInvalidBitNum() {
-		Assertions.assertThatThrownBy(() -> BigIntFactory.from(0).clearBit(-1))
-				.isExactlyInstanceOf(ArithmeticException.class).hasMessage("Negative bit address");
-	}
+    @Test
+    public void testNegativeNumberOnBit() {
+        check(-9, 2, true);
+    }
+
+    @Test
+    public void testNegativeNumberOffBit() {
+        check(-9, 3, false);
+    }
+
+    @Test
+    public void testInvalidBitNum() {
+        Assertions.assertThatThrownBy(() -> BigIntFactory.from(0).clearBit(-1)).isExactlyInstanceOf(
+            ArithmeticException.class).hasMessage("Negative bit address");
+    }
 
 }

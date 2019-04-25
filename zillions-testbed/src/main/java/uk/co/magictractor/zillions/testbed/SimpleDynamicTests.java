@@ -11,31 +11,32 @@ import org.junit.jupiter.api.DynamicTest;
 // TODO! This will be deleted once DynamicSuite is stable
 public class SimpleDynamicTests {
 
-	private Random randomNumberGenerator = new Random(0L);
-	// 0 to 1
-	private double chanceOfFailure = 0.25;
+    private Random randomNumberGenerator = new Random(0L);
+    // 0 to 1
+    private double chanceOfFailure = 0.25;
 
-	public Stream<DynamicNode> stream() {
-		return simpleSuite();
-	}
+    public Stream<DynamicNode> stream() {
+        return simpleSuite();
+    }
 
-	private Stream<DynamicNode> simpleSuite() {
+    private Stream<DynamicNode> simpleSuite() {
 
-		DynamicTest test1 = DynamicTest.dynamicTest("test1", this::pass);
-		DynamicTest test2 = DynamicTest.dynamicTest("test2", this::fail);
+        DynamicTest test1 = DynamicTest.dynamicTest("test1", this::pass);
+        DynamicTest test2 = DynamicTest.dynamicTest("test2", this::fail);
 
-		Stream<DynamicNode> tests = Stream.of(test1, test2);
+        Stream<DynamicNode> tests = Stream.of(test1, test2);
 
-		DynamicContainer node = DynamicContainer.dynamicContainer("bucket", tests);
+        DynamicContainer node = DynamicContainer.dynamicContainer("bucket", tests);
 
-		return Stream.of(node);
-		// return tests;
-	}
-	
-	private void pass() {
-	}
+        return Stream.of(node);
+        // return tests;
+    }
 
-	private void fail() {
-		Assertions.fail("dynamic test fail");
-	}
+    private void pass() {
+    }
+
+    private void fail() {
+        Assertions.fail("dynamic test fail");
+    }
+
 }

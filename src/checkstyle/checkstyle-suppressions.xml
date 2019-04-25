@@ -3,24 +3,24 @@
 
 <suppressions>
 
-  <!-- No checks on native libraries -->
-  <suppress files=".*\.dll" checks=".*" />
+	<!-- No checks on native libraries -->
+	<suppress files=".*\.dll" checks=".*" />
 
-  <!-- No checks on SPI files -->
-  <suppress files="META-INF[\\/]services[\\/]" checks=".*" />
+	<!-- No checks on SPI files -->
+	<suppress files="META-INF[\\/]services[\\/]" checks=".*" />
 
-  <!-- No naming checks on classes which use same names as corresponding 
-    C/C++ classes and functions -->
-  <suppress files="Lib\.java" checks="MethodName" />
-  <suppress files="mpz_t\.java" checks="(TypeName|MemberName)" />
+	<!-- No naming checks on classes which use same names as corresponding C/C++ 
+		classes and functions -->
+	<suppress files="Lib\.java" checks="MethodName" />
+	<suppress files="mpz_t\.java" checks="(TypeName|MemberName)" />
 
-  <!-- Ignore anything in target directory -->
-  <suppress files="[\\/]target[\\/]" checks=".*" />
+	<!-- Ignore anything in target directory -->
+	<suppress files="[\\/]target[\\/]" checks=".*" />
 
-  <!-- Ignore Eclipse files: .project, .classpath and .settings/* -->
-  <suppress files="[\\/]\." checks=".*" />
+	<!-- Ignore Eclipse files: .project, .classpath and .settings/* -->
+	<suppress files="[\\/]\." checks=".*" />
 
-  <!-- Ignore C header files used for generating native classes and interfaces -->
-  <suppress files="\.h$" checks=".*" />
+	<!-- Ignore C header files used for generating native classes and interfaces -->
+	<suppress files="\.h$" checks=".*" />
 
 </suppressions>

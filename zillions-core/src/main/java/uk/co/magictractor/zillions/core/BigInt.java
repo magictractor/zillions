@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Ken Dobson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,12 +20,12 @@ package uk.co.magictractor.zillions.core;
  * BigInt implementations are mutable. All methods should return "this" to allow
  * daisy chaining of operations.
  * </p>
- * 
+ *
  * <p>
  * As well as the methods defined on this interface, implementations will
  * require implementations of toString(), equals() and hashCode().
  * </p>
- * 
+ *
  * <p>
  * Note that for a different BigInt implementation with the same numeric value,
  * equals() should return false. All other methods which have a BigInt parameter
@@ -36,56 +36,56 @@ package uk.co.magictractor.zillions.core;
  */
 public interface BigInt extends EnhancedComparable<BigInt> {
 
-	BigInt add(BigInt y);
+    BigInt add(BigInt y);
 
-	BigInt add(long y);
+    BigInt add(long y);
 
-	BigInt subtract(BigInt y);
+    BigInt subtract(BigInt y);
 
-	BigInt subtract(long y);
+    BigInt subtract(long y);
 
-	BigInt multiply(BigInt y);
+    BigInt multiply(BigInt y);
 
-	BigInt multiply(long y);
+    BigInt multiply(long y);
 
-	/** Negate value. */
-	BigInt negate();
+    /** Negate value. */
+    BigInt negate();
 
-	/** Absolute value. */
-	BigInt abs();
-	
-	int signum();
+    /** Absolute value. */
+    BigInt abs();
 
-	// Bit operations.
+    int signum();
 
-	BigInt or(BigInt y);
+    // Bit operations.
 
-	BigInt and(BigInt y);
+    BigInt or(BigInt y);
 
-	BigInt xor(BigInt y);
+    BigInt and(BigInt y);
 
-	// 1's complement
-	BigInt not();
+    BigInt xor(BigInt y);
 
-	// also andNot() in BigInteger
+    // 1's complement
+    BigInt not();
 
-	/**
-	 * For these ops, bit 0 is the least significant bit. Big operations should act
-	 * on a 2's complement representation of the number.
-	 * https://en.wikipedia.org/wiki/Two%27s_complement
-	 */
+    // also andNot() in BigInteger
 
-	BigInt setBit(int n);
+    /**
+     * For these ops, bit 0 is the least significant bit. Big operations should act
+     * on a 2's complement representation of the number.
+     * https://en.wikipedia.org/wiki/Two%27s_complement
+     */
 
-	BigInt clearBit(int n);
+    BigInt setBit(int n);
 
-	BigInt flipBit(int n);
+    BigInt clearBit(int n);
 
-	boolean testBit(int n);
+    BigInt flipBit(int n);
 
-	BigInt shiftLeft(int n);
+    boolean testBit(int n);
 
-	BigInt shiftRight(int n);
+    BigInt shiftLeft(int n);
 
-	BigInt copy();
+    BigInt shiftRight(int n);
+
+    BigInt copy();
 }
