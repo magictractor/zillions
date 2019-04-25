@@ -1,4 +1,18 @@
-
+/**
+ * Copyright 2015-2019 Ken Dobson
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package uk.co.magictractor.zillions.core.junit;
 
 import uk.co.magictractor.zillions.core.BigInt;
@@ -7,7 +21,7 @@ import uk.co.magictractor.zillions.core.BigInt;
  * A very simple implementation of BigInt which only has correct behaviour for
  * relatively small numbers, because it is implemented with operations on a
  * long.
- * 
+ *
  * The "big number" tests don't hit this. Tests in zillions-core probably won't
  * exercise this class, just create instances. Tests in zillions-testbed may use
  * this to test the behaviour of BigInt.equals() and BigInt.compare() with other
@@ -21,6 +35,7 @@ public class NumptyBigInt implements BigInt {
         _x = n;
     }
 
+    @Override
     public NumptyBigInt copy() {
         return new NumptyBigInt(_x);
     }
@@ -169,6 +184,7 @@ public class NumptyBigInt implements BigInt {
         return (int) (_x ^ (_x >>> 32));
     }
 
+    @Override
     public String toString() {
         return Long.toString(_x);
     }

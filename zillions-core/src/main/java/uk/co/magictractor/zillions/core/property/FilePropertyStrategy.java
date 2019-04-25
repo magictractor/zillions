@@ -1,12 +1,12 @@
 /**
- * Copyright 2015 Ken Dobson
- * 
+ * Copyright 2015-2019 Ken Dobson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,32 +21,33 @@ import java.util.Properties;
 
 import uk.co.magictractor.zillions.core.environment.Init;
 
-public class FilePropertyStrategy implements PropertyStrategy, Init
-{
+public class FilePropertyStrategy implements PropertyStrategy, Init {
 
-  private String _resource;
-  private Properties _properties;
+    private String _resource;
+    private Properties _properties;
 
-  public FilePropertyStrategy(String resource) {
-    _resource = resource;
-  }
-
-  public void init()
-    throws IOException {
-    InputStream inputStream = getClass().getResourceAsStream(_resource);
-    _properties = new Properties();
-    // TODO! indicate that the property is unavailable because the resource is missing
-    if (inputStream != null) {
-      _properties.load(inputStream);
+    public FilePropertyStrategy(String resource) {
+        _resource = resource;
     }
-  }
 
-  public boolean containsKey(String key) {
-    return _properties.containsKey(key);
-  }
+    @Override
+    public void init() throws IOException {
+        InputStream inputStream = getClass().getResourceAsStream(_resource);
+        _properties = new Properties();
+        // TODO! indicate that the property is unavailable because the resource is missing
+        if (inputStream != null) {
+            _properties.load(inputStream);
+        }
+    }
 
-  public String get(String key) {
-    return _properties.getProperty(key);
-  }
+    @Override
+    public boolean containsKey(String key) {
+        return _properties.containsKey(key);
+    }
+
+    @Override
+    public String get(String key) {
+        return _properties.getProperty(key);
+    }
 
 }

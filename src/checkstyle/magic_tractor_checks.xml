@@ -918,7 +918,7 @@
 	</module>
 	<module name="Header">
 		<property name="headerFile" value="${config_loc}\header.txt" />
-		<property name="ignoreLines" value="2" />
+		<!-- <property name="ignoreLines" value="2" /> -->
 		<property name="fileExtensions" value="java" />
 		<metadata name="uk.co.magictractor.checkstyle.description"
 			value="Checks the header of the source against a fixed header file." />
