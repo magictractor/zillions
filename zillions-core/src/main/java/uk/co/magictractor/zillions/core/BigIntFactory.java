@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Ken Dobson
+ * Copyright 2015-2019 Ken Dobson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public final class BigIntFactory {
      * If working with many random numbers, it will be more performant to use
      * {@link RandomStrategy#randomise} to allow memory space occupied by random
      * numbers to be recycled.
-     * 
+     *
      * @return a uniformly random BigInt in the range 0 to 2^n-1 (inclusive)
      */
     public static BigInt random(int numBits) {
