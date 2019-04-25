@@ -18,5 +18,7 @@ package uk.co.magictractor.zillions.biginteger;
 import uk.co.magictractor.zillions.testbed.TestbedSuite;
 
 public class BigIntegerTestbedSuite extends TestbedSuite {
+
     // Nothing here. Full test suite is inherited from testbed parent suite.
+
 }

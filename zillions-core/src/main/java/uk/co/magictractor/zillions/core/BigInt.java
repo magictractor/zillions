@@ -88,4 +88,5 @@ public interface BigInt extends EnhancedComparable<BigInt> {
     BigInt shiftRight(int n);
 
     BigInt copy();
+
 }

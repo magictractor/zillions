@@ -114,4 +114,5 @@ public abstract class AbstractProxyStrategyFactory implements StrategyFactory {
     public String toString() {
         return MoreObjects.toStringHelper(this).toString();
     }
+
 }

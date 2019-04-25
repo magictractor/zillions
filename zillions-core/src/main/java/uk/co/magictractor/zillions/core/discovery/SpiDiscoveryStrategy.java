@@ -58,4 +58,5 @@ public class SpiDiscoveryStrategy implements DiscoveryStrategy {
     public String toString() {
         return MoreObjects.toStringHelper(this).toString();
     }
+
 }

@@ -51,4 +51,5 @@ public class GmpRandomStrategy implements RandomStrategy, Init {
     public String toString() {
         return MoreObjects.toStringHelper(this).toString();
     }
+
 }

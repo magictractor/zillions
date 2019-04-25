@@ -88,4 +88,5 @@ public class BitLengthTest {
         int actual = getBestAvailableImplementation(BigIntBitLength.class).bitLength(value);
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
 }

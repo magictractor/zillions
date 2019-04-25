@@ -55,4 +55,5 @@ public abstract class OpTestSingleParam<PARAM, RESULT> extends OpTest<RESULT> {
             assertThat(actual).isSameAs(x);
         }
     }
+
 }

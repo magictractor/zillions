@@ -68,4 +68,5 @@ public class BitCountTest /*extends OpTestNoParam*/ {
         int actual = getBestAvailableImplementation(BigIntBitCount.class).bitCount(value);
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
 }

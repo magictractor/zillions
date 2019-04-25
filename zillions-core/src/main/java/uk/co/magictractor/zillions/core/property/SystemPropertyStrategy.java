@@ -41,4 +41,5 @@ public class SystemPropertyStrategy implements PropertyStrategy {
     public String toString() {
         return MoreObjects.toStringHelper(this).toString();
     }
+
 }

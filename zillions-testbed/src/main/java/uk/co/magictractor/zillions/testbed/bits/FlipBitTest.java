@@ -55,4 +55,5 @@ public class FlipBitTest extends OpTestIntParam {
         Assertions.assertThatThrownBy(() -> BigIntFactory.from(0).flipBit(-1)).isExactlyInstanceOf(
             ArithmeticException.class).hasMessage("Negative bit address");
     }
+
 }

@@ -154,4 +154,5 @@ public class JnaGmpLib implements GmpLib, Library {
     // https://gmplib.org/manual/Random-State-Seeding.html#Random-State-Seeding
     @Override
     public native void gmp_randseed(gmp_randstate_t state, mpz_t seed);
+
 }

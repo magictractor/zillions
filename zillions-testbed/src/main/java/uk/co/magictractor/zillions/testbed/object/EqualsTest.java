@@ -48,4 +48,5 @@ public class EqualsTest {
         // But equals is false because of the different implementing class.
         assertThat(bigInt1).isNotEqualTo(bigInt2);
     }
+
 }

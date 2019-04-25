@@ -21,5 +21,7 @@ import org.junit.platform.suite.api.SelectClasses;
 //@SuiteClasses({AddTest.class, MultiplyTest.class})
 @SelectClasses({ AddTest.class, SubtractTest.class, MultiplyTest.class })
 public class ArithmeticSuite {
+
     // This class is left intentionally blank.
+
 }

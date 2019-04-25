@@ -45,4 +45,5 @@ public class ShiftLeftTest extends OpTestIntParam {
     public void testNegativeNumberNegativeShift() {
         check(-13, -2, -4);
     }
+
 }

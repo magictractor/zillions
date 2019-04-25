@@ -59,4 +59,5 @@ public class ImplPropertyDiscoveryStrategy implements DiscoveryStrategy {
     public String toString() {
         return MoreObjects.toStringHelper(this).toString();
     }
+
 }

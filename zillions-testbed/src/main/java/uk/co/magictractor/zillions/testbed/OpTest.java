@@ -74,4 +74,5 @@ public abstract class OpTest<RESULT> {
         }
         return (T) result;
     }
+
 }

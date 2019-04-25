@@ -19,5 +19,7 @@ import uk.co.magictractor.zillions.testbed.arithmetic.ArithmeticSuite;
 
 // temp
 public class GmpArithmeticSuite extends ArithmeticSuite {
+
     // Nothing here. Full test suite is inherited from testbed parent suite.
+
 }

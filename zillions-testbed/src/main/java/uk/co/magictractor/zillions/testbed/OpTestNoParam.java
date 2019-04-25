@@ -47,4 +47,5 @@ public class OpTestNoParam<RESULT> extends OpTest<RESULT> {
         RESULT actual = _op.apply(x);
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
 }
