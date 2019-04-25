@@ -1,6 +1,6 @@
 package uk.co.magictractor.zillions.gmp;
 
-public class GmpLibInstance {
+public final class GmpLibInstance {
 
     public static GmpLib __lib;
 
