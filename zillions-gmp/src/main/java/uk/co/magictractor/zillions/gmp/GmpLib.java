@@ -80,16 +80,16 @@ public interface GmpLib {
     void mpz_com(mpz_t rop, mpz_t op);
 
     // Set bit bit_index in rop.
-    void mpz_setbit(mpz_t rop, mp_bitcnt_t bit_index);
+    void mpz_setbit(mpz_t rop, mp_bitcnt_t bitIndex);
 
     // Clear bit bit_index in rop.
-    void mpz_clrbit(mpz_t rop, mp_bitcnt_t bit_index);
+    void mpz_clrbit(mpz_t rop, mp_bitcnt_t bitIndex);
 
     // Complement bit bit_index in rop.
-    void mpz_combit(mpz_t rop, mp_bitcnt_t bit_index);
+    void mpz_combit(mpz_t rop, mp_bitcnt_t bitIndex);
 
     // Test bit bit_index in op and return 0 or 1 accordingly.
-    int mpz_tstbit(mpz_t op, mp_bitcnt_t bit_index);
+    int mpz_tstbit(mpz_t op, mp_bitcnt_t bitIndex);
 
     // Used to find higest set bit (base 2)
     // https://gmplib.org/manual/Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions

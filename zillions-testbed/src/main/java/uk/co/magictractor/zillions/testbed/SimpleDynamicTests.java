@@ -26,9 +26,9 @@ import org.junit.jupiter.api.DynamicTest;
 // TODO! This will be deleted once DynamicSuite is stable
 public class SimpleDynamicTests {
 
-    private Random randomNumberGenerator = new Random(0L);
+    private Random _randomNumberGenerator = new Random(0L);
     // 0 to 1
-    private double chanceOfFailure = 0.25;
+    private double _chanceOfFailure = 0.25;
 
     public Stream<DynamicNode> stream() {
         return simpleSuite();

@@ -40,45 +40,45 @@ public abstract class EnsureRegisteredExtension implements BeforeAllCallback, Be
         AfterEachCallback, BeforeTestExecutionCallback, AfterTestExecutionCallback
 {
 
-    private boolean isRegistered;
+    private boolean _isRegistered;
     // TODO! is there something in ExtensionContext which indicates whether the
     // registered extension is static?
-    private boolean isStatic;
-    private boolean isWithinTest;
+    private boolean _isStatic;
+    private boolean _isWithinTest;
 
     // can this be removed?
     protected boolean isWithinTest() {
-        return isWithinTest;
+        return _isWithinTest;
     }
 
     protected boolean isRegistered() {
-        return isRegistered;
+        return _isRegistered;
     }
 
     protected boolean isStatic() {
-        return isStatic;
+        return _isStatic;
     }
 
     @Override
     public final void beforeAll(ExtensionContext context) throws Exception {
         System.err.println("beforeAll");
-        isStatic = true;
-        isRegistered = true;
+        _isStatic = true;
+        _isRegistered = true;
         before(true, context);
     }
 
     @Override
     public final void beforeEach(ExtensionContext context) throws Exception {
         System.err.println("beforeEach");
-        isRegistered = true;
-        isWithinTest = true;
+        _isRegistered = true;
+        _isWithinTest = true;
         // if (!all) {
         before(false, context);
         // }
     }
 
     protected void ensureRegistered() {
-        if (isWithinTest && !isRegistered) {
+        if (_isWithinTest && !_isRegistered) {
             throw new IllegalStateException(
                 "Extension is not registered, so will be torn down properly, and could cause later tests to fail.");
         }
@@ -88,7 +88,7 @@ public abstract class EnsureRegisteredExtension implements BeforeAllCallback, Be
     public final void afterEach(ExtensionContext context) throws Exception {
         System.err.println("afterEach");
         after(false, context);
-        isWithinTest = false;
+        _isWithinTest = false;
     }
 
     @Override

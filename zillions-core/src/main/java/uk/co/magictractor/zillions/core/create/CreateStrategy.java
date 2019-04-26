@@ -27,6 +27,7 @@ import uk.co.magictractor.zillions.core.BigInt;
  * library.
  * <p>
  */
+// TODO! creation from Strings and Longs should be distinct strategies
 public interface CreateStrategy {
 
     BigInt fromString(String decimal);

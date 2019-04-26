@@ -127,16 +127,16 @@ public class JnaGmpLib implements GmpLib, Library {
 
     // Set, clear, flip and test bit.
     @Override
-    public native void mpz_setbit(mpz_t rop, mp_bitcnt_t bit_index);
+    public native void mpz_setbit(mpz_t rop, mp_bitcnt_t bitIndex);
 
     @Override
-    public native void mpz_clrbit(mpz_t rop, mp_bitcnt_t bit_index);
+    public native void mpz_clrbit(mpz_t rop, mp_bitcnt_t bitIndex);
 
     @Override
-    public native void mpz_combit(mpz_t rop, mp_bitcnt_t bit_index);
+    public native void mpz_combit(mpz_t rop, mp_bitcnt_t bitIndex);
 
     @Override
-    public native int mpz_tstbit(mpz_t op, mp_bitcnt_t bit_index);
+    public native int mpz_tstbit(mpz_t op, mp_bitcnt_t bitIndex);
 
     // Import
     @Override

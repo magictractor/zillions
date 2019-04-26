@@ -311,7 +311,7 @@ public class DynamicSuite {
         private final DynamicContainerInfo2 _suiteContainer;
         private final List<? extends DynamicNode> _children;
 
-        private int depth;
+        private int _depth;
 
         private DynamicContainerInfo2 _mostRecentContainer;
         // private TestExecutionResult _testExecutionResult;
@@ -329,7 +329,7 @@ public class DynamicSuite {
 
         @Override
         public void executionStarted(TestIdentifier testIdentifier) {
-            if (++depth <= 2) {
+            if (++_depth <= 2) {
                 // Skip engine and class name.
                 // TODO! could get class name node here and remove other.
                 return;
@@ -347,7 +347,7 @@ public class DynamicSuite {
 
         @Override
         public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-            depth--;
+            _depth--;
             // TODO! not handling CONTAINER_AND_TEST descriptor type properly.
             if (testIdentifier.isTest()) {
                 addTest(testIdentifier, testExecutionResult);
