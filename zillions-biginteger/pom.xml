@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>zillions-biginteger</artifactId>
 	<packaging>jar</packaging>
-	<name>Zillions - reference BigInt implementation using java.math.BigInteger</name>
-	<description>Zillions - fast large integer arithmetic</description>
+	<name>BigInteger BigInt implementation</name>
+	<description>Reference BigInt implementation using java.math.BigInteger</description>
 
 	<parent>
 		<groupId>uk.co.magictractor</groupId>

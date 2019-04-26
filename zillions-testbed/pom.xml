@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>zillions-testbed</artifactId>
 	<packaging>jar</packaging>
-	<name>Zillions - test suite used by all BigInt implementations</name>
-	<description>Zillions - fast large integer arithmetic</description>
+	<name>Zillions test suite</name>
+	<description>Test suite used by all BigInt implementations</description>
 
 	<parent>
 		<groupId>uk.co.magictractor</groupId>

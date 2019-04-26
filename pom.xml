@@ -6,7 +6,7 @@
 	<artifactId>zillions-parent</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Zillions - fast large integer arithmetic</name>
+	<name>Zillions parent project</name>
 	<description>Zillions - fast large integer arithmetic</description>
 
 	<properties>

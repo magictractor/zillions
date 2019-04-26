@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>zillions-gmp</artifactId>
 	<packaging>jar</packaging>
-	<name>Zillions - BitInt implementation using GNU Multiple Precision Arithmetic Library (GMP)</name>
-	<description>Zillions - fast large integer arithmetic</description>
+	<name>GMP BigInt implementation</name>
+	<description>BigInt implementation using GNU Multiple Precision Arithmetic Library (GMP)</description>
 
 	<parent>
 		<groupId>uk.co.magictractor</groupId>
