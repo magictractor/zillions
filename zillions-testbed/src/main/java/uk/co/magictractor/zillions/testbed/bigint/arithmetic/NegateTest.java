@@ -13,13 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.gmp;
+package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import org.junit.jupiter.api.Test;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.testbed.bigint.OpTestNoParam;
 
-    // Nothing here. Full test suite is inherited from testbed parent suite.
+public class NegateTest extends OpTestNoParam<BigInt> {
+
+    public NegateTest() {
+        super(BigInt.class, BigInt::negate);
+    }
+
+    @Test
+    public void testNegateSmallPositiveNumber() {
+        check(10, -10);
+    }
+
+    @Test
+    public void testNegateSmallNegativeNumber() {
+        check(-10, 10);
+    }
+
+    @Test
+    public void testNegateZero() {
+        check(0, 0);
+    }
 
 }

@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.gmp;
+package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import org.junit.jupiter.api.Test;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.testbed.bigint.OpTestBigIntParam;
 
-    // Nothing here. Full test suite is inherited from testbed parent suite.
+public class SubtractTest extends OpTestBigIntParam {
+
+    public SubtractTest() {
+        super(BigInt::subtract);
+    }
+
+    @Test
+    public void testSubtractSmallPositiveNumbers() {
+        check(10, 4, 6);
+    }
 
 }

@@ -15,10 +15,10 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import uk.co.magictractor.zillions.testbed.bigint.BigIntSuite;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+// @ExcludeClassNamePatterns({"^.*BitLengthTest$", "^.*BitCountTest$"})
+public class GmpBigIntSuite extends BigIntSuite {
 
     // Nothing here. Full test suite is inherited from testbed parent suite.
 

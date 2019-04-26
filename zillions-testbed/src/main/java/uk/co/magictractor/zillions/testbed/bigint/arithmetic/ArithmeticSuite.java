@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.gmp;
+package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import org.junit.platform.suite.api.SelectClasses;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+//@RunWith(Suite.class)
+//@SuiteClasses({AddTest.class, MultiplyTest.class})
+@SelectClasses({ AddTest.class, SubtractTest.class, MultiplyTest.class })
+public class ArithmeticSuite {
 
-    // Nothing here. Full test suite is inherited from testbed parent suite.
+    // This class is left intentionally blank.
 
 }

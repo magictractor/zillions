@@ -15,10 +15,9 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import uk.co.magictractor.zillions.testbed.strategy.importer.StrategySuite;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+public class GmpStrategySuite extends StrategySuite {
 
     // Nothing here. Full test suite is inherited from testbed parent suite.
 

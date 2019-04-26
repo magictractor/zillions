@@ -20,7 +20,7 @@ import java.util.Random;
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.environment.Environment;
 import uk.co.magictractor.zillions.core.environment.Priority;
-import uk.co.magictractor.zillions.core.importer.ByteImporter;
+import uk.co.magictractor.zillions.core.importer.BigIntByteImporter;
 
 /**
  * Uses Java's Random class to generate random bytes which is then imported to
@@ -31,7 +31,7 @@ import uk.co.magictractor.zillions.core.importer.ByteImporter;
  */
 public class JavaRandomStrategy implements RandomStrategy, Priority {
 
-    private static final ByteImporter BYTE_IMPORTER = Environment.getBestAvailableImplementation(ByteImporter.class);
+    private static final BigIntByteImporter BYTE_IMPORTER = Environment.getBestAvailableImplementation(BigIntByteImporter.class);
 
     private final Random _randomNumberGenerator = new Random();
 

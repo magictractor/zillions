@@ -18,13 +18,13 @@ package uk.co.magictractor.zillions.core;
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
 import uk.co.magictractor.zillions.core.create.RandomStrategy;
 import uk.co.magictractor.zillions.core.environment.Environment;
-import uk.co.magictractor.zillions.core.importer.ByteImporter;
+import uk.co.magictractor.zillions.core.importer.BigIntByteImporter;
 
 public final class BigIntFactory {
 
     private static final CreateStrategy CREATE = Environment.getBestAvailableImplementation(CreateStrategy.class);
     private static final RandomStrategy RANDOM = Environment.getBestAvailableImplementation(RandomStrategy.class);
-    private static final ByteImporter BYTE_IMPORTER = Environment.getBestAvailableImplementation(ByteImporter.class);
+    private static final BigIntByteImporter BYTE_IMPORTER = Environment.getBestAvailableImplementation(BigIntByteImporter.class);
 
     private BigIntFactory() {
     }

@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.gmp;
+package uk.co.magictractor.zillions.core.exporter;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import uk.co.magictractor.zillions.core.BigInt;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+public interface BigIntByteExporter {
 
-    // Nothing here. Full test suite is inherited from testbed parent suite.
+    void populateBytes(BigInt op, byte[] bytes);
+
+    byte[] asBytes(BigInt op);
 
 }

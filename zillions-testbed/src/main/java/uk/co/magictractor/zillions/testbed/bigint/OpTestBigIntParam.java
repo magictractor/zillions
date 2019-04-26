@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.gmp;
+package uk.co.magictractor.zillions.testbed.bigint;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import java.util.function.BiFunction;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+import uk.co.magictractor.zillions.core.BigInt;
 
-    // Nothing here. Full test suite is inherited from testbed parent suite.
+public abstract class OpTestBigIntParam extends OpTestSingleParam<BigInt, BigInt> {
+
+    protected OpTestBigIntParam(BiFunction<BigInt, BigInt, BigInt> op) {
+        super(BigInt.class, BigInt.class, op);
+    }
 
 }

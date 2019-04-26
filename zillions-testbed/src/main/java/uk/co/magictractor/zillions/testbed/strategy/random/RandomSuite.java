@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.gmp;
+package uk.co.magictractor.zillions.testbed.strategy.random;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import java.util.stream.Stream;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
+import org.junit.platform.suite.api.SelectClasses;
 
-    // Nothing here. Full test suite is inherited from testbed parent suite.
+import uk.co.magictractor.zillions.testbed.bigint.DynamicSuite;
+
+@SelectClasses({ DefaultRandomStrategyTest.class, JavaRandomStrategyTest.class })
+public class RandomSuite {
+
+    @TestFactory
+    public Stream<DynamicNode> suiteFactory() {
+        return new DynamicSuite(this).stream();
+    }
 
 }

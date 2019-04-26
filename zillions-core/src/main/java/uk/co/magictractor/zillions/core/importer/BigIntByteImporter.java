@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.gmp;
+package uk.co.magictractor.zillions.core.importer;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
+import uk.co.magictractor.zillions.core.BigInt;
 
-// temp
-public class GmpArithmeticSuite extends ArithmeticSuite {
+public interface BigIntByteImporter {
 
-    // Nothing here. Full test suite is inherited from testbed parent suite.
+    /**
+     * Bytes should be in <i>big-endian</i> byte-order: the most significant byte is
+     * in the zeroth element.
+     */
+    BigInt signedFrom(BigInt rop, byte[] bytes);
+
+    /**
+     * Bytes should be in <i>big-endian</i> byte-order: the most significant byte is
+     * in the zeroth element.
+     */
+    BigInt unsignedFrom(BigInt rop, byte[] bytes);
 
 }
