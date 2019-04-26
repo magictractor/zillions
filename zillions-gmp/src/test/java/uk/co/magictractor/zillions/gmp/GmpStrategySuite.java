@@ -15,7 +15,7 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import uk.co.magictractor.zillions.testbed.strategy.importer.StrategySuite;
+import uk.co.magictractor.zillions.testbed.strategy.StrategySuite;
 
 public class GmpStrategySuite extends StrategySuite {
 

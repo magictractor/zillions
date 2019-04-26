@@ -15,8 +15,8 @@
  */
 package uk.co.magictractor.zillions.biginteger.importer;
 
-import uk.co.magictractor.zillions.testbed.strategy.importer.BigIntegerByteImporterTest;
+import uk.co.magictractor.zillions.testbed.strategy.importer.BigIntByteImporterTest;
 
-public class BigIntegerByteImporterTest extends BigIntegerByteImporterTest {
+public class BigIntegerByteImporterTest extends BigIntByteImporterTest {
 
 }

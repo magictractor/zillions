@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.strategy.importer;
+package uk.co.magictractor.zillions.testbed.strategy;
 
 import java.util.stream.Stream;
 
@@ -22,9 +22,11 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.SelectClasses;
 
 import uk.co.magictractor.zillions.testbed.bigint.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.strategy.exporter.BigIntByteExporterTest;
+import uk.co.magictractor.zillions.testbed.strategy.importer.BigIntByteImporterTest;
 
 /** Suite which runs the core strategy implementations. */
-@SelectClasses({ BigIntegerByteImporterTest.class })
+@SelectClasses({ BigIntByteImporterTest.class, BigIntByteExporterTest.class })
 public abstract class StrategySuite {
 
     @TestFactory

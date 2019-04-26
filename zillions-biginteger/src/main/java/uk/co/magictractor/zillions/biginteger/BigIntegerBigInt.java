@@ -184,4 +184,9 @@ public class BigIntegerBigInt implements BigInt {
         return _bigInteger.toString();
     }
 
+    // TODO! use this only and remove non-static getInternalValue() method?
+    public static BigInteger getInternalValue(BigInt x) {
+        return ((BigIntegerBigInt) x)._bigInteger;
+    }
+
 }

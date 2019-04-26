@@ -27,9 +27,9 @@ import uk.co.magictractor.zillions.core.bits.BitUtils;
 import uk.co.magictractor.zillions.core.importer.BigIntByteImporter;
 import uk.co.magictractor.zillions.testbed.bigint.AbstractStrategyTest;
 
-public class BigIntegerByteImporterTest extends AbstractStrategyTest<BigIntByteImporter> {
+public class BigIntByteImporterTest extends AbstractStrategyTest<BigIntByteImporter> {
 
-    protected BigIntegerByteImporterTest() {
+    protected BigIntByteImporterTest() {
         super(BigIntByteImporter.class);
     }
 

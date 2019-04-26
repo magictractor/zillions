@@ -19,6 +19,12 @@ import uk.co.magictractor.zillions.core.BigInt;
 
 public interface BigIntByteExporter {
 
+    /**
+     * If bytes is empty, implementations should not throw an exception.
+     *
+     * @param op
+     * @param bytes
+     */
     void populateBytes(BigInt op, byte[] bytes);
 
     byte[] asBytes(BigInt op);

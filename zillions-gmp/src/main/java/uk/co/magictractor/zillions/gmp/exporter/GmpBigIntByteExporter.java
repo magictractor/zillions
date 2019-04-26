@@ -13,12 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.biginteger;
+package uk.co.magictractor.zillions.gmp.exporter;
 
-import uk.co.magictractor.zillions.testbed.strategy.StrategySuite;
+import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.core.exporter.BigIntByteExporter;
 
-public class BigIntegerStrategySuite extends StrategySuite {
+public class GmpBigIntByteExporter implements BigIntByteExporter {
 
-    // Nothing here. Full test suite is inherited from testbed parent suite.
+    @Override
+    public void populateBytes(BigInt op, byte[] bytes) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    public byte[] asBytes(BigInt op) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
 }

@@ -29,6 +29,10 @@ public final class BitUtils {
         return (bytes[0] & 0x80) != 0;
     }
 
+    public static boolean isNegative(int[] bytesAsInts) {
+        return (bytesAsInts[0] & 0x80) != 0;
+    }
+
     public static byte[] intsToBytes(int... bytesAsInts) {
         byte[] bytes = new byte[bytesAsInts.length];
         for (int i = 0; i < bytes.length; i++) {
@@ -40,6 +44,15 @@ public final class BitUtils {
         }
 
         return bytes;
+    }
+
+    public static int[] bytesToInts(byte[] bytes) {
+        int[] bytesAsInts = new int[bytes.length];
+        for (int i = 0; i < bytes.length; i++) {
+            bytesAsInts[i] = bytes[i] & 0xff;
+        }
+
+        return bytesAsInts;
     }
 
     // Based on Java's Bits class.
