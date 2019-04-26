@@ -68,12 +68,19 @@ public class GmpBigIntByteExporter implements BigIntByteExporter {
         }
 
         // TODO! fill only unpopulated bytes at the end
-        //        byte padding = isNegative ? BYTE_FF : BYTE_00;
-        Arrays.fill(bytes, BitUtils.BYTE_00);
+        byte padding = isNegative ? BitUtils.BYTE_FF : BitUtils.BYTE_00;
+        Arrays.fill(bytes, padding);
 
-        //int from 
+        //int from
         //   while (mpz._mp_size != 0) {
         int lowInt = __lib.mpz_get_ui(mpz);
+        if (isNegative) {
+            /*
+             * Bit flip rather than the whole number subtraction done for import
+             * because this could be a single byte from a very large number.
+             */
+            lowInt = lowInt ^ 0xffffffff;
+        }
         int len = Math.min(4, bytes.length);
         int index = bytes.length - len;
         // TODO! util for this? see also BigInteger exported
@@ -88,11 +95,6 @@ public class GmpBigIntByteExporter implements BigIntByteExporter {
         }
         bytes[index] = (byte) lowInt;
         //        }
-
-        if (isNegative) {
-            // Flip rather than subtraction done for import because this could be a single byte from a very large number.
-            BitUtils.flipBytes(bytes);
-        }
     }
 
     @Override
@@ -100,10 +102,7 @@ public class GmpBigIntByteExporter implements BigIntByteExporter {
         //mpz_t mpz = GmpBigInt.getInternalValue(op);
         //size = mpz.
         int bitLength = Environment.getBestAvailableImplementation(BigIntBitLength.class).bitLength(op);
-        // Ah! bitCount results are rubbish
-        System.err.println("bitLength: " + bitLength + " for " + op);
-        // TODO! might need another byte for negative numbers?
-        // 0->1 7->1 8->2
+        // TODO! more test coverage around the number of bytes
         byte[] bytes = new byte[(bitLength + 8) / 8];
         populateBytes(op, bytes);
 
