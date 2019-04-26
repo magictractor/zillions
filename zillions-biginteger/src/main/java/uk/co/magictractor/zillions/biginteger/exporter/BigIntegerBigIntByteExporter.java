@@ -15,6 +15,11 @@
  */
 package uk.co.magictractor.zillions.biginteger.exporter;
 
+import static uk.co.magictractor.zillions.core.bits.BitUtils.BYTE_00;
+import static uk.co.magictractor.zillions.core.bits.BitUtils.BYTE_FF;
+
+import java.util.Arrays;
+
 import uk.co.magictractor.zillions.biginteger.BigIntegerBigInt;
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.exporter.BigIntByteExporter;
@@ -30,12 +35,15 @@ public class BigIntegerBigIntByteExporter implements BigIntByteExporter {
         if (len > 4) {
             // BigInteger doesn't provide a method which will populate a given byte array.
             byte[] allBytes = asBytes(op);
-            if (allBytes.length > bytes.length) {
-                // System.arraycopy(src, srcPos, dest, destPos, length);
+            if (allBytes.length >= bytes.length) {
+                System.arraycopy(allBytes, allBytes.length - len, bytes, 0, len);
             }
             else {
-                // bytes is larger than required, leading bytes are set to zero,
+                // bytes is larger than required, leading bytes are padded,
                 // then bytes copied.
+                byte padding = op.signum() >= 0 ? BYTE_00 : BYTE_FF;
+                Arrays.fill(bytes, 0, len - allBytes.length, padding);
+                System.arraycopy(allBytes, 0, bytes, len - allBytes.length, allBytes.length);
             }
             return;
         }

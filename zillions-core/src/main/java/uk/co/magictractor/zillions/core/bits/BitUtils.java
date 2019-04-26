@@ -17,6 +17,9 @@ package uk.co.magictractor.zillions.core.bits;
 
 public final class BitUtils {
 
+    public static final byte BYTE_00 = (byte) 0x00;
+    public static final byte BYTE_FF = (byte) 0xff;
+
     private BitUtils() {
     }
 

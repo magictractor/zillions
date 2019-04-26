@@ -54,20 +54,34 @@ public class BigIntByteExporterTest extends AbstractStrategyTest<BigIntByteExpor
     }
 
     @Test
-    public void testLargePositiveWithTopBitSetInMostSignificantByte() {
+    public void testThreeBytePositiveWithTopBitSetInMostSignificantByte() {
         BigInt value = BigIntFactory.from(1).shiftLeft(23);
         check(value, 0, 128, 0, 0);
     }
 
     @Test
-    public void testLargeNegative() {
+    public void testThreeByteNegative() {
         BigInt value = BigIntFactory.from(-1).shiftLeft(23);
         check(value, 128, 0, 0);
     }
 
-    // TODO! bigger words and complete BigInt impl
+    @Test
+    public void testVeryLargePositive() {
+        check("86739834739293766432993866432003874372993", 0, 254, 231, 204, 130, 114, 144, 95, 74, 89, 172, 56, 172,
+            205, 35, 218, 61, 129);
+    }
+
+    @Test
+    public void testVeryLargeNegative() {
+        check("-8886449923764639200387382769755661028746268", 153, 253, 18, 31, 64, 157, 93, 175, 16, 72, 167, 219, 5,
+            56, 201, 113, 27, 228);
+    }
 
     private void check(long value, int... expectedBytesAsInts) {
+        check(BigIntFactory.from(value), expectedBytesAsInts);
+    }
+
+    private void check(String value, int... expectedBytesAsInts) {
         check(BigIntFactory.from(value), expectedBytesAsInts);
     }
 
@@ -75,7 +89,8 @@ public class BigIntByteExporterTest extends AbstractStrategyTest<BigIntByteExpor
         checkAsBytes(value, expectedBytesAsInts);
         checkPopulateBytes(value, 1, leastSignificantBytes(1, expectedBytesAsInts));
         checkPopulateBytes(value, 4, leastSignificantBytes(4, expectedBytesAsInts));
-        // checkPopulateBytes(value, 16, leastSignificantBytes(16, expectedBytesAsInts));
+        checkPopulateBytes(value, 16, leastSignificantBytes(16, expectedBytesAsInts));
+        checkPopulateBytes(value, 128, leastSignificantBytes(128, expectedBytesAsInts));
     }
 
     private int[] leastSignificantBytes(int byteCount, int... expectedBytesAsInts) {
