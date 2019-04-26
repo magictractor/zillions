@@ -24,6 +24,7 @@ import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
+import com.sun.jna.ptr.IntByReference;
 
 import uk.co.magictractor.zillions.gmp.struct.gmp_randstate_t;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
@@ -138,9 +139,12 @@ public class JnaGmpLib implements GmpLib, Library {
     @Override
     public native int mpz_tstbit(mpz_t op, mp_bitcnt_t bitIndex);
 
-    // Import
     @Override
     public native void mpz_import(mpz_t rop, int count, int order, int size, int endian, int nails, Pointer bytes);
+
+    @Override
+    public native Pointer mpz_export(Pointer bytes, IntByReference countp, int order, int size, int endian, int nails,
+            mpz_t op);
 
     // Random
     // https://gmplib.org/manual/Integer-Random-Numbers.html#Integer-Random-Numbers
@@ -154,5 +158,8 @@ public class JnaGmpLib implements GmpLib, Library {
     // https://gmplib.org/manual/Random-State-Seeding.html#Random-State-Seeding
     @Override
     public native void gmp_randseed(gmp_randstate_t state, mpz_t seed);
+
+    @Override
+    public native int mpz_get_ui(mpz_t op);
 
 }

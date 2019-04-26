@@ -75,4 +75,10 @@ public final class BitUtils {
         return b0 & 0xff;
     }
 
+    public static void flipBytes(byte[] bytes) {
+        for (int i = 0, len = bytes.length; i < len; i++) {
+            bytes[i] ^= BitUtils.BYTE_FF;
+        }
+    }
+
 }

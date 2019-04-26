@@ -47,6 +47,11 @@ public class BigIntByteExporterTest extends AbstractStrategyTest<BigIntByteExpor
         check(-1, 255);
     }
 
+    @Test
+    public void testMinusTwo() {
+        check(-2, 254);
+    }
+
     /** Check output is distinct from -1, which appears as 255 due to 2's complement representation. */
     @Test
     public void testFilledByte() {
@@ -88,7 +93,7 @@ public class BigIntByteExporterTest extends AbstractStrategyTest<BigIntByteExpor
     private void check(BigInt value, int... expectedBytesAsInts) {
         checkAsBytes(value, expectedBytesAsInts);
         checkPopulateBytes(value, 1, leastSignificantBytes(1, expectedBytesAsInts));
-        checkPopulateBytes(value, 4, leastSignificantBytes(4, expectedBytesAsInts));
+        checkPopulateBytes(value, 6, leastSignificantBytes(6, expectedBytesAsInts));
         checkPopulateBytes(value, 16, leastSignificantBytes(16, expectedBytesAsInts));
         checkPopulateBytes(value, 128, leastSignificantBytes(128, expectedBytesAsInts));
     }

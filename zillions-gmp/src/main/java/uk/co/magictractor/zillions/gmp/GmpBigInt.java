@@ -261,4 +261,12 @@ public class GmpBigInt implements BigInt {
         discard();
     }
 
+    public static mpz_t getInternalValue(BigInt bigInt) {
+        return ((GmpBigInt) bigInt)._mpz;
+    }
+
+    public static mpz_t getAltInternalValue(BigInt bigInt) {
+        return ((GmpBigInt) bigInt).getAlternateInternalValue();
+    }
+
 }

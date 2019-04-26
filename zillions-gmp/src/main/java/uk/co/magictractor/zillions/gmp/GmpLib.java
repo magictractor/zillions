@@ -17,6 +17,7 @@ package uk.co.magictractor.zillions.gmp;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
+import com.sun.jna.ptr.IntByReference;
 
 import uk.co.magictractor.zillions.gmp.struct.gmp_randstate_t;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
@@ -134,5 +135,10 @@ public interface GmpLib {
 
     // size_t is int
     void mpz_import(mpz_t rop, int count, int order, int size, int endian, int nails, Pointer bytes);
+
+    //void * mpz_export (void *rop, size_t *countp, int order, size_t size, int endian, size_t nails, const mpz_t op)
+    Pointer mpz_export(Pointer bytes, IntByReference countp, int order, int size, int endian, int nails, mpz_t op);
+
+    int mpz_get_ui(mpz_t op);
 
 }
