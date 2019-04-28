@@ -24,9 +24,9 @@ public final class BitUtils {
     }
 
     /**
-     * Determines whether the bytes represent a negative number, assuming that the
-     * bytes are a 2's complement representation with the most significant byte
-     * first.
+     * Determines whether the bytes represent a negative number, assuming that
+     * the bytes are a 2's complement representation with the most significant
+     * byte first.
      */
     public static boolean isNegative(byte[] bytes) {
         return (bytes[0] & 0x80) != 0;
@@ -73,6 +73,37 @@ public final class BitUtils {
 
     public static int makeInt(byte b0) {
         return b0 & 0xff;
+    }
+
+    /**
+     * Set (up to) four bytes in an array corresponding to values in the given
+     * int. The most significant bits in the int are set in the lower indexed
+     * elements of the array. The index value may be -3, -2 or -1, in which case
+     * the most significant bits of the int are not copied.
+     *
+     * @param bytes array in which values are set
+     * @param index the first index in bytes in which a value is set, elements
+     *        index+1, index+2 and index+3 also have values set
+     * @param bytesAsInt contains four byte values to set in the array
+     */
+    public static void setBytes(byte[] bytes, int index, int bytesAsInt) {
+        // TODO! refactor
+        // TODO! perhaps allow least significant bytes to be clipped too
+
+        if (index < -3) {
+            throw new ArrayIndexOutOfBoundsException("index too low: " + index);
+        }
+
+        if (index >= 0) {
+            bytes[index] = (byte) (bytesAsInt >> 24);
+        }
+        if (index >= -1) {
+            bytes[index + 1] = (byte) (bytesAsInt >> 16);
+        }
+        if (index >= -2) {
+            bytes[index + 2] = (byte) (bytesAsInt >> 8);
+        }
+        bytes[index + 3] = (byte) (bytesAsInt);
     }
 
 }

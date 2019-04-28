@@ -25,8 +25,14 @@ import uk.co.magictractor.zillions.core.bits.BitUtils;
 import uk.co.magictractor.zillions.core.environment.Environment;
 import uk.co.magictractor.zillions.core.exporter.BigIntByteExporter;
 import uk.co.magictractor.zillions.gmp.GmpBigInt;
+import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;
 
+/**
+ * GMP byte exporter. This currently works by copying bytes from the least
+ * significant integer and then bit shifting, so is not efficient for very large
+ * numbers.
+ */
 public class GmpBigIntByteExporter implements BigIntByteExporter {
 
     // From https://gmplib.org/manual/Integer-Import-and-Export.html#Integer-Import-and-Export
@@ -39,70 +45,69 @@ public class GmpBigIntByteExporter implements BigIntByteExporter {
     // count = (mpz_sizeinbase (z, 2) + 7) / 8
     // p = malloc (count)
 
-    // Ah! how about using unsigned long int mpz_get_ui (const mpz_t op)
+    //        Memory memory = new Memory(bytes.length);
+    //        IntByReference writtenRef = new IntByReference();
+    //        mpz_t mpz = GmpBigInt.getInternalValue(op);
+    //
+    //        // TODO! this can write more byte than are in the buffer
+    //        GmpLibInstance.__lib.mpz_export(memory, writtenRef, 1, 1, 1, 0, mpz);
+    //
+    //        int written = writtenRef.getValue();
+    //        System.err.println("written: " + written);
+    //        if ()
 
     @Override
     public void populateBytes(BigInt op, byte[] bytes) {
-        //        Memory memory = new Memory(bytes.length);
-        //        IntByReference writtenRef = new IntByReference();
-        //        mpz_t mpz = GmpBigInt.getInternalValue(op);
-        //
-        //        // TODO! this can write more byte than are in the buffer
-        //        GmpLibInstance.__lib.mpz_export(memory, writtenRef, 1, 1, 1, 0, mpz);
-        //
-        //        int written = writtenRef.getValue();
-        //        System.err.println("written: " + written);
-        //        if ()
 
-        boolean isCopy;
+        int intCount = (bytes.length + 3) / 4;
 
         mpz_t mpz = GmpBigInt.getInternalValue(op);
         boolean isNegative = mpz._mp_size < 0;
         if (isNegative) {
             // GMP imports and exports only unsigned values.
             mpz_t alt = GmpBigInt.getAltInternalValue(op);
-            //__lib.mpz_com(alt, mpz);
-            __lib.mpz_add_ui(alt, mpz, 1L);
+            __lib.mpz_com(alt, mpz);
             mpz = alt;
-            isCopy = true;
+        }
+        else if (intCount > 1) {
+            // Bits will be shifted, so use a copy.
+            mpz_t alt = GmpBigInt.getAltInternalValue(op);
+            __lib.mpz_set(alt, mpz);
+            mpz = alt;
         }
 
-        // TODO! fill only unpopulated bytes at the end
-        byte padding = isNegative ? BitUtils.BYTE_FF : BitUtils.BYTE_00;
-        Arrays.fill(bytes, padding);
+        int index = bytes.length;
+        for (int i = 1; i <= intCount && mpz._mp_size != 0; i++) {
 
-        //int from
-        //   while (mpz._mp_size != 0) {
-        int lowInt = __lib.mpz_get_ui(mpz);
-        if (isNegative) {
-            /*
-             * Bit flip rather than the whole number subtraction done for import
-             * because this could be a single byte from a very large number.
-             */
-            lowInt = lowInt ^ 0xffffffff;
+            if (i > 1) {
+                // shift right
+                __lib.mpz_fdiv_q_2exp(mpz, mpz, new mp_bitcnt_t(32));
+            }
+
+            int lowInt = __lib.mpz_get_ui(mpz);
+            if (isNegative) {
+                /*
+                 * Bit flip rather than the whole number subtraction done for
+                 * import because this could be a single byte from a very large
+                 * number.
+                 */
+                lowInt = lowInt ^ 0xffffffff;
+            }
+
+            index -= 4;
+            BitUtils.setBytes(bytes, index, lowInt);
         }
-        int len = Math.min(4, bytes.length);
-        int index = bytes.length - len;
-        // TODO! util for this? see also BigInteger exported
-        if (len == 4) {
-            bytes[index++] = (byte) (lowInt >> 24);
+
+        // Fill any bytes which were not copied with correct padding.
+        if (index > 0) {
+            byte padding = isNegative ? BitUtils.BYTE_FF : BitUtils.BYTE_00;
+            Arrays.fill(bytes, 0, index, padding);
         }
-        if (len >= 3) {
-            bytes[index++] = (byte) (lowInt >> 16);
-        }
-        if (len >= 2) {
-            bytes[index++] = (byte) (lowInt >> 8);
-        }
-        bytes[index] = (byte) lowInt;
-        //        }
     }
 
     @Override
     public byte[] asBytes(BigInt op) {
-        //mpz_t mpz = GmpBigInt.getInternalValue(op);
-        //size = mpz.
         int bitLength = Environment.getBestAvailableImplementation(BigIntBitLength.class).bitLength(op);
-        // TODO! more test coverage around the number of bytes
         byte[] bytes = new byte[(bitLength + 8) / 8];
         populateBytes(op, bytes);
 

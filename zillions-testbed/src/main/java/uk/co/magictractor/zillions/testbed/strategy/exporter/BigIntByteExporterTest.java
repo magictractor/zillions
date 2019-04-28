@@ -15,6 +15,8 @@
  */
 package uk.co.magictractor.zillions.testbed.strategy.exporter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Arrays;
 
 import org.assertj.core.api.Assertions;
@@ -33,29 +35,63 @@ public class BigIntByteExporterTest extends AbstractStrategyTest<BigIntByteExpor
     }
 
     @Test
-    public void testZero() {
+    public void test0() {
         check(0, 0);
     }
 
     @Test
-    public void testOne() {
+    public void test1() {
         check(1, 1);
     }
 
     @Test
-    public void testMinusOne() {
+    public void testMinus1() {
         check(-1, 255);
     }
 
     @Test
-    public void testMinusTwo() {
+    public void testMinus2() {
         check(-2, 254);
     }
 
-    /** Check output is distinct from -1, which appears as 255 due to 2's complement representation. */
     @Test
-    public void testFilledByte() {
+    public void test127() {
+        check(127, 127);
+    }
+
+    @Test
+    public void test128() {
+        check(128, 0, 128);
+    }
+
+    @Test
+    public void test255() {
         check(255, 0, 255);
+    }
+
+    @Test
+    public void test256() {
+        check(256, 1, 0);
+    }
+
+    @Test
+    public void testMinus127() {
+        check(-127, 129);
+    }
+
+    @Test
+    public void testMinus128() {
+        check(-128, 128);
+    }
+
+    @Test
+    public void testMinus255() {
+        check(-255, 255, 1);
+    }
+
+    @Test
+    public void testMinus256() {
+        check(-256, 255, 0);
     }
 
     @Test
@@ -129,7 +165,11 @@ public class BigIntByteExporterTest extends AbstractStrategyTest<BigIntByteExpor
         byte[] actual = new byte[arrayLength];
         // Populate with non-zero (and not 0xff) value for cases where array is larger than number length.
         Arrays.fill(actual, (byte) 0x55);
+
+        // TODO! tests could wrap all impls checking that BigInts are not modified (unless also returned)
+        int preHashCode = value.hashCode();
         getImpl().populateBytes(value, actual);
+        assertThat(value.hashCode()).withFailMessage("value was modified").isEqualTo(preHashCode);
 
         // Convert to ints to values in errors are in range 0-255 rather than -128-127
         int[] actualAsInts = BitUtils.bytesToInts(actual);

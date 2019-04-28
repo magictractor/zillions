@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import uk.co.magictractor.zillions.biginteger.BigIntegerBigInt;
 import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.core.bits.BitUtils;
 import uk.co.magictractor.zillions.core.exporter.BigIntByteExporter;
 
 public class BigIntegerBigIntByteExporter implements BigIntByteExporter {
@@ -50,17 +51,7 @@ public class BigIntegerBigIntByteExporter implements BigIntByteExporter {
 
         // longValue() combines two intValue() calls, so just use array for that.
         int lowInt = BigIntegerBigInt.getInternalValue(op).intValue();
-        int index = 0;
-        if (len == 4) {
-            bytes[index++] = (byte) (lowInt >> 24);
-        }
-        if (len >= 3) {
-            bytes[index++] = (byte) (lowInt >> 16);
-        }
-        if (len >= 2) {
-            bytes[index++] = (byte) (lowInt >> 8);
-        }
-        bytes[index] = (byte) lowInt;
+        BitUtils.setBytes(bytes, bytes.length - 4, lowInt);
     }
 
     @Override
