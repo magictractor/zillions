@@ -52,29 +52,28 @@ import org.junit.platform.suite.api.SelectClasses;
 import com.google.common.collect.Iterables;
 
 /**
+ * <p>
  * Runs a JUnit suite as dynamic tests without having to change the test engine.
- *
  * Only supports a subset of suite associated annotations. Currently these
  * annotations are supported
  * <ul>
  * <li>@SelectClasses</li>
  * <li>@ExcludeClassNamePatterns</li>
  * </ul>
- *
+ * <p>
  * This class will probably be removed once JUnit5 has better support for
  * suites. See https://github.com/junit-team/junit5/issues/744.
- *
- * TODO! ignored tests are displayed as passed tests (or not displayed)
- *
- * TODO! support @SelectPackages
- *
- * TODO! filters should apply to nested suites too
- *
- * TODO! registered extension should apply to nested suites too (see extension
- * in Attic)
- *
- * TODO! fix dynamic test node URI. Requires JUnit enhancement. Have raised
- * https://github.com/junit-team/junit5/issues/1850
+ * <ul>
+ * <li>TODO! ignored tests are displayed as passed tests (or not displayed),
+ * perhaps use assumptions, see
+ * https://github.com/junit-team/junit5/issues/1439</li>
+ * <li>TODO! support @SelectPackages</li>
+ * <li>TODO! filters should apply to nested suites too</li>
+ * <li>TODO! registered extension should apply to nested suites too (see
+ * extension in Attic)</li>
+ * <li>TODO! fix dynamic test node URI. Requires JUnit enhancement. Have raised
+ * https://github.com/junit-team/junit5/issues/1850</li>
+ * </ul>
  */
 public class DynamicSuite {
 
@@ -97,7 +96,8 @@ public class DynamicSuite {
     }
 
     /**
-     * @param suiteTestClasses test classes which are annotated with @SelectClasses
+     * @param suiteTestClasses test classes which are annotated
+     *        with @SelectClasses
      */
     public DynamicSuite(Class<?>... suiteTestClasses) {
         this(Arrays.asList(suiteTestClasses));
@@ -113,9 +113,8 @@ public class DynamicSuite {
     }
 
     /**
-     * Check whether the test class has suite annotations.
-     *
-     * Currently checks only for @SelectClasses, this is likely to be improved soon.
+     * Check whether the test class has suite annotations. Currently checks only
+     * for @SelectClasses, this is likely to be improved soon.
      */
     private boolean hasSuiteAnnotations(Class<?> testClass) {
         return testClass.getAnnotation(SelectClasses.class) != null;
@@ -337,8 +336,9 @@ public class DynamicSuite {
 
             // System.err.println("++executionStarted: " + testIdentifier);
             /*
-             * Use executionStarted() rather than dynamicTestRegistered() for adding
-             * containers to include templplate and parameterised test containers.
+             * Use executionStarted() rather than dynamicTestRegistered() for
+             * adding containers to include templplate and parameterised test
+             * containers.
              */
             if (testIdentifier.isContainer()) {
                 addContainer(testIdentifier);
@@ -382,8 +382,9 @@ public class DynamicSuite {
 
     /**
      * Test have already been run once to determine the tests in the suite
-     * (including dynamic and template test). To avoid running them again, all tests
-     * in the suite are dynamic tests, and they just mimic the original result.
+     * (including dynamic and template test). To avoid running them again, all
+     * tests in the suite are dynamic tests, and they just mimic the original
+     * result.
      */
     private DynamicTest createDynamicNodeForExecutedTestResult(TestIdentifier testIdentifier,
             TestExecutionResult testExecutionResult) {

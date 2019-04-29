@@ -21,6 +21,7 @@
 		<jna.version>5.2.0</jna.version>
 		<assertj.version>3.11.1</assertj.version>
 		<compiler.plugin.version>3.8.0</compiler.plugin.version>
+		<site.plugin.version>3.7.1</site.plugin.version>
 		<surefire.plugin.version>2.22.1</surefire.plugin.version>
 		<checkstyle.plugin.version>3.0.0</checkstyle.plugin.version>
 		<checkstyle.version>6.3</checkstyle.version>
@@ -135,8 +136,23 @@
 				</goals> </execution> </executions> </plugin> -->
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${site.plugin.version}</version>
+			</plugin>
+
+			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${surefire.plugin.version}</version>
+				<!-- Default &lt;includes&gt; does not include *Suite.java -->
+				<!-- Surefire runs the suites, but results have a) a flattened structure 
+					and b) use the legacy name, not the display name https://github.com/junit-team/junit5/issues/1320 -->
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*Suite.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -176,6 +192,20 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<!-- <version>${surefire.plugin.version}</version> -->
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<licenses>
 		<license>
