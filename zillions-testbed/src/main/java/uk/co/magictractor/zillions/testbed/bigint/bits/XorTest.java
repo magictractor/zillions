@@ -56,9 +56,9 @@ public class XorTest extends OpTestBigIntParam {
     }
 
     // For checking behaviour with dynamic test suite
-    @Test
-    public void fails() {
-        check(-10, -3, 999);
-    }
+    //@Test
+    //public void fails() {
+    //    check(-10, -3, 999);
+    //}
 
 }

@@ -17,9 +17,7 @@ package uk.co.magictractor.zillions.testbed.bigint;
 
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DynamicNode;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.SelectClasses;
 
@@ -57,11 +55,6 @@ public abstract class BigIntSuite {
     @TestFactory
     public Stream<DynamicNode> suiteFactory() {
         return new DynamicSuite(this).stream();
-    }
-
-    @Test
-    public void fail() {
-        Assertions.fail();
     }
 
 }
