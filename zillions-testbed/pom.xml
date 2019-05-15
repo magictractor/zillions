@@ -41,11 +41,6 @@
 			<artifactId>junit-platform-suite-api</artifactId>
 			<version>${junit.platform.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-runner</artifactId>
-			<version>${junit.platform.version}</version>
-		</dependency>
 
 		<!-- AssertJ rather than Hamcrest -->
 		<dependency>
