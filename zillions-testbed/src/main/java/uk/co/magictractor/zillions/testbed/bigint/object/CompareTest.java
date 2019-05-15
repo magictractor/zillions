@@ -15,6 +15,8 @@
  */
 package uk.co.magictractor.zillions.testbed.bigint.object;
 
+import org.junit.jupiter.api.Test;
+
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestSingleParam;
 
@@ -24,19 +26,22 @@ public class CompareTest extends OpTestSingleParam<BigInt, Integer> {
         super(BigInt.class, Integer.class, BigInt::compareTo);
     }
 
+    @Test
     public void testEquals() {
         check(0, 0, 0);
         check(-10, -10, 0);
     }
 
+    @Test
     public void testLessThan() {
         check(0, 1, -1);
         check(-1, 0, -1);
     }
 
+    @Test
     public void testGreaterThan() {
         check(1, 0, 1);
-        check(0, -1, -1);
+        check(0, -1, 1);
     }
 
 }

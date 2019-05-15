@@ -15,13 +15,21 @@
  */
 package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.SelectClasses;
 
-//@RunWith(Suite.class)
-//@SuiteClasses({AddTest.class, MultiplyTest.class})
-@SelectClasses({ AddTest.class, SubtractTest.class, MultiplyTest.class })
+import uk.co.magictractor.zillions.testbed.bigint.DynamicSuite;
+
+@SelectClasses({ AddTest.class, SubtractTest.class, MultiplyTest.class, NegateTest.class, SignumTest.class,
+        AbsTest.class })
 public class ArithmeticSuite {
 
-    // This class is left intentionally blank.
+    @TestFactory
+    public Stream<DynamicNode> suiteFactory() {
+        return new DynamicSuite(this).stream();
+    }
 
 }

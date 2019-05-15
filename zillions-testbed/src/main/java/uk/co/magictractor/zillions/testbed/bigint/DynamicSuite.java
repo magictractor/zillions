@@ -17,9 +17,11 @@ package uk.co.magictractor.zillions.testbed.bigint;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -48,6 +50,7 @@ import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.suite.api.ExcludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectClasses;
+import org.opentest4j.TestAbortedException;
 
 import com.google.common.collect.Iterables;
 
@@ -64,9 +67,6 @@ import com.google.common.collect.Iterables;
  * This class will probably be removed once JUnit5 has better support for
  * suites. See https://github.com/junit-team/junit5/issues/744.
  * <ul>
- * <li>TODO! ignored tests are displayed as passed tests (or not displayed),
- * perhaps use assumptions, see
- * https://github.com/junit-team/junit5/issues/1439</li>
  * <li>TODO! support @SelectPackages</li>
  * <li>TODO! filters should apply to nested suites too</li>
  * <li>TODO! registered extension should apply to nested suites too (see
@@ -80,6 +80,9 @@ public class DynamicSuite {
     private final Launcher _launcher = LauncherFactory.create();
     private final List<Class<?>> _suiteTestClasses;
 
+    // TODO! threadlocal
+    private static final Deque<DynamicSuite> evaluating = new ArrayDeque<>();
+
     /**
      * Constructor typically used within a method annotated by @TestFactory in a
      * test class which has suite annotations.
@@ -92,7 +95,8 @@ public class DynamicSuite {
      * </pre>
      */
     public DynamicSuite(Object suiteTest) {
-        this(Collections.singletonList(suiteTest.getClass()));
+        // TODO! tidy this
+        this(Collections.singletonList(suiteTest instanceof Class ? (Class<?>) suiteTest : suiteTest.getClass()));
     }
 
     /**
@@ -168,6 +172,7 @@ public class DynamicSuite {
     //                : createDynamicTest(testPlan, testIdentifier);
     //    }
 
+    // hmms
     private DynamicNode createDynamicContainer(TestPlan testPlan, TestIdentifier containerIdentifier) {
 
         if (!containerIdentifier.isContainer()) {
@@ -191,17 +196,18 @@ public class DynamicSuite {
         // System.err.println("createDynamicContainer: " + containerIdentifier);
         URI uri = createSourceUri(containerIdentifier);
 
+        System.err.println("disp#1: " + containerIdentifier.getDisplayName());
         return DynamicContainer.dynamicContainer(containerIdentifier.getDisplayName(), uri, children);
     }
 
-    private final class DynamicContainerInfo2 {
+    private final class DynamicContainerInfo {
         private final TestIdentifier _containerIdentifier;
         // private final DynamicContainer _dynamicContainer;
         // null at top
-        private DynamicContainerInfo2 _parentContainerInfo;
+        private DynamicContainerInfo _parentContainerInfo;
         private final List<DynamicNode> _children = new ArrayList<>();
 
-        DynamicContainerInfo2(TestIdentifier containerIdentifier) {
+        DynamicContainerInfo(TestIdentifier containerIdentifier) {
             _containerIdentifier = containerIdentifier;
         }
 
@@ -225,8 +231,8 @@ public class DynamicSuite {
             _children.add(dynamicTest);
         }
 
-        public DynamicContainerInfo2 addContainer(TestIdentifier containerIdentifier) {
-            DynamicContainerInfo2 containerInfo = new DynamicContainerInfo2(containerIdentifier);
+        public DynamicContainerInfo addContainer(TestIdentifier containerIdentifier) {
+            DynamicContainerInfo containerInfo = new DynamicContainerInfo(containerIdentifier);
             // TODO! assertions
             containerInfo._parentContainerInfo = this;
             DynamicContainer container = createDynamicContainerForExecutedTestResults(containerIdentifier,
@@ -236,7 +242,6 @@ public class DynamicSuite {
         }
 
         public Stream<? extends DynamicNode> stream() {
-            // TODO Auto-generated method stub
             return _children.stream();
         }
 
@@ -307,19 +312,19 @@ public class DynamicSuite {
     // TODO! static??
     private final class ClassResultListener implements TestExecutionListener {
         // private final TestIdentifier _suiteIdentifier;
-        private final DynamicContainerInfo2 _suiteContainer;
-        private final List<? extends DynamicNode> _children;
+        private final DynamicContainerInfo _suiteContainer;
+        //private final List<? extends DynamicNode> _children;
 
         private int _depth;
 
-        private DynamicContainerInfo2 _mostRecentContainer;
+        private DynamicContainerInfo _mostRecentContainer;
         // private TestExecutionResult _testExecutionResult;
 
         ClassResultListener(TestIdentifier suiteIdentifier) {
             // _suiteIdentifier = suiteIdentifier;
-            _suiteContainer = new DynamicContainerInfo2(suiteIdentifier);
+            _suiteContainer = new DynamicContainerInfo(suiteIdentifier);
             _mostRecentContainer = _suiteContainer;
-            _children = new ArrayList<>();
+            //_children = new ArrayList<>();
         }
 
         public Stream<? extends DynamicNode> stream() {
@@ -331,8 +336,10 @@ public class DynamicSuite {
             if (++_depth <= 2) {
                 // Skip engine and class name.
                 // TODO! could get class name node here and remove other.
+                System.err.println("started skip: " + testIdentifier);
                 return;
             }
+            System.err.println("started: " + testIdentifier);
 
             // System.err.println("++executionStarted: " + testIdentifier);
             /*
@@ -347,10 +354,28 @@ public class DynamicSuite {
 
         @Override
         public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
+            System.err.println("finished: " + testIdentifier);
             _depth--;
+
             // TODO! not handling CONTAINER_AND_TEST descriptor type properly.
+            if (testIdentifier.isTest() && testIdentifier.isContainer()) {
+                throw new IllegalStateException("what to do for test+container: " + testIdentifier);
+            }
+
+            // TODO! check for anything started but not finished (ignored?)
             if (testIdentifier.isTest()) {
                 addTest(testIdentifier, testExecutionResult);
+            }
+        }
+
+        @Override
+        public void executionSkipped(TestIdentifier testIdentifier, String reason) {
+            //System.err.println("skipped: " + testIdentifier);
+            if (testIdentifier.isTest()) {
+                // Test disabled or assumption failed.
+                // Dynamic nodes may use assumptions, but cannot be ignored prior to execution.
+                // See https://github.com/junit-team/junit5/issues/1439
+                addTest(testIdentifier, TestExecutionResult.aborted(new TestAbortedException(reason)));
             }
         }
 
@@ -388,6 +413,8 @@ public class DynamicSuite {
      */
     private DynamicTest createDynamicNodeForExecutedTestResult(TestIdentifier testIdentifier,
             TestExecutionResult testExecutionResult) {
+        System.err.println("createDynamicNodeForExecutedTestResult " + testIdentifier);
+
         String displayName = testIdentifier.getDisplayName();
         URI testSourceUri = createSourceUri(testIdentifier);
         Executable executable = () -> returnOriginalTestExecutionResult(testExecutionResult);
@@ -398,20 +425,23 @@ public class DynamicSuite {
     private DynamicContainer createDynamicContainerForExecutedTestResults(TestIdentifier testIdentifier,
             Stream<? extends DynamicNode> children) {
         String displayName = testIdentifier.getDisplayName();
-        System.err.println("displayName: '" + displayName + "' (" + testIdentifier.getLegacyReportingName() + ")");
+        //System.err.println("displayName: '" + displayName + "' (" + testIdentifier.getLegacyReportingName() + ")");
         URI testSourceUri = createSourceUri(testIdentifier);
 
+        System.err.println("disp#2: " + displayName);
         return DynamicContainer.dynamicContainer(displayName, testSourceUri, children);
     }
 
     private void returnOriginalTestExecutionResult(TestExecutionResult testExecutionResult) throws Throwable {
         // System.err.println("result: " + testExecutionResult);
-        if (testExecutionResult == null) {
-            // An ignored test.
-            // TODO! is there a way to indicate that the test was ignored?
-            // For now, just mark it as a pass.
-            return;
-        }
+
+        //        if (testExecutionResult == null) {
+        //            // Originally an ignored test or a failed assumption.
+        //            // Dynamic nodes may use assumptions, but cannot be ignored prior to execution.
+        //            // See https://github.com/junit-team/junit5/issues/1439
+        //            throw new TestAbortedException();
+        //        }
+
         if (testExecutionResult.getThrowable().isPresent()) {
             // System.err.println("rethrow failure");
             throw testExecutionResult.getThrowable().get();
