@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.bigint;
+package uk.co.magictractor.zillions.testbed.dynamic;
+
+import static uk.co.magictractor.zillions.testbed.dynamic.DynamicSourceUriUtil.createSourceUri;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -39,8 +39,6 @@ import org.junit.platform.engine.TestSource;
 import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.engine.support.descriptor.ClassSource;
-import org.junit.platform.engine.support.descriptor.ClasspathResourceSource;
-import org.junit.platform.engine.support.descriptor.MethodSource;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.TestExecutionListener;
@@ -95,8 +93,11 @@ public class DynamicSuite {
      * </pre>
      */
     public DynamicSuite(Object suiteTest) {
-        // TODO! tidy this
-        this(Collections.singletonList(suiteTest instanceof Class ? (Class<?>) suiteTest : suiteTest.getClass()));
+        this(Collections.singletonList(suiteTest.getClass()));
+    }
+
+    public DynamicSuite(Class<?> suiteTestClass) {
+        this(Collections.singletonList((Class<?>) suiteTestClass));
     }
 
     /**
@@ -132,7 +133,19 @@ public class DynamicSuite {
     }
 
     public Stream<DynamicNode> stream() {
-        return _suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
+        //        System.err.println("*** stream");
+        //        new RuntimeException().printStackTrace(System.err);
+        if (evaluating.isEmpty()) {
+            System.err.println("*** stream() outer");
+            evaluating.push(this);
+            Stream<DynamicNode> stream = _suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
+            evaluating.pop();
+            return stream;
+        }
+        else {
+            System.err.println("*** stream() inner");
+            return Stream.empty();
+        }
     }
 
     private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
@@ -164,6 +177,7 @@ public class DynamicSuite {
     }
 
     private Stream<DynamicNode> streamForTestIdentifiers(TestPlan testPlan, Set<TestIdentifier> testIdentifiers) {
+        System.err.println("streamForTestIdentifiers: " + testIdentifiers);
         return testIdentifiers.stream().map(tid -> createDynamicContainer(testPlan, tid));
     }
 
@@ -186,23 +200,15 @@ public class DynamicSuite {
         ClassResultListener classResultListener = new ClassResultListener(containerIdentifier);
         _launcher.execute(request, classResultListener);
 
-        Stream<? extends DynamicNode> children = classResultListener.stream();
+        // TODO! _suiteContainer not same as _mostRecentContainer (which is null)??
+        return classResultListener._suiteContainerInfo.toDynamicContainer();
 
-        return createDynamicContainer(containerIdentifier, children);
+        //        Stream<? extends DynamicNode> children = classResultListener._suiteContainer.stream();
+        //        return createDynamicContainer(containerIdentifier, children);
     }
 
-    private DynamicContainer createDynamicContainer(TestIdentifier containerIdentifier,
-            Stream<? extends DynamicNode> children) {
-        // System.err.println("createDynamicContainer: " + containerIdentifier);
-        URI uri = createSourceUri(containerIdentifier);
-
-        System.err.println("disp#1: " + containerIdentifier.getDisplayName());
-        return DynamicContainer.dynamicContainer(containerIdentifier.getDisplayName(), uri, children);
-    }
-
-    private final class DynamicContainerInfo {
+    private static final class DynamicContainerInfo {
         private final TestIdentifier _containerIdentifier;
-        // private final DynamicContainer _dynamicContainer;
         // null at top
         private DynamicContainerInfo _parentContainerInfo;
         private final List<DynamicNode> _children = new ArrayList<>();
@@ -211,96 +217,79 @@ public class DynamicSuite {
             _containerIdentifier = containerIdentifier;
         }
 
-        //        DynamicContainer createNode() {
-        //            System.err.println(
-        //                ">> create discovered container: " + _containerIdentifier.getDisplayName() + " " + _children.size());
-        //            return createDynamicContainer(_containerIdentifier, _children.stream());
-        //        }
-
-        boolean isParent(TestIdentifier nodeIdentifier) {
-            String nodeParentId = nodeIdentifier.getParentId().orElse(null);
-            String containerId = _containerIdentifier.getUniqueId();
-
-            // System.out.println("nodeParentId: " + nodeParentId);
-            // System.out.println("containerId: " + containerId);
-
-            return Objects.equals(nodeParentId, containerId);
-        }
-
-        public void addTest(DynamicTest dynamicTest) {
+        //public void addTest(DynamicTest dynamicTest) {
+        public void addTest(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
+            System.err.println("addTest: " + testIdentifier + " to " + this);
+            DynamicTest dynamicTest = createDynamicNodeForExecutedTestResult(testIdentifier, testExecutionResult);
             _children.add(dynamicTest);
         }
 
-        public DynamicContainerInfo addContainer(TestIdentifier containerIdentifier) {
-            DynamicContainerInfo containerInfo = new DynamicContainerInfo(containerIdentifier);
+        public DynamicContainerInfo addContainer(TestIdentifier childContainerIdentifier) {
+            DynamicContainerInfo childContainerInfo = new DynamicContainerInfo(childContainerIdentifier);
+            System.err.println("addContainer: " + childContainerInfo + " to " + this);
             // TODO! assertions
-            containerInfo._parentContainerInfo = this;
-            DynamicContainer container = createDynamicContainerForExecutedTestResults(containerIdentifier,
-                containerInfo.stream());
-            _children.add(container);
-            return containerInfo;
+            childContainerInfo._parentContainerInfo = this;
+            // ook
+            //DynamicContainer container = createDynamicContainerForExecutedTestResults();
+            //_children.add(container);
+            _children.add(childContainerInfo.toDynamicContainer());
+            return childContainerInfo;
         }
 
-        public Stream<? extends DynamicNode> stream() {
-            return _children.stream();
+        public DynamicContainer toDynamicContainer() {
+            // System.err.println("createDynamicContainer: " + containerIdentifier);
+            URI uri = createSourceUri(_containerIdentifier);
+
+            String displayName = _containerIdentifier.getDisplayName();
+            System.err.println("createDynamicContainer: " + displayName);
+            return DynamicContainer.dynamicContainer(displayName, uri, _children.stream());
         }
 
-    }
-    //    See Stream.generate(Supplier)
-    //    private Stream<DynamicNode> streamForDynamicContainerChildren(TestIdentifier testIdentifer) {
-    //    }
+        /**
+         * Test have already been run once to determine the tests in the suite
+         * (including dynamic and template tests). To avoid running them again,
+         * all tests in the suite are dynamic tests, and they just mimic the
+         * original result by either throwing an exception or doing nothing.
+         */
+        private DynamicTest createDynamicNodeForExecutedTestResult(TestIdentifier testIdentifier,
+                TestExecutionResult testExecutionResult) {
+            System.err.println("createDynamicNodeForExecutedTestResult " + testIdentifier);
 
-    private URI createSourceUri(TestIdentifier testIdentifier) {
-        if (!testIdentifier.getSource().isPresent()) {
-            // Very unlikely, there should always be a source.
-            // Just use the default URI.
-            return null;
-        }
+            String displayName = testIdentifier.getDisplayName();
+            // TODO! make this conditional (on sys prop? - useful until some gradle bugs fixed)
+            if (true) {
+                // TODO! gets called multiple times with nested suites
+                if (!displayName.contains(".")) {
+                    displayName = _containerIdentifier.getDisplayName() + "." + displayName;
+                }
+            }
 
-        String className;
-        String methodName = null;
-        TestSource source = testIdentifier.getSource().get();
-        if (source instanceof MethodSource) {
-            // The method name cannot currently be included in the source URI.
-            // The best we can do is just link back to the class.
-            // See https://github.com/junit-team/junit5/issues/1850
-            MethodSource methodSource = (MethodSource) source;
-            className = methodSource.getClassName();
-            methodName = methodSource.getMethodName();
-            // TODO! not how the URL will look see the JUnit issue
-        }
-        else if (source instanceof ClassSource) {
-            className = ((ClassSource) source).getClassName();
-        }
-        else if (source instanceof ClasspathResourceSource) {
-            className = ((ClasspathResourceSource) source).getClasspathResourceName();
-            // System.err.println("getClasspathResourceName(): " + className);
-        }
-        else {
-            // This should be relaxed to just log a warning.
-            throw new IllegalStateException(
-                "Code needs modified to create a URI for source type " + source.getClass().getSimpleName());
+            URI testSourceUri = createSourceUri(testIdentifier);
+            Executable executable = () -> returnOriginalTestExecutionResult(testExecutionResult);
+
+            return DynamicTest.dynamicTest(displayName, testSourceUri, executable);
         }
 
-        return createUri(className, methodName);
-    }
+        private void returnOriginalTestExecutionResult(TestExecutionResult testExecutionResult) throws Throwable {
+            if (testExecutionResult.getThrowable().isPresent()) {
+                throw testExecutionResult.getThrowable().get();
+            }
 
-    private URI createUri(String className, String methodName) {
-        String path = "/" + className.replace('.', '/');
-        String query = null;
-        if (methodName != null) {
-            query = "method=" + methodName;
+            if (!testExecutionResult.getStatus().equals(Status.SUCCESSFUL)) {
+                throw new IllegalStateException("Test was not successful, but does not have a Throwable");
+            }
+
+            // Do nothing, test will pass.
         }
 
-        URI uri;
-        try {
-            uri = new URI("classpath", null, path, query, null);
-        }
-        catch (URISyntaxException e) {
-            throw new IllegalStateException(e);
-        }
+        //        public Stream<? extends DynamicNode> stream() {
+        //            return _children.stream();
+        //        }
 
-        return uri;
+        @Override
+        public String toString() {
+            return getClass().getSimpleName() + "[displayName=" + _containerIdentifier.getDisplayName() + "]";
+        }
     }
 
     private LauncherDiscoveryRequest requestForClassSource(ClassSource classSource) {
@@ -309,42 +298,43 @@ public class DynamicSuite {
         return LauncherDiscoveryRequestBuilder.request().selectors(selector).build();
     }
 
-    // TODO! static??
-    private final class ClassResultListener implements TestExecutionListener {
+    private static final class ClassResultListener implements TestExecutionListener {
         // private final TestIdentifier _suiteIdentifier;
-        private final DynamicContainerInfo _suiteContainer;
+        private final DynamicContainerInfo _suiteContainerInfo;
         //private final List<? extends DynamicNode> _children;
 
-        private int _depth;
+        private int _executionDepth;
 
         private DynamicContainerInfo _mostRecentContainer;
         // private TestExecutionResult _testExecutionResult;
 
         ClassResultListener(TestIdentifier suiteIdentifier) {
             // _suiteIdentifier = suiteIdentifier;
-            _suiteContainer = new DynamicContainerInfo(suiteIdentifier);
-            _mostRecentContainer = _suiteContainer;
+            _suiteContainerInfo = new DynamicContainerInfo(suiteIdentifier);
+            _mostRecentContainer = _suiteContainerInfo;
             //_children = new ArrayList<>();
         }
 
-        public Stream<? extends DynamicNode> stream() {
-            return _suiteContainer.stream();
-        }
+        //        public Stream<? extends DynamicNode> stream() {
+        //            return _suiteContainer.stream();
+        //        }
 
         @Override
         public void executionStarted(TestIdentifier testIdentifier) {
-            if (++_depth <= 2) {
+            if (++_executionDepth <= 2) {
                 // Skip engine and class name.
                 // TODO! could get class name node here and remove other.
-                System.err.println("started skip: " + testIdentifier);
+                System.out.println("started skip: " + testIdentifier);
                 return;
             }
-            System.err.println("started: " + testIdentifier);
+            System.out.println("started: " + testIdentifier);
+
+            checkParentContainer(testIdentifier);
 
             // System.err.println("++executionStarted: " + testIdentifier);
             /*
              * Use executionStarted() rather than dynamicTestRegistered() for
-             * adding containers to include templplate and parameterised test
+             * adding containers to include template and parameterised test
              * containers.
              */
             if (testIdentifier.isContainer()) {
@@ -354,15 +344,28 @@ public class DynamicSuite {
 
         @Override
         public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-            System.err.println("finished: " + testIdentifier);
-            _depth--;
+            System.out.println("finished: " + testIdentifier);
 
-            // TODO! not handling CONTAINER_AND_TEST descriptor type properly.
-            if (testIdentifier.isTest() && testIdentifier.isContainer()) {
-                throw new IllegalStateException("what to do for test+container: " + testIdentifier);
+            // TODO! something like this??
+            //            if (--_depth <= 1) {
+            //                return;
+            //            }
+
+            // TODO! check for anything started but not finished/skipped?
+            if (testIdentifier.isContainer()) {
+                _executionDepth--;
+                // TODO!
+                //                if (!testIdentifier.equals(_mostRecentContainer._containerIdentifier)) {
+                //                    throw new IllegalStateException(
+                //                        "executionFinished() for a contained other than the current container");
+                //                }
+
+                // TODO! depth check for this method?
+                if (_mostRecentContainer != null) {
+                    _mostRecentContainer = _mostRecentContainer._parentContainerInfo;
+                }
             }
 
-            // TODO! check for anything started but not finished (ignored?)
             if (testIdentifier.isTest()) {
                 addTest(testIdentifier, testExecutionResult);
             }
@@ -380,75 +383,20 @@ public class DynamicSuite {
         }
 
         private void addTest(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-            DynamicTest dynamicTest = createDynamicNodeForExecutedTestResult(testIdentifier, testExecutionResult);
-            updateMostRecentContainer(testIdentifier);
-            _mostRecentContainer.addTest(dynamicTest);
+            checkParentContainer(testIdentifier);
+            _mostRecentContainer.addTest(testIdentifier, testExecutionResult);
         }
 
         private void addContainer(TestIdentifier containerIdentifier) {
-            updateMostRecentContainer(containerIdentifier);
+            checkParentContainer(containerIdentifier);
             _mostRecentContainer = _mostRecentContainer.addContainer(containerIdentifier);
         }
 
-        private void updateMostRecentContainer(TestIdentifier nodeIdentifier) {
-            // TODO! guard against problems
-            while (_mostRecentContainer != null && !_mostRecentContainer.isParent(nodeIdentifier)) {
-                _mostRecentContainer = _mostRecentContainer._parentContainerInfo;
+        private void checkParentContainer(TestIdentifier testIdentifier) {
+            String parentId = testIdentifier.getParentId().get();
+            if (!_mostRecentContainer._containerIdentifier.getUniqueId().equals(parentId)) {
+                throw new IllegalStateException("Current container is not a parent of the TestIdentifier");
             }
-
-            // TODO! this is scruffy
-            if (_mostRecentContainer == null) {
-                _mostRecentContainer = _suiteContainer;
-            }
-
-            // return _mostRecentContainer;
-        }
-    }
-
-    /**
-     * Test have already been run once to determine the tests in the suite
-     * (including dynamic and template test). To avoid running them again, all
-     * tests in the suite are dynamic tests, and they just mimic the original
-     * result.
-     */
-    private DynamicTest createDynamicNodeForExecutedTestResult(TestIdentifier testIdentifier,
-            TestExecutionResult testExecutionResult) {
-        System.err.println("createDynamicNodeForExecutedTestResult " + testIdentifier);
-
-        String displayName = testIdentifier.getDisplayName();
-        URI testSourceUri = createSourceUri(testIdentifier);
-        Executable executable = () -> returnOriginalTestExecutionResult(testExecutionResult);
-
-        return DynamicTest.dynamicTest(displayName, testSourceUri, executable);
-    }
-
-    private DynamicContainer createDynamicContainerForExecutedTestResults(TestIdentifier testIdentifier,
-            Stream<? extends DynamicNode> children) {
-        String displayName = testIdentifier.getDisplayName();
-        //System.err.println("displayName: '" + displayName + "' (" + testIdentifier.getLegacyReportingName() + ")");
-        URI testSourceUri = createSourceUri(testIdentifier);
-
-        System.err.println("disp#2: " + displayName);
-        return DynamicContainer.dynamicContainer(displayName, testSourceUri, children);
-    }
-
-    private void returnOriginalTestExecutionResult(TestExecutionResult testExecutionResult) throws Throwable {
-        // System.err.println("result: " + testExecutionResult);
-
-        //        if (testExecutionResult == null) {
-        //            // Originally an ignored test or a failed assumption.
-        //            // Dynamic nodes may use assumptions, but cannot be ignored prior to execution.
-        //            // See https://github.com/junit-team/junit5/issues/1439
-        //            throw new TestAbortedException();
-        //        }
-
-        if (testExecutionResult.getThrowable().isPresent()) {
-            // System.err.println("rethrow failure");
-            throw testExecutionResult.getThrowable().get();
-        }
-        if (!testExecutionResult.getStatus().equals(Status.SUCCESSFUL)) {
-            // System.err.println("missing throwable");
-            throw new IllegalStateException("Test was not successful, but does not have a Throwable");
         }
     }
 

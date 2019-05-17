@@ -21,7 +21,7 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.SelectClasses;
 
-import uk.co.magictractor.zillions.testbed.bigint.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
 
 @SelectClasses({ ToStringTest.class, EqualsTest.class, CompareTest.class, HashCodeTest.class })
 public class ObjectSuite {

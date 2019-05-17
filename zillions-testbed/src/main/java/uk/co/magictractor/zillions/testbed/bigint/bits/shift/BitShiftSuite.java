@@ -21,7 +21,7 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.SelectClasses;
 
-import uk.co.magictractor.zillions.testbed.bigint.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
 
 @SelectClasses({ ShiftLeftTest.class, ShiftRightTest.class })
 public class BitShiftSuite {

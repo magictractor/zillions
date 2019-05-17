@@ -31,4 +31,9 @@ public class AddTest extends OpTestBigIntParam {
         check(10, 4, 14);
     }
 
+    @Test
+    public void testAddSmallNegativeNumbers() {
+        check(-10, -4, -14);
+    }
+
 }
