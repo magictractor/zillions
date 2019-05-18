@@ -15,17 +15,18 @@
  */
 package uk.co.magictractor.zillions.testbed.dynamic;
 
-import static uk.co.magictractor.zillions.testbed.dynamic.DynamicSourceUriUtil.createSourceUri;
-
 import java.net.URI;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicContainer;
@@ -36,9 +37,10 @@ import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.TestExecutionResult.Status;
 import org.junit.platform.engine.TestSource;
-import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
+import org.junit.platform.engine.reporting.ReportEntry;
 import org.junit.platform.engine.support.descriptor.ClassSource;
+import org.junit.platform.engine.support.descriptor.MethodSource;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.TestExecutionListener;
@@ -46,8 +48,6 @@ import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
-import org.junit.platform.suite.api.ExcludeClassNamePatterns;
-import org.junit.platform.suite.api.SelectClasses;
 import org.opentest4j.TestAbortedException;
 
 import com.google.common.collect.Iterables;
@@ -75,11 +75,13 @@ import com.google.common.collect.Iterables;
  */
 public class DynamicSuite {
 
+    // TODO! threadlocal - if it's useful
+    private static final Deque<DynamicSuite> evaluating = new ArrayDeque<>();
+    private static final Deque<SuiteRequestBuilder> executing = new ArrayDeque<>();
+    private static final Map<MethodSource, DynamicContainer> results = new HashMap<>();
+
     private final Launcher _launcher = LauncherFactory.create();
     private final List<Class<?>> _suiteTestClasses;
-
-    // TODO! threadlocal
-    private static final Deque<DynamicSuite> evaluating = new ArrayDeque<>();
 
     /**
      * Constructor typically used within a method annotated by @TestFactory in a
@@ -109,11 +111,13 @@ public class DynamicSuite {
     }
 
     public DynamicSuite(List<Class<?>> suiteTestClasses) {
+        System.err.println("new DynamicSuite: " + suiteTestClasses);
+
         if (suiteTestClasses == null || suiteTestClasses.isEmpty()) {
             throw new IllegalArgumentException("suiteTestClasses must not be null or empty");
         }
 
-        suiteTestClasses.forEach(this::ensureSuiteAnnotations);
+        //suiteTestClasses.forEach(this::ensureSuiteAnnotations);
         _suiteTestClasses = suiteTestClasses;
     }
 
@@ -121,76 +125,147 @@ public class DynamicSuite {
      * Check whether the test class has suite annotations. Currently checks only
      * for @SelectClasses, this is likely to be improved soon.
      */
-    private boolean hasSuiteAnnotations(Class<?> testClass) {
-        return testClass.getAnnotation(SelectClasses.class) != null;
-    }
+    //    private boolean hasSuiteAnnotations(Class<?> testClass) {
+    //        return testClass.getAnnotation(SelectClasses.class) != null;
+    //    }
 
-    private void ensureSuiteAnnotations(Class<?> testClass) {
-        if (!hasSuiteAnnotations(testClass)) {
-            throw new IllegalArgumentException(
-                testClass.getName() + " is used as a suite but does not have a @SelectClasses annotation");
-        }
-    }
+    //    private void ensureSuiteAnnotations(Class<?> testClass) {
+    //        if (!hasSuiteAnnotations(testClass)) {
+    //            throw new IllegalArgumentException(
+    //                testClass.getName() + " is used as a suite but does not have a @SelectClasses annotation");
+    //        }
+    //    }
 
     public Stream<DynamicNode> stream() {
         //        System.err.println("*** stream");
         //        new RuntimeException().printStackTrace(System.err);
-        if (evaluating.isEmpty()) {
-            System.err.println("*** stream() outer");
+        System.err.println("stream(): " + this + "  eval " + evaluating.size() + "  exec " + executing.size()); // 00, 01, 02
+        if (evaluating.isEmpty() /* && executing.isEmpty() */) {
+            System.err.println("*** stream() outer " + this);
             evaluating.push(this);
-            Stream<DynamicNode> stream = _suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
+            Stream<DynamicNode> stream = _suiteTestClasses.stream()
+                    .peek(c -> System.err.println("stream() for " + c))
+                    .map(this::streamForSuite)
+                    .flatMap(i -> i)
+                    .peek(i -> System.err.println("result: " + i));
             evaluating.pop();
             return stream;
         }
         else {
             System.err.println("*** stream() inner");
             return Stream.empty();
+            //return suppliedStream(this::stream);
         }
     }
 
+    //    private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
+    //        System.err.println("streamForSuite " + suiteClass.getSimpleName());
+    //
+    //        List<Class<?>> unfilteredClasses = Arrays.asList(suiteClass.getAnnotation(SelectClasses.class).value());
+    //        SuiteFilters suiteFilters = new SuiteFilters(suiteClass);
+    //
+    //        return unfilteredClasses.stream()
+    //                .filter(suiteFilters.getClassPredicate())
+    //                .map(this::streamForUnitTests)
+    //                .flatMap(i -> i);
+    //    }
+
     private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
-        List<Class<?>> unfilteredClasses = Arrays.asList(suiteClass.getAnnotation(SelectClasses.class).value());
-        SuiteFilters suiteFilters = new SuiteFilters(suiteClass);
+        //private Stream<DynamicNode> streamForUnitTests(Class<?> suiteClass) {
+        //        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
+        //                .selectors(DiscoverySelectors.selectClass(testClass))
+        //                .build();
 
-        return unfilteredClasses.stream().filter(suiteFilters.getClassPredicate()).map(
-            this::streamForUnitTests).flatMap(i -> i);
-    }
-
-    private Stream<DynamicNode> streamForUnitTests(Class<?> testClass) {
-        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request().selectors(
-            DiscoverySelectors.selectClass(testClass)).build();
-        TestPlan testPlan = _launcher.discover(request);
+        SuiteRequestBuilder requestBuilder = new SuiteRequestBuilder(suiteClass, executing.peek());
+        System.err.println("push: " + requestBuilder);
+        executing.push(requestBuilder);
+        TestPlan testPlan = _launcher.discover(requestBuilder.build());
+        //executing.pop();
 
         // System.err.println("streamForUnitTests: " + testClass.getSimpleName());
 
-        Set<TestIdentifier> roots = testPlan.getRoots();
-        if (roots.size() == 1) {
+        Set<TestIdentifier> testPlanRoots = testPlan.getRoots();
+        Set<TestIdentifier> roots = new LinkedHashSet<>();
+        if (testPlanRoots.size() == 1) {
             // This should always happen, with the engine being the root.
             // Skip the DynamicContainer which shows the engine name.
-            TestIdentifier root = Iterables.getOnlyElement(roots);
-            roots = testPlan.getChildren(root);
+            TestIdentifier root = Iterables.getOnlyElement(testPlanRoots);
+            roots.addAll(testPlan.getChildren(root));
         }
-        // else log warning?
+        else {
+            // log warning? throw exception?
+            roots.addAll(testPlanRoots);
+        }
 
         System.err.println("roots: " + roots);
-        return streamForTestIdentifiers(testPlan, roots);
+
+        //return streamForTestIdentifiers(testPlan, roots);
+
+        //        return suppliedStream(() -> {
+        //            System.err.println("pop: " + executing.peek());
+        //            Stream<DynamicNode> stream = streamForTestIdentifiers(testPlan, roots);
+        //            executing.pop();
+        //            return stream;
+        //        });
+
+        return streamForTestIdentifiers(testPlan, roots).onClose(() -> {
+            // TODO! no - still closes outer first (e.g. BitSuite before BitShiftSuite)
+            SuiteRequestBuilder popped = executing.pop();
+            System.err.println("popped: " + popped);
+        });
     }
 
     private Stream<DynamicNode> streamForTestIdentifiers(TestPlan testPlan, Set<TestIdentifier> testIdentifiers) {
-        System.err.println("streamForTestIdentifiers: " + testIdentifiers);
-        return testIdentifiers.stream().map(tid -> createDynamicContainer(testPlan, tid));
+        // System.err.println("streamForTestIdentifiers: " + testIdentifiers);
+        return testIdentifiers.stream().map(tid -> createNodeForTestIdentifier(testPlan, tid));
     }
 
-    //    private DynamicNode createDynamicNode(TestPlan testPlan, TestIdentifier testIdentifier) {
-    //        return testIdentifier.isContainer() ? createDynamicContainer(testPlan, testIdentifier)
-    //                : createDynamicTest(testPlan, testIdentifier);
-    //    }
-
-    // hmms
-    private DynamicNode createDynamicContainer(TestPlan testPlan, TestIdentifier containerIdentifier) {
+    private DynamicNode createNodeForTestIdentifier(TestPlan testPlan, TestIdentifier containerIdentifier) {
 
         if (!containerIdentifier.isContainer()) {
-            throw new IllegalStateException("TestIdentifier is not a container");
+            throw new IllegalArgumentException("TestIdentifier is not a container");
+        }
+
+        TestSource source = containerIdentifier.getSource().get();
+        System.err.println("*** Source: " + source);
+        MethodSource methodSource = null;
+        if (source instanceof MethodSource) {
+            methodSource = ((MethodSource) source);
+            if (results.containsKey(methodSource)) {
+                System.err.println("*** Have seen value before: " + methodSource);
+                return results.get(methodSource);
+            }
+        }
+
+        //        Stream<? extends DynamicNode> children = classResultListener._suiteContainer.stream();
+        //        return createDynamicContainer(containerIdentifier, children);
+
+        DynamicContainer container = DynamicContainer.dynamicContainer(containerIdentifier.getDisplayName(), null,
+            suppliedStream(() -> executeTests(testPlan, containerIdentifier)));
+
+        if (methodSource != null) {
+            results.put(methodSource, container);
+            System.err.println("*** Stored result for: " + methodSource);
+        }
+
+        return container;
+    }
+
+    //    private Class<?> getTestSourceClass(TestIdentifier containerIdentifier) {
+    //        TestSource source = containerIdentifier.getSource().get();
+    //        if (source instanceof ClassSource) {
+    //            return ((ClassSource) source).getJavaClass();
+    //        }
+    //        throw new IllegalArgumentException("Unable to determine ");
+    //    }
+
+    private Stream<? extends DynamicNode> executeTests(TestPlan testPlan, TestIdentifier containerIdentifier) {
+        System.err.println("executeTests: " + containerIdentifier + " " + executing.size() + "  " + evaluating.size());
+
+        if (!executing.isEmpty()) {
+            // TODO! doc
+            // return Stream.empty(); // no tests
+            // return suppliedStream(() -> executeTests(testPlan, containerIdentifier)); // infinite loop
         }
 
         TestSource source = containerIdentifier.getSource().get();
@@ -198,51 +273,68 @@ public class DynamicSuite {
         ClassSource classSource = (ClassSource) source;
         LauncherDiscoveryRequest request = requestForClassSource(classSource);
         ClassResultListener classResultListener = new ClassResultListener(containerIdentifier);
+        // executing.push(this);
         _launcher.execute(request, classResultListener);
+        // executing.pop();
 
-        // TODO! _suiteContainer not same as _mostRecentContainer (which is null)??
-        return classResultListener._suiteContainerInfo.toDynamicContainer();
-
-        //        Stream<? extends DynamicNode> children = classResultListener._suiteContainer.stream();
-        //        return createDynamicContainer(containerIdentifier, children);
+        // TODO! _suiteContainer not same as _mostRecentContainer
+        return classResultListener._suiteContainerInfo.stream();
     }
 
     private static final class DynamicContainerInfo {
         private final TestIdentifier _containerIdentifier;
         // null at top
         private DynamicContainerInfo _parentContainerInfo;
-        private final List<DynamicNode> _children = new ArrayList<>();
+        private final List<DynamicContainerInfo> _childContainers = new ArrayList<>();
+        private final List<DynamicTest> _childTests = new ArrayList<>();
+        private TestExecutionResult _problem;
 
         DynamicContainerInfo(TestIdentifier containerIdentifier) {
             _containerIdentifier = containerIdentifier;
         }
 
-        //public void addTest(DynamicTest dynamicTest) {
         public void addTest(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-            System.err.println("addTest: " + testIdentifier + " to " + this);
-            DynamicTest dynamicTest = createDynamicNodeForExecutedTestResult(testIdentifier, testExecutionResult);
-            _children.add(dynamicTest);
+            //System.out.println("addTest: " + testIdentifier + " to " + this);
+            DynamicTest dynamicTest = createDynamicNodeForTestExecutionResult(testIdentifier, testExecutionResult);
+            _childTests.add(dynamicTest);
         }
 
         public DynamicContainerInfo addContainer(TestIdentifier childContainerIdentifier) {
             DynamicContainerInfo childContainerInfo = new DynamicContainerInfo(childContainerIdentifier);
-            System.err.println("addContainer: " + childContainerInfo + " to " + this);
+            //System.out.println("addContainer: " + childContainerInfo + " to " + this);
             // TODO! assertions
             childContainerInfo._parentContainerInfo = this;
-            // ook
-            //DynamicContainer container = createDynamicContainerForExecutedTestResults();
-            //_children.add(container);
-            _children.add(childContainerInfo.toDynamicContainer());
+            _childContainers.add(childContainerInfo);
             return childContainerInfo;
         }
 
-        public DynamicContainer toDynamicContainer() {
+        private DynamicContainer toDynamicContainer() {
+
             // System.err.println("createDynamicContainer: " + containerIdentifier);
-            URI uri = createSourceUri(_containerIdentifier);
+            URI uri = DynamicSourceUriUtil.createSourceUri(_containerIdentifier);
 
             String displayName = _containerIdentifier.getDisplayName();
             System.err.println("createDynamicContainer: " + displayName);
-            return DynamicContainer.dynamicContainer(displayName, uri, _children.stream());
+
+            //                    if (_problem != null) {
+            //                        return DynamicTest.dynamicTest(displayName, uri, () -> {
+            //                            throw new IllegalStateException(_problem);
+            //                        });
+            //                    }
+            return DynamicContainer.dynamicContainer(displayName, uri, stream());
+        }
+
+        public Stream<? extends DynamicNode> stream() {
+            if (_problem != null) {
+                DynamicTest problemNode = createDynamicNodeForTestExecutionResult(_containerIdentifier, _problem);
+                return Stream.of(problemNode);
+            }
+
+            Stream<DynamicContainer> containerStream = _childContainers.stream()
+                    .map(DynamicContainerInfo::toDynamicContainer);
+            Stream<DynamicTest> testStream = _childTests.stream();
+
+            return Stream.concat(containerStream, testStream);
         }
 
         /**
@@ -251,26 +343,28 @@ public class DynamicSuite {
          * all tests in the suite are dynamic tests, and they just mimic the
          * original result by either throwing an exception or doing nothing.
          */
-        private DynamicTest createDynamicNodeForExecutedTestResult(TestIdentifier testIdentifier,
+        private DynamicTest createDynamicNodeForTestExecutionResult(TestIdentifier testIdentifier,
                 TestExecutionResult testExecutionResult) {
-            System.err.println("createDynamicNodeForExecutedTestResult " + testIdentifier);
 
             String displayName = testIdentifier.getDisplayName();
             // TODO! make this conditional (on sys prop? - useful until some gradle bugs fixed)
             if (true) {
                 // TODO! gets called multiple times with nested suites
-                if (!displayName.contains(".")) {
-                    displayName = _containerIdentifier.getDisplayName() + "." + displayName;
-                }
+                // if (!displayName.contains(".")) {
+                displayName = _containerIdentifier.getDisplayName() + "." + displayName;
+                // }
             }
 
-            URI testSourceUri = createSourceUri(testIdentifier);
+            URI testSourceUri = DynamicSourceUriUtil.createSourceUri(testIdentifier);
             Executable executable = () -> returnOriginalTestExecutionResult(testExecutionResult);
+
+            System.err.println("createDynamicNodeForExecutedTestResult() for " + testIdentifier);
 
             return DynamicTest.dynamicTest(displayName, testSourceUri, executable);
         }
 
         private void returnOriginalTestExecutionResult(TestExecutionResult testExecutionResult) throws Throwable {
+
             if (testExecutionResult.getThrowable().isPresent()) {
                 throw testExecutionResult.getThrowable().get();
             }
@@ -286,10 +380,15 @@ public class DynamicSuite {
         //            return _children.stream();
         //        }
 
+        public void setProblem(TestExecutionResult problem) {
+            _problem = problem;
+        }
+
         @Override
         public String toString() {
             return getClass().getSimpleName() + "[displayName=" + _containerIdentifier.getDisplayName() + "]";
         }
+
     }
 
     private LauncherDiscoveryRequest requestForClassSource(ClassSource classSource) {
@@ -324,10 +423,10 @@ public class DynamicSuite {
             if (++_executionDepth <= 2) {
                 // Skip engine and class name.
                 // TODO! could get class name node here and remove other.
-                System.out.println("started skip: " + testIdentifier);
+                // System.out.println("started skip: " + testIdentifier);
                 return;
             }
-            System.out.println("started: " + testIdentifier);
+            //System.out.println("started: " + testIdentifier);
 
             checkParentContainer(testIdentifier);
 
@@ -344,7 +443,7 @@ public class DynamicSuite {
 
         @Override
         public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-            System.out.println("finished: " + testIdentifier);
+            System.out.println("finished: " + testIdentifier + "  result " + testExecutionResult);
 
             // TODO! something like this??
             //            if (--_depth <= 1) {
@@ -353,6 +452,10 @@ public class DynamicSuite {
 
             // TODO! check for anything started but not finished/skipped?
             if (testIdentifier.isContainer()) {
+                if (!Status.SUCCESSFUL.equals(testExecutionResult.getStatus())) {
+                    _mostRecentContainer.setProblem(testExecutionResult);
+                }
+
                 _executionDepth--;
                 // TODO!
                 //                if (!testIdentifier.equals(_mostRecentContainer._containerIdentifier)) {
@@ -382,6 +485,12 @@ public class DynamicSuite {
             }
         }
 
+        // TODO! bin??
+        @Override
+        public void reportingEntryPublished(TestIdentifier testIdentifier, ReportEntry entry) {
+            System.err.println("reportingEntryPublished: " + entry);
+        }
+
         private void addTest(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
             checkParentContainer(testIdentifier);
             _mostRecentContainer.addTest(testIdentifier, testExecutionResult);
@@ -401,31 +510,36 @@ public class DynamicSuite {
     }
 
     /** A holder for filter information for a suite. */
-    private static final class SuiteFilters {
-        private ClassNameFilter _excludeClassNamePatterns;
-
-        SuiteFilters(Class<?> suiteClass) {
-            if (suiteClass.isAnnotationPresent(ExcludeClassNamePatterns.class)) {
-                String[] patterns = suiteClass.getAnnotation(ExcludeClassNamePatterns.class).value();
-                _excludeClassNamePatterns = ClassNameFilter.excludeClassNamePatterns(patterns);
-            }
-        }
-
-        Predicate<Class<?>> getClassPredicate() {
-            if (_excludeClassNamePatterns != null) {
-                // TODO! should this be name or simple name?
-                return c -> _excludeClassNamePatterns.apply(c.getName()).included();
-            }
-            else {
-                // No filter.
-                return c -> true;
-            }
-        }
-    }
+    //    private static final class SuiteFilters {
+    //        private ClassNameFilter _excludeClassNamePatterns;
+    //
+    //        SuiteFilters(Class<?> suiteClass) {
+    //            if (suiteClass.isAnnotationPresent(ExcludeClassNamePatterns.class)) {
+    //                String[] patterns = suiteClass.getAnnotation(ExcludeClassNamePatterns.class).value();
+    //                _excludeClassNamePatterns = ClassNameFilter.excludeClassNamePatterns(patterns);
+    //            }
+    //        }
+    //
+    //        Predicate<Class<?>> getClassPredicate() {
+    //            if (_excludeClassNamePatterns != null) {
+    //                // TODO! should this be name or simple name?
+    //                return c -> _excludeClassNamePatterns.apply(c.getName()).included();
+    //            }
+    //            else {
+    //                // No filter.
+    //                return c -> true;
+    //            }
+    //        }
+    //    }
 
     // TODO! there's probably an existing Java or Guava class which does this
-    //    private <T> Stream<T> suppliedStream(Supplier<Stream<T>> streamSupplier) {
-    //        return Stream.of(streamSupplier).map(supplier -> supplier.get()).flatMap(i -> i);
-    //    }
+    private <T> Stream<T> suppliedStream(Supplier<Stream<T>> streamSupplier) {
+        return Stream.of(streamSupplier).map(supplier -> supplier.get()).flatMap(i -> i);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[suiteTestClasses=" + _suiteTestClasses + "]";
+    }
 
 }

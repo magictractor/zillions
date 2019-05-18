@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.bigint.bits;
+package uk.co.magictractor.zillions.testbed.bigint.bits.op;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;

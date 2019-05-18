@@ -17,39 +17,19 @@ package uk.co.magictractor.zillions.testbed.bigint;
 
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
-import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.IncludeClassNamePatterns;
+import org.junit.platform.suite.api.SelectPackages;
 
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.AbsTest;
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.AddTest;
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.MultiplyTest;
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.NegateTest;
-import uk.co.magictractor.zillions.testbed.bigint.arithmetic.SubtractTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.AndTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.ClearBitTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.FlipBitTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.OrTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.SetBitTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.TestBitTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.XorTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.shift.ShiftLeftTest;
-import uk.co.magictractor.zillions.testbed.bigint.bits.shift.ShiftRightTest;
-import uk.co.magictractor.zillions.testbed.bigint.object.CompareTest;
-import uk.co.magictractor.zillions.testbed.bigint.object.EqualsTest;
-import uk.co.magictractor.zillions.testbed.bigint.object.HashCodeTest;
-import uk.co.magictractor.zillions.testbed.bigint.object.ToStringTest;
+import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
 
 // JUnit5 suite support coming.
 // See https://github.com/junit-team/junit5/issues/744.
 
-// TODO! revert to suite of suites
-//@SelectClasses({ObjectSuite.class, ArithmeticSuite.class, BitSuite.class})
-
-@SelectClasses({ ToStringTest.class, EqualsTest.class, CompareTest.class, HashCodeTest.class, AddTest.class,
-        SubtractTest.class, MultiplyTest.class, NegateTest.class, AbsTest.class, AndTest.class, OrTest.class,
-        XorTest.class, ShiftLeftTest.class, ShiftRightTest.class, SetBitTest.class, ClearBitTest.class,
-        FlipBitTest.class, TestBitTest.class })
+@SelectPackages("uk.co.magictractor.zillions.testbed.bigint")
+@IncludeClassNamePatterns("^uk\\.co\\.magictractor\\.zillions\\.testbed\\.bigint\\.[^.]*\\.[^.]*Suite$")
 public abstract class BigIntSuite {
 
     @TestFactory

@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.bigint.bits;
+package uk.co.magictractor.zillions.testbed.bigint.bits.single;
 
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
-import org.junit.platform.suite.api.IncludeClassNamePatterns;
+import org.junit.platform.suite.api.ExcludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectPackages;
 
 import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
 
-@SelectPackages("uk.co.magictractor.zillions.testbed.bigint.bits")
-@IncludeClassNamePatterns("^uk\\.co\\.magictractor\\.zillions\\.testbed\\.bigint\\.bits\\.[^.]*\\.[^.]*Suite$")
-public class BitSuite {
+@SelectPackages("uk.co.magictractor.zillions.testbed.bigint.bits.single")
+@ExcludeClassNamePatterns({ "^.*Suite$" })
+public class BitSingleSuite {
 
     @TestFactory
     public Stream<DynamicNode> suiteFactory() {

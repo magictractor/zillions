@@ -19,12 +19,13 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
-import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.ExcludeClassNamePatterns;
+import org.junit.platform.suite.api.SelectPackages;
 
 import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
 
-@SelectClasses({ AddTest.class, SubtractTest.class, MultiplyTest.class, NegateTest.class, SignumTest.class,
-        AbsTest.class })
+@SelectPackages("uk.co.magictractor.zillions.testbed.bigint.arithmetic")
+@ExcludeClassNamePatterns({ "^.*Suite$" })
 public class ArithmeticSuite {
 
     @TestFactory

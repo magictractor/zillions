@@ -13,37 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.bigint.bits;
+package uk.co.magictractor.zillions.testbed.bigint.bits.op;
 
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestBigIntParam;
 
-public class OrTest extends OpTestBigIntParam {
+public class AndTest extends OpTestBigIntParam {
 
-    public OrTest() {
-        super(BigInt::or);
+    public AndTest() {
+        super(BigInt::and);
     }
 
     @Test
-    public void testOrPositivePositive() {
-        check(10, 3, 11);
+    public void testAndPositivePositive() {
+        check(10, 3, 2);
     }
 
     @Test
-    public void testOrPositiveNegative() {
-        check(10, -3, -1);
+    public void testAndPositiveNegative() {
+        check(10, -3, 8);
     }
 
     @Test
-    public void testOrNegativePositive() {
-        check(-10, 3, -9);
+    public void testAndNegativePositive() {
+        check(-10, 3, 2);
     }
 
     @Test
-    public void testOrNegativeNegative() {
-        check(-10, -3, -1);
+    public void testAndNegativeNegative() {
+        check(-10, -3, -12);
     }
 
 }

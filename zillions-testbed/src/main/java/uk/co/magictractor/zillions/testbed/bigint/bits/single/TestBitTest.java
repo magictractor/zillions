@@ -13,41 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.bigint.bits;
+package uk.co.magictractor.zillions.testbed.bigint.bits.single;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.BigIntFactory;
-import uk.co.magictractor.zillions.testbed.bigint.OpTestIntParam;
+import uk.co.magictractor.zillions.testbed.bigint.OpTestSingleParam;
 
-public class ClearBitTest extends OpTestIntParam {
+public class TestBitTest extends OpTestSingleParam<Integer, Boolean> {
 
-    public ClearBitTest() {
-        super(BigInt::clearBit);
+    public TestBitTest() {
+        super(Integer.class, Boolean.class, BigInt::testBit);
     }
 
     @Test
-    public void testPositiveNumberChangedBit() {
-        check(9, 0, 8);
+    public void testPositiveNumber() {
+        check(9, 3, true);
     }
 
     @Test
-    public void testPositiveNumberUnchangedBit() {
-        check(9, 1, 9);
+    public void testPositiveNumberOffBit() {
+        check(9, 2, false);
     }
 
     // -9 in binary is 111...1110111
 
     @Test
-    public void testNegativeNumberChangedBit() {
-        check(-9, 0, -10);
+    public void testNegativeNumberOnBit() {
+        check(-9, 2, true);
     }
 
     @Test
-    public void testNegativeNumberUnchangedBit() {
-        check(-9, 3, -9);
+    public void testNegativeNumberOffBit() {
+        check(-9, 3, false);
     }
 
     @Test

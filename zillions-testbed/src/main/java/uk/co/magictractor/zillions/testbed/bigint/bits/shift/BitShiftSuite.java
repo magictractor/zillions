@@ -19,11 +19,13 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
-import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.ExcludeClassNamePatterns;
+import org.junit.platform.suite.api.SelectPackages;
 
 import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
 
-@SelectClasses({ ShiftLeftTest.class, ShiftRightTest.class })
+@SelectPackages("uk.co.magictractor.zillions.testbed.bigint.bits.shift")
+@ExcludeClassNamePatterns({ "^.*Suite$" })
 public class BitShiftSuite {
 
     @TestFactory

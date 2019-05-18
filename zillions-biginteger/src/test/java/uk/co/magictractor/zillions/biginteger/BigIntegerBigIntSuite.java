@@ -17,6 +17,8 @@ package uk.co.magictractor.zillions.biginteger;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import uk.co.magictractor.zillions.biginteger.bits.BigIntegerBigIntBitCount;
+import uk.co.magictractor.zillions.biginteger.bits.BigIntegerBigIntBitLength;
 import uk.co.magictractor.zillions.core.junit.TestContextExtension;
 import uk.co.magictractor.zillions.testbed.bigint.BigIntSuite;
 
@@ -24,7 +26,8 @@ public class BigIntegerBigIntSuite extends BigIntSuite {
 
     // TODO! test context should pick up default impls without requiring this explcit set up
     @RegisterExtension
-    public static TestContextExtension todo = new TestContextExtension(BigIntegerCreateStrategy.class);
+    public static TestContextExtension todo = new TestContextExtension(BigIntegerCreateStrategy.class,
+        BigIntegerBigIntBitCount.class, BigIntegerBigIntBitLength.class);
 
     // Nothing here. Full test suite is inherited from testbed parent suite.
 
