@@ -21,11 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -33,24 +29,14 @@ import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
-import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.TestExecutionResult.Status;
-import org.junit.platform.engine.TestSource;
-import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.engine.reporting.ReportEntry;
-import org.junit.platform.engine.support.descriptor.ClassSource;
-import org.junit.platform.engine.support.descriptor.MethodSource;
 import org.junit.platform.launcher.Launcher;
-import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.TestExecutionListener;
 import org.junit.platform.launcher.TestIdentifier;
-import org.junit.platform.launcher.TestPlan;
-import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.opentest4j.TestAbortedException;
-
-import com.google.common.collect.Iterables;
 
 /**
  * <p>
@@ -76,11 +62,14 @@ import com.google.common.collect.Iterables;
 public class DynamicSuite {
 
     // TODO! threadlocal - if it's useful
-    private static final Deque<DynamicSuite> evaluating = new ArrayDeque<>();
+    //private static final Deque<DynamicSuite> evaluating = new ArrayDeque<>();
     private static final Deque<SuiteRequestBuilder> executing = new ArrayDeque<>();
-    private static final Map<MethodSource, DynamicContainer> results = new HashMap<>();
+    //private static final Map<MethodSource, DynamicContainer> results = new HashMap<>();
 
-    private final Launcher _launcher = LauncherFactory.create();
+    // TODO! not static
+    private static final Launcher _launcher = LauncherFactory.create();
+    private static final SuiteExecutionListener _suiteExecutionListener = new SuiteExecutionListener();
+
     private final List<Class<?>> _suiteTestClasses;
 
     /**
@@ -121,171 +110,44 @@ public class DynamicSuite {
         _suiteTestClasses = suiteTestClasses;
     }
 
-    /**
-     * Check whether the test class has suite annotations. Currently checks only
-     * for @SelectClasses, this is likely to be improved soon.
-     */
-    //    private boolean hasSuiteAnnotations(Class<?> testClass) {
-    //        return testClass.getAnnotation(SelectClasses.class) != null;
-    //    }
-
-    //    private void ensureSuiteAnnotations(Class<?> testClass) {
-    //        if (!hasSuiteAnnotations(testClass)) {
-    //            throw new IllegalArgumentException(
-    //                testClass.getName() + " is used as a suite but does not have a @SelectClasses annotation");
-    //        }
-    //    }
-
     public Stream<DynamicNode> stream() {
         //        System.err.println("*** stream");
         //        new RuntimeException().printStackTrace(System.err);
-        System.err.println("stream(): " + this + "  eval " + evaluating.size() + "  exec " + executing.size()); // 00, 01, 02
-        if (evaluating.isEmpty() /* && executing.isEmpty() */) {
-            System.err.println("*** stream() outer " + this);
-            evaluating.push(this);
-            Stream<DynamicNode> stream = _suiteTestClasses.stream()
-                    .peek(c -> System.err.println("stream() for " + c))
-                    .map(this::streamForSuite)
-                    .flatMap(i -> i)
-                    .peek(i -> System.err.println("result: " + i));
-            evaluating.pop();
-            return stream;
-        }
-        else {
-            System.err.println("*** stream() inner");
-            return Stream.empty();
-            //return suppliedStream(this::stream);
-        }
+        Stream<DynamicNode> stream = _suiteTestClasses.stream()
+                .peek(c -> System.out.println("stream() for " + c))
+                .map(this::streamForSuite)
+                .flatMap(i -> i)
+                .peek(i -> System.out.println("result: " + i));
+        return stream;
     }
-
-    //    private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
-    //        System.err.println("streamForSuite " + suiteClass.getSimpleName());
-    //
-    //        List<Class<?>> unfilteredClasses = Arrays.asList(suiteClass.getAnnotation(SelectClasses.class).value());
-    //        SuiteFilters suiteFilters = new SuiteFilters(suiteClass);
-    //
-    //        return unfilteredClasses.stream()
-    //                .filter(suiteFilters.getClassPredicate())
-    //                .map(this::streamForUnitTests)
-    //                .flatMap(i -> i);
-    //    }
 
     private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
-        //private Stream<DynamicNode> streamForUnitTests(Class<?> suiteClass) {
-        //        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-        //                .selectors(DiscoverySelectors.selectClass(testClass))
-        //                .build();
 
-        SuiteRequestBuilder requestBuilder = new SuiteRequestBuilder(suiteClass, executing.peek());
-        System.err.println("push: " + requestBuilder);
+        SuiteRequestBuilder requestBuilder = new SuiteRequestBuilder(suiteClass);
+
+        boolean isOuterSuite = executing.isEmpty();
+        if (!isOuterSuite) {
+            _suiteExecutionListener.startInnerSuite();
+        }
+
         executing.push(requestBuilder);
-        TestPlan testPlan = _launcher.discover(requestBuilder.build());
-        //executing.pop();
+        _launcher.execute(requestBuilder.build(), _suiteExecutionListener);
+        executing.pop();
 
-        // System.err.println("streamForUnitTests: " + testClass.getSimpleName());
-
-        Set<TestIdentifier> testPlanRoots = testPlan.getRoots();
-        Set<TestIdentifier> roots = new LinkedHashSet<>();
-        if (testPlanRoots.size() == 1) {
-            // This should always happen, with the engine being the root.
-            // Skip the DynamicContainer which shows the engine name.
-            TestIdentifier root = Iterables.getOnlyElement(testPlanRoots);
-            roots.addAll(testPlan.getChildren(root));
+        if (isOuterSuite) {
+            return _suiteExecutionListener._topContainer._childContainers.stream()
+                    .map(DynamicContainerInfo::toDynamicContainer);
         }
         else {
-            // log warning? throw exception?
-            roots.addAll(testPlanRoots);
+            return Stream.empty();
         }
-
-        System.err.println("roots: " + roots);
-
-        //return streamForTestIdentifiers(testPlan, roots);
-
-        //        return suppliedStream(() -> {
-        //            System.err.println("pop: " + executing.peek());
-        //            Stream<DynamicNode> stream = streamForTestIdentifiers(testPlan, roots);
-        //            executing.pop();
-        //            return stream;
-        //        });
-
-        return streamForTestIdentifiers(testPlan, roots).onClose(() -> {
-            // TODO! no - still closes outer first (e.g. BitSuite before BitShiftSuite)
-            SuiteRequestBuilder popped = executing.pop();
-            System.err.println("popped: " + popped);
-        });
-    }
-
-    private Stream<DynamicNode> streamForTestIdentifiers(TestPlan testPlan, Set<TestIdentifier> testIdentifiers) {
-        // System.err.println("streamForTestIdentifiers: " + testIdentifiers);
-        return testIdentifiers.stream().map(tid -> createNodeForTestIdentifier(testPlan, tid));
-    }
-
-    private DynamicNode createNodeForTestIdentifier(TestPlan testPlan, TestIdentifier containerIdentifier) {
-
-        if (!containerIdentifier.isContainer()) {
-            throw new IllegalArgumentException("TestIdentifier is not a container");
-        }
-
-        TestSource source = containerIdentifier.getSource().get();
-        System.err.println("*** Source: " + source);
-        MethodSource methodSource = null;
-        if (source instanceof MethodSource) {
-            methodSource = ((MethodSource) source);
-            if (results.containsKey(methodSource)) {
-                System.err.println("*** Have seen value before: " + methodSource);
-                return results.get(methodSource);
-            }
-        }
-
-        //        Stream<? extends DynamicNode> children = classResultListener._suiteContainer.stream();
-        //        return createDynamicContainer(containerIdentifier, children);
-
-        DynamicContainer container = DynamicContainer.dynamicContainer(containerIdentifier.getDisplayName(), null,
-            suppliedStream(() -> executeTests(testPlan, containerIdentifier)));
-
-        if (methodSource != null) {
-            results.put(methodSource, container);
-            System.err.println("*** Stored result for: " + methodSource);
-        }
-
-        return container;
-    }
-
-    //    private Class<?> getTestSourceClass(TestIdentifier containerIdentifier) {
-    //        TestSource source = containerIdentifier.getSource().get();
-    //        if (source instanceof ClassSource) {
-    //            return ((ClassSource) source).getJavaClass();
-    //        }
-    //        throw new IllegalArgumentException("Unable to determine ");
-    //    }
-
-    private Stream<? extends DynamicNode> executeTests(TestPlan testPlan, TestIdentifier containerIdentifier) {
-        System.err.println("executeTests: " + containerIdentifier + " " + executing.size() + "  " + evaluating.size());
-
-        if (!executing.isEmpty()) {
-            // TODO! doc
-            // return Stream.empty(); // no tests
-            // return suppliedStream(() -> executeTests(testPlan, containerIdentifier)); // infinite loop
-        }
-
-        TestSource source = containerIdentifier.getSource().get();
-
-        ClassSource classSource = (ClassSource) source;
-        LauncherDiscoveryRequest request = requestForClassSource(classSource);
-        ClassResultListener classResultListener = new ClassResultListener(containerIdentifier);
-        // executing.push(this);
-        _launcher.execute(request, classResultListener);
-        // executing.pop();
-
-        // TODO! _suiteContainer not same as _mostRecentContainer
-        return classResultListener._suiteContainerInfo.stream();
     }
 
     private static final class DynamicContainerInfo {
         private final TestIdentifier _containerIdentifier;
         // null at top
         private DynamicContainerInfo _parentContainerInfo;
-        private final List<DynamicContainerInfo> _childContainers = new ArrayList<>();
+        private List<DynamicContainerInfo> _childContainers = new ArrayList<>();
         private final List<DynamicTest> _childTests = new ArrayList<>();
         private TestExecutionResult _problem;
 
@@ -347,18 +209,13 @@ public class DynamicSuite {
                 TestExecutionResult testExecutionResult) {
 
             String displayName = testIdentifier.getDisplayName();
-            // TODO! make this conditional (on sys prop? - useful until some gradle bugs fixed)
+            // TODO! make this conditional (on sys prop? - useful pending Gradle enhancements)
             if (true) {
-                // TODO! gets called multiple times with nested suites
-                // if (!displayName.contains(".")) {
                 displayName = _containerIdentifier.getDisplayName() + "." + displayName;
-                // }
             }
 
             URI testSourceUri = DynamicSourceUriUtil.createSourceUri(testIdentifier);
             Executable executable = () -> returnOriginalTestExecutionResult(testExecutionResult);
-
-            System.err.println("createDynamicNodeForExecutedTestResult() for " + testIdentifier);
 
             return DynamicTest.dynamicTest(displayName, testSourceUri, executable);
         }
@@ -376,10 +233,6 @@ public class DynamicSuite {
             // Do nothing, test will pass.
         }
 
-        //        public Stream<? extends DynamicNode> stream() {
-        //            return _children.stream();
-        //        }
-
         public void setProblem(TestExecutionResult problem) {
             _problem = problem;
         }
@@ -391,59 +244,50 @@ public class DynamicSuite {
 
     }
 
-    private LauncherDiscoveryRequest requestForClassSource(ClassSource classSource) {
-        DiscoverySelector selector = DiscoverySelectors.selectClass(classSource.getJavaClass());
+    private static final class SuiteExecutionListener implements TestExecutionListener {
 
-        return LauncherDiscoveryRequestBuilder.request().selectors(selector).build();
-    }
-
-    private static final class ClassResultListener implements TestExecutionListener {
-        // private final TestIdentifier _suiteIdentifier;
-        private final DynamicContainerInfo _suiteContainerInfo;
-        //private final List<? extends DynamicNode> _children;
-
-        private int _executionDepth;
-
+        private DynamicContainerInfo _topContainer;
         private DynamicContainerInfo _mostRecentContainer;
-        // private TestExecutionResult _testExecutionResult;
-
-        ClassResultListener(TestIdentifier suiteIdentifier) {
-            // _suiteIdentifier = suiteIdentifier;
-            _suiteContainerInfo = new DynamicContainerInfo(suiteIdentifier);
-            _mostRecentContainer = _suiteContainerInfo;
-            //_children = new ArrayList<>();
-        }
-
-        //        public Stream<? extends DynamicNode> stream() {
-        //            return _suiteContainer.stream();
-        //        }
+        private boolean _startInnerSuite;
 
         @Override
         public void executionStarted(TestIdentifier testIdentifier) {
-            if (++_executionDepth <= 2) {
-                // Skip engine and class name.
-                // TODO! could get class name node here and remove other.
-                // System.out.println("started skip: " + testIdentifier);
-                return;
-            }
-            //System.out.println("started: " + testIdentifier);
+            System.out.println("executionStarted: " + testIdentifier);
 
             checkParentContainer(testIdentifier);
 
-            // System.err.println("++executionStarted: " + testIdentifier);
-            /*
-             * Use executionStarted() rather than dynamicTestRegistered() for
-             * adding containers to include template and parameterised test
-             * containers.
-             */
             if (testIdentifier.isContainer()) {
                 addContainer(testIdentifier);
+                if (_startInnerSuite) {
+                    // _mostRecentContainer is for the engine identifier which will be removed from the results.
+
+                    DynamicContainerInfo parent;
+                    // TODO! can do either of these, make configurable
+                    if (2 == 1 + 1) {
+                        // Remove inner @TestFactory methods
+                        parent = _mostRecentContainer._parentContainerInfo._parentContainerInfo;
+                    }
+                    else {
+                        // Leave node for inner @TestFactory methods
+                        parent = _mostRecentContainer._parentContainerInfo;
+                        // Share child containers so nodes added to the engine are added to the level above.
+                        //_mostRecentContainer._parentContainerInfo._childContainers.remove(_mostRecentContainer);
+                        //_mostRecentContainer._childContainers = _mostRecentContainer._parentContainerInfo._childContainers;
+                    }
+
+                    // TODO! NOOO!!!! don't clear??
+                    parent._childContainers.clear();
+                    // Share child containers so nodes added to this container are also added to the parent.
+                    _mostRecentContainer._childContainers = parent._childContainers;
+
+                    _startInnerSuite = false;
+                }
             }
         }
 
         @Override
         public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-            System.out.println("finished: " + testIdentifier + "  result " + testExecutionResult);
+            System.out.println("executionFinished: " + testIdentifier + "  result " + testExecutionResult);
 
             // TODO! something like this??
             //            if (--_depth <= 1) {
@@ -456,7 +300,6 @@ public class DynamicSuite {
                     _mostRecentContainer.setProblem(testExecutionResult);
                 }
 
-                _executionDepth--;
                 // TODO!
                 //                if (!testIdentifier.equals(_mostRecentContainer._containerIdentifier)) {
                 //                    throw new IllegalStateException(
@@ -478,14 +321,24 @@ public class DynamicSuite {
         public void executionSkipped(TestIdentifier testIdentifier, String reason) {
             //System.err.println("skipped: " + testIdentifier);
             if (testIdentifier.isTest()) {
-                // Test disabled or assumption failed.
+                // @Disabled test disabled or an assumption failed.
                 // Dynamic nodes may use assumptions, but cannot be ignored prior to execution.
                 // See https://github.com/junit-team/junit5/issues/1439
                 addTest(testIdentifier, TestExecutionResult.aborted(new TestAbortedException(reason)));
             }
         }
 
-        // TODO! bin??
+        // TODO! probably not needed
+        @Override
+        public void dynamicTestRegistered(TestIdentifier testIdentifier) {
+            System.err.println("dynamicTestRegistered: " + testIdentifier);
+        }
+
+        public void startInnerSuite() {
+            _startInnerSuite = true;
+        }
+
+        // TODO! probably not needed
         @Override
         public void reportingEntryPublished(TestIdentifier testIdentifier, ReportEntry entry) {
             System.err.println("reportingEntryPublished: " + entry);
@@ -498,39 +351,26 @@ public class DynamicSuite {
 
         private void addContainer(TestIdentifier containerIdentifier) {
             checkParentContainer(containerIdentifier);
-            _mostRecentContainer = _mostRecentContainer.addContainer(containerIdentifier);
+            if (_mostRecentContainer == null) {
+                if (_topContainer != null) {
+                    throw new IllegalStateException("top container has already been set");
+                }
+                _topContainer = new DynamicContainerInfo(containerIdentifier);
+                _mostRecentContainer = _topContainer;
+            }
+            else {
+                _mostRecentContainer = _mostRecentContainer.addContainer(containerIdentifier);
+            }
         }
 
         private void checkParentContainer(TestIdentifier testIdentifier) {
-            String parentId = testIdentifier.getParentId().get();
-            if (!_mostRecentContainer._containerIdentifier.getUniqueId().equals(parentId)) {
-                throw new IllegalStateException("Current container is not a parent of the TestIdentifier");
-            }
+            // TODO! reinstate
+            //            String parentId = testIdentifier.getParentId().get();
+            //            if (!_mostRecentContainer._containerIdentifier.getUniqueId().equals(parentId)) {
+            //                throw new IllegalStateException("Current container is not a parent of the TestIdentifier");
+            //            }
         }
     }
-
-    /** A holder for filter information for a suite. */
-    //    private static final class SuiteFilters {
-    //        private ClassNameFilter _excludeClassNamePatterns;
-    //
-    //        SuiteFilters(Class<?> suiteClass) {
-    //            if (suiteClass.isAnnotationPresent(ExcludeClassNamePatterns.class)) {
-    //                String[] patterns = suiteClass.getAnnotation(ExcludeClassNamePatterns.class).value();
-    //                _excludeClassNamePatterns = ClassNameFilter.excludeClassNamePatterns(patterns);
-    //            }
-    //        }
-    //
-    //        Predicate<Class<?>> getClassPredicate() {
-    //            if (_excludeClassNamePatterns != null) {
-    //                // TODO! should this be name or simple name?
-    //                return c -> _excludeClassNamePatterns.apply(c.getName()).included();
-    //            }
-    //            else {
-    //                // No filter.
-    //                return c -> true;
-    //            }
-    //        }
-    //    }
 
     // TODO! there's probably an existing Java or Guava class which does this
     private <T> Stream<T> suppliedStream(Supplier<Stream<T>> streamSupplier) {

@@ -15,6 +15,7 @@
  */
 package uk.co.magictractor.zillions.biginteger;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import uk.co.magictractor.zillions.biginteger.bits.BigIntegerBigIntBitCount;

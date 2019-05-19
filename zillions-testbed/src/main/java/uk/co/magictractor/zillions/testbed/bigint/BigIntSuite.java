@@ -17,7 +17,6 @@ package uk.co.magictractor.zillions.testbed.bigint;
 
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.IncludeClassNamePatterns;

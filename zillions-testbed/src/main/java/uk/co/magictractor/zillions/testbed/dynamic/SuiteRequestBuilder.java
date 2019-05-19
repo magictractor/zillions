@@ -27,12 +27,10 @@ import org.junit.platform.suite.api.SelectPackages;
 public class SuiteRequestBuilder {
 
     private final Class<?> _suiteClass;
-    private final SuiteRequestBuilder _parentBuilder;
     private List<Filter<?>> _filters;
 
-    public SuiteRequestBuilder(Class<?> suiteClass, SuiteRequestBuilder parentBuilder) {
+    public SuiteRequestBuilder(Class<?> suiteClass) {
         _suiteClass = suiteClass;
-        _parentBuilder = parentBuilder;
     }
 
     public LauncherDiscoveryRequest build() {
@@ -82,9 +80,6 @@ public class SuiteRequestBuilder {
 
     private void initFilters() {
         _filters = new ArrayList<>();
-        if (_parentBuilder != null) {
-            _filters.addAll(_parentBuilder.filters());
-        }
 
         // Similar to JUnitPlatform.addFiltersFromAnnotations()
         addFilter(ExcludeClassNamePatterns.class, a -> ClassNameFilter.excludeClassNamePatterns(a.value()));
@@ -97,47 +92,17 @@ public class SuiteRequestBuilder {
         addFilter(IncludeEngines.class, a -> EngineFilter.includeEngines(a.value()));
     }
 
-    // ExcludeClassNamePatterns
     private <A extends Annotation> void addFilter(Class<A> annotationClass, Function<A, Filter<?>> filterFunction) {
-        // ClassNameFilter.excludeClassNamePatterns(patterns);
         A annotation = _suiteClass.getAnnotation(annotationClass);
-        if (annotation == null) {
-            return;
+        if (annotation != null) {
+            Filter<?> filter = filterFunction.apply(annotation);
+            _filters.add(filter);
         }
-
-        Filter<?> filter = filterFunction.apply(annotation);
-        _filters.add(filter);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "[suiteClass=" + _suiteClass + "]";
     }
-
-    //        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-    //                .selectors(DiscoverySelectors.selectClass(testClass))
-    //                .build();
-
-    //  private static final class SuiteFilters {
-    //  private ClassNameFilter _excludeClassNamePatterns;
-    //
-    //  SuiteFilters(Class<?> suiteClass) {
-    //      if (suiteClass.isAnnotationPresent(ExcludeClassNamePatterns.class)) {
-    //          String[] patterns = suiteClass.getAnnotation(ExcludeClassNamePatterns.class).value();
-    //          _excludeClassNamePatterns = ClassNameFilter.excludeClassNamePatterns(patterns);
-    //      }
-    //  }
-    //
-    //  Predicate<Class<?>> getClassPredicate() {
-    //      if (_excludeClassNamePatterns != null) {
-    //          // TODO! should this be name or simple name?
-    //          return c -> _excludeClassNamePatterns.apply(c.getName()).included();
-    //      }
-    //      else {
-    //          // No filter.
-    //          return c -> true;
-    //      }
-    //  }
-    //}
 
 }
