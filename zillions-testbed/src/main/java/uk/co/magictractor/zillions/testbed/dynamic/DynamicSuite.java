@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicContainer;
@@ -61,14 +60,18 @@ import org.opentest4j.TestAbortedException;
  */
 public class DynamicSuite {
 
-    // TODO! threadlocal - if it's useful
-    //private static final Deque<DynamicSuite> evaluating = new ArrayDeque<>();
-    private static final Deque<SuiteRequestBuilder> executing = new ArrayDeque<>();
-    //private static final Map<MethodSource, DynamicContainer> results = new HashMap<>();
+    private static final Launcher LAUNCHER = LauncherFactory.create();
 
-    // TODO! not static
-    private static final Launcher _launcher = LauncherFactory.create();
-    private static final SuiteExecutionListener _suiteExecutionListener = new SuiteExecutionListener();
+    /*
+     * Note that tests with multiple threads have had absolutely no testing.
+     * This InheritableThreadLocal might not be sufficient.
+     */
+    private static final InheritableThreadLocal<SharedState> STATE = new InheritableThreadLocal<SharedState>() {
+        @Override
+        protected SharedState initialValue() {
+            return new SharedState();
+        }
+    };
 
     private final List<Class<?>> _suiteTestClasses;
 
@@ -106,36 +109,32 @@ public class DynamicSuite {
             throw new IllegalArgumentException("suiteTestClasses must not be null or empty");
         }
 
-        //suiteTestClasses.forEach(this::ensureSuiteAnnotations);
         _suiteTestClasses = suiteTestClasses;
     }
 
     public Stream<DynamicNode> stream() {
-        //        System.err.println("*** stream");
-        //        new RuntimeException().printStackTrace(System.err);
-        Stream<DynamicNode> stream = _suiteTestClasses.stream()
-                .peek(c -> System.out.println("stream() for " + c))
-                .map(this::streamForSuite)
-                .flatMap(i -> i)
-                .peek(i -> System.out.println("result: " + i));
-        return stream;
+        return _suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
     }
 
     private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
 
         SuiteRequestBuilder requestBuilder = new SuiteRequestBuilder(suiteClass);
 
+        SharedState state = STATE.get();
+        Deque<SuiteRequestBuilder> executing = state._executing;
+        SuiteExecutionListener suiteExecutionListener = state._suiteExecutionListener;
+
         boolean isOuterSuite = executing.isEmpty();
         if (!isOuterSuite) {
-            _suiteExecutionListener.startInnerSuite();
+            suiteExecutionListener.startInnerSuite();
         }
 
         executing.push(requestBuilder);
-        _launcher.execute(requestBuilder.build(), _suiteExecutionListener);
+        LAUNCHER.execute(requestBuilder.build(), suiteExecutionListener);
         executing.pop();
 
         if (isOuterSuite) {
-            return _suiteExecutionListener._topContainer._childContainers.stream()
+            return suiteExecutionListener._topContainer._childContainers.stream()
                     .map(DynamicContainerInfo::toDynamicContainer);
         }
         else {
@@ -156,15 +155,12 @@ public class DynamicSuite {
         }
 
         public void addTest(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-            //System.out.println("addTest: " + testIdentifier + " to " + this);
             DynamicTest dynamicTest = createDynamicNodeForTestExecutionResult(testIdentifier, testExecutionResult);
             _childTests.add(dynamicTest);
         }
 
         public DynamicContainerInfo addContainer(TestIdentifier childContainerIdentifier) {
             DynamicContainerInfo childContainerInfo = new DynamicContainerInfo(childContainerIdentifier);
-            //System.out.println("addContainer: " + childContainerInfo + " to " + this);
-            // TODO! assertions
             childContainerInfo._parentContainerInfo = this;
             _childContainers.add(childContainerInfo);
             return childContainerInfo;
@@ -172,17 +168,11 @@ public class DynamicSuite {
 
         private DynamicContainer toDynamicContainer() {
 
-            // System.err.println("createDynamicContainer: " + containerIdentifier);
             URI uri = DynamicSourceUriUtil.createSourceUri(_containerIdentifier);
 
             String displayName = _containerIdentifier.getDisplayName();
             System.err.println("createDynamicContainer: " + displayName);
 
-            //                    if (_problem != null) {
-            //                        return DynamicTest.dynamicTest(displayName, uri, () -> {
-            //                            throw new IllegalStateException(_problem);
-            //                        });
-            //                    }
             return DynamicContainer.dynamicContainer(displayName, uri, stream());
         }
 
@@ -244,6 +234,12 @@ public class DynamicSuite {
 
     }
 
+    /** State shared between a test suite and any child suites of that suite. */
+    private static final class SharedState {
+        private final Deque<SuiteRequestBuilder> _executing = new ArrayDeque<>();
+        private final SuiteExecutionListener _suiteExecutionListener = new SuiteExecutionListener();
+    }
+
     private static final class SuiteExecutionListener implements TestExecutionListener {
 
         private DynamicContainerInfo _topContainer;
@@ -259,7 +255,13 @@ public class DynamicSuite {
             if (testIdentifier.isContainer()) {
                 addContainer(testIdentifier);
                 if (_startInnerSuite) {
-                    // _mostRecentContainer is for the engine identifier which will be removed from the results.
+                    /*
+                     * _mostRecentContainer is for the engine identifier which
+                     * will be removed from the results, its parent will be
+                     * the @TestFactory method which calls
+                     * DynamicSuite.stream(), which may optionally be removed
+                     * too.
+                     */
 
                     DynamicContainerInfo parent;
                     // TODO! can do either of these, make configurable
@@ -289,11 +291,6 @@ public class DynamicSuite {
         public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
             System.out.println("executionFinished: " + testIdentifier + "  result " + testExecutionResult);
 
-            // TODO! something like this??
-            //            if (--_depth <= 1) {
-            //                return;
-            //            }
-
             // TODO! check for anything started but not finished/skipped?
             if (testIdentifier.isContainer()) {
                 if (!Status.SUCCESSFUL.equals(testExecutionResult.getStatus())) {
@@ -306,10 +303,7 @@ public class DynamicSuite {
                 //                        "executionFinished() for a contained other than the current container");
                 //                }
 
-                // TODO! depth check for this method?
-                if (_mostRecentContainer != null) {
-                    _mostRecentContainer = _mostRecentContainer._parentContainerInfo;
-                }
+                _mostRecentContainer = _mostRecentContainer._parentContainerInfo;
             }
 
             if (testIdentifier.isTest()) {
@@ -373,9 +367,9 @@ public class DynamicSuite {
     }
 
     // TODO! there's probably an existing Java or Guava class which does this
-    private <T> Stream<T> suppliedStream(Supplier<Stream<T>> streamSupplier) {
-        return Stream.of(streamSupplier).map(supplier -> supplier.get()).flatMap(i -> i);
-    }
+    //    private <T> Stream<T> suppliedStream(Supplier<Stream<T>> streamSupplier) {
+    //        return Stream.of(streamSupplier).map(supplier -> supplier.get()).flatMap(i -> i);
+    //    }
 
     @Override
     public String toString() {
