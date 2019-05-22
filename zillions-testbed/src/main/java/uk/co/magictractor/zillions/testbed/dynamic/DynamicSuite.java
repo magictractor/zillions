@@ -50,12 +50,8 @@ import org.opentest4j.TestAbortedException;
  * This class will probably be removed once JUnit5 has better support for
  * suites. See https://github.com/junit-team/junit5/issues/744.
  * <ul>
- * <li>TODO! support @SelectPackages</li>
- * <li>TODO! filters should apply to nested suites too</li>
  * <li>TODO! registered extension should apply to nested suites too (see
  * extension in Attic)</li>
- * <li>TODO! fix dynamic test node URI. Requires JUnit enhancement. Have raised
- * https://github.com/junit-team/junit5/issues/1850</li>
  * </ul>
  */
 public class DynamicSuite {
@@ -168,10 +164,31 @@ public class DynamicSuite {
 
         private DynamicContainer toDynamicContainer() {
 
-            URI uri = DynamicSourceUriUtil.createSourceUri(_containerIdentifier);
-
             String displayName = _containerIdentifier.getDisplayName();
             System.err.println("createDynamicContainer: " + displayName);
+
+            /**
+             * <p>
+             * TODO! inner "suiteFactory()" method names are not displayed in
+             * Eclipse (a container without a name is displayed). Workarounds
+             * are modifying the display name (e.g. removing parentheses) or not
+             * passing URIs. But not passing the URI for the @TestFactory method
+             * alone is not sufficient.
+             * </p>
+             * <p>
+             * Not passing URIs for all dynamic nodes is sufficient - but then
+             * the links to test classes are broken.
+             * </p>
+             * <p>
+             * Seems like an Eclipse bug and inner @TestFactory nodes will
+             * generally be magicked away, so do no hackery here.
+             * <p>
+             */
+            URI uri = SourceUriSupport.fromTestIdentifier(_containerIdentifier);
+
+            //            if (displayName.endsWith("()")) {
+            //                displayName = displayName.substring(0, displayName.length() - 2);
+            //            }
 
             return DynamicContainer.dynamicContainer(displayName, uri, stream());
         }
@@ -204,7 +221,7 @@ public class DynamicSuite {
                 displayName = _containerIdentifier.getDisplayName() + "." + displayName;
             }
 
-            URI testSourceUri = DynamicSourceUriUtil.createSourceUri(testIdentifier);
+            URI testSourceUri = SourceUriSupport.fromTestIdentifier(testIdentifier);
             Executable executable = () -> returnOriginalTestExecutionResult(testExecutionResult);
 
             return DynamicTest.dynamicTest(displayName, testSourceUri, executable);
