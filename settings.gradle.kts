@@ -9,12 +9,15 @@
 
 rootProject.name = "zillions"
 
+include("zillions-api")
+include("zillions-env")
 include("zillions-core")
 include("zillions-testbed")
 include("zillions-biginteger")
 include("zillions-gmp")
 
 // Trick copied from https://github.com/robfletcher/strikt/blob/master/settings.gradle.kts
+// Explained at http://www.developerphil.com/renaming-your-gradle-build-files
 rootProject.children.forEach {
   it.buildFileName = "${it.name}.gradle.kts"
 }
