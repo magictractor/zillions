@@ -24,6 +24,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
  * the default PER_METHOD Lifecycle).
  */
 @TestInstance(Lifecycle.PER_CLASS)
+//
 @Disabled("Failing - @Disabled while setting up Maven builds")
 public class SystemPropertiesExtensionTestPerClassLifecycle extends SystemPropertiesExtensionTest {
 
