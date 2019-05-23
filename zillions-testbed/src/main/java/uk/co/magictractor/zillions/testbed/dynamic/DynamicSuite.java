@@ -130,6 +130,9 @@ public class DynamicSuite {
         executing.pop();
 
         if (isOuterSuite) {
+            // Reset state in case there are multiple top-level suites.
+            STATE.remove();
+
             return suiteExecutionListener._topContainer._childContainers.stream()
                     .map(DynamicContainerInfo::toDynamicContainer);
         }
