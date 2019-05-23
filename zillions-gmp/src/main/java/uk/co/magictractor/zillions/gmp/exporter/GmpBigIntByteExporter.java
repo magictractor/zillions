@@ -19,11 +19,11 @@ import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 
 import java.util.Arrays;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.api.bits.BigIntBitLength;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.bits.BigIntBitLength;
+import uk.co.magictractor.zillions.api.exporter.BigIntByteExporter;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
-import uk.co.magictractor.zillions.core.environment.Environment;
-import uk.co.magictractor.zillions.core.exporter.BigIntByteExporter;
+import uk.co.magictractor.zillions.environment.Environment;
 import uk.co.magictractor.zillions.gmp.GmpBigInt;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;

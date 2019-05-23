@@ -17,7 +17,7 @@ package uk.co.magictractor.zillions.testbed.bigint;
 
 import java.util.function.BiFunction;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
 
 public abstract class OpTestIntParam extends OpTestSingleParam<Integer, BigInt> {
 

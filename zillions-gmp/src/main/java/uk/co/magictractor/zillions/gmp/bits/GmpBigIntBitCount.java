@@ -17,8 +17,8 @@ package uk.co.magictractor.zillions.gmp.bits;
 
 import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.api.bits.BigIntBitCount;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.bits.BigIntBitCount;
 import uk.co.magictractor.zillions.gmp.GmpBigInt;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;
 

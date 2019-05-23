@@ -22,8 +22,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
 
 // hmm - put this in new project which could extend all impls?
 public class MultiplyBenchmark {

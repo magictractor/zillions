@@ -17,7 +17,7 @@ package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 
 import org.junit.jupiter.api.Test;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestNoParam;
 
 public class NegateTest extends OpTestNoParam<BigInt> {

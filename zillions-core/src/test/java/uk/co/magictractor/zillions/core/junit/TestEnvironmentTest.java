@@ -23,13 +23,13 @@ import java.lang.reflect.Proxy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.create.CreateStrategy;
 import uk.co.magictractor.zillions.core.NoopBigInt;
 import uk.co.magictractor.zillions.core.NoopCreateStrategy;
 import uk.co.magictractor.zillions.core.NumptyCreateStrategy;
-import uk.co.magictractor.zillions.core.create.CreateStrategy;
-import uk.co.magictractor.zillions.core.environment.Environment;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
+import uk.co.magictractor.zillions.environment.Environment;
 
 public class TestEnvironmentTest {
 

@@ -15,8 +15,8 @@
  */
 package uk.co.magictractor.zillions.testbed.bigint;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
 
 public abstract class OpTest<RESULT> {
 

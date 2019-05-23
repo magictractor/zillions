@@ -17,10 +17,10 @@ package uk.co.magictractor.zillions.biginteger.importer;
 
 import java.math.BigInteger;
 
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.importer.BigIntByteImporter;
 import uk.co.magictractor.zillions.biginteger.BigIntegerBigInt;
-import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
-import uk.co.magictractor.zillions.core.importer.BigIntByteImporter;
 
 public class BigIntegerBigIntByteImporter implements BigIntByteImporter {
 

@@ -17,7 +17,7 @@ package uk.co.magictractor.zillions.biginteger;
 
 import java.math.BigInteger;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
 
 public class BigIntegerBigInt implements BigInt {
 

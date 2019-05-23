@@ -15,7 +15,7 @@
  */
 package uk.co.magictractor.zillions.core.junit;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
 
 /**
  * A very simple implementation of BigInt which only has correct behaviour for

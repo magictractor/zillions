@@ -18,10 +18,10 @@ package uk.co.magictractor.zillions.core.example;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.core.NumptyCreateStrategy;
 import uk.co.magictractor.zillions.core.junit.TestContextExtension;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
 
 // TODO! move this to an examples project
 public class ExampleQuickStart {

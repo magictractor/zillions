@@ -15,6 +15,10 @@
  */
 package uk.co.magictractor.zillions.core.bits;
 
+/**
+ * Utility methods for working with bits and bytes which may be useful to some
+ * BitInt implementations.
+ */
 public final class BitUtils {
 
     public static final byte BYTE_00 = (byte) 0x00;

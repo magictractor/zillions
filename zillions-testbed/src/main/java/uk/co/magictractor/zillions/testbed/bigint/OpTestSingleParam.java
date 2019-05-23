@@ -19,8 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.function.BiFunction;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
 
 public abstract class OpTestSingleParam<PARAM, RESULT> extends OpTest<RESULT> {
 

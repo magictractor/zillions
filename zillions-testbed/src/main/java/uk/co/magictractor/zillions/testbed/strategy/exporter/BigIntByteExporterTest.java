@@ -22,10 +22,10 @@ import java.util.Arrays;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.exporter.BigIntByteExporter;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
-import uk.co.magictractor.zillions.core.exporter.BigIntByteExporter;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
 import uk.co.magictractor.zillions.testbed.bigint.AbstractStrategyTest;
 
 public class BigIntByteExporterTest extends AbstractStrategyTest<BigIntByteExporter> {

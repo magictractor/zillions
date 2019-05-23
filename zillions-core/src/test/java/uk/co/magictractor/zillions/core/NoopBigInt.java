@@ -15,6 +15,8 @@
  */
 package uk.co.magictractor.zillions.core;
 
+import uk.co.magictractor.zillions.api.BigInt;
+
 /**
  * An even more useless implementation of BigInt than NumptyBigInt. Always has a
  * value of zero, and all operations have no effect.

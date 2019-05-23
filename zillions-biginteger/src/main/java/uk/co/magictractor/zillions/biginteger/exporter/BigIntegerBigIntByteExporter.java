@@ -20,10 +20,10 @@ import static uk.co.magictractor.zillions.core.bits.BitUtils.BYTE_FF;
 
 import java.util.Arrays;
 
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.exporter.BigIntByteExporter;
 import uk.co.magictractor.zillions.biginteger.BigIntegerBigInt;
-import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
-import uk.co.magictractor.zillions.core.exporter.BigIntByteExporter;
 
 public class BigIntegerBigIntByteExporter implements BigIntByteExporter {
 

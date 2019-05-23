@@ -18,8 +18,8 @@ package uk.co.magictractor.zillions.testbed.bigint.bits.single;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestSingleParam;
 
 public class TestBitTest extends OpTestSingleParam<Integer, Boolean> {

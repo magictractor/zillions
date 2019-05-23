@@ -19,8 +19,8 @@ import java.util.function.Function;
 
 import org.assertj.core.api.Assertions;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
 
 public class OpTestNoParam<RESULT> extends OpTest<RESULT> {
 

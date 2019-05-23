@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    api(project(":zillions-api"))
     api("com.google.guava:guava:27.0.1-jre")
 //    api("org.slf4j:slf4j-api:1.7.26")
     testImplementation("ch.qos.logback:logback-classic:1.2.3")

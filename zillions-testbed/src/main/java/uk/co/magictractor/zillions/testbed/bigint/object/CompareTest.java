@@ -17,7 +17,7 @@ package uk.co.magictractor.zillions.testbed.bigint.object;
 
 import org.junit.jupiter.api.Test;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestSingleParam;
 
 public class CompareTest extends OpTestSingleParam<BigInt, Integer> {

@@ -16,11 +16,11 @@
 package uk.co.magictractor.zillions.testbed.bigint.object;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.magictractor.zillions.core.BigIntFactory.from;
+import static uk.co.magictractor.zillions.environment.BigIntFactory.from;
 
 import org.junit.jupiter.api.Test;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
 
 public class ToStringTest {
     @Test

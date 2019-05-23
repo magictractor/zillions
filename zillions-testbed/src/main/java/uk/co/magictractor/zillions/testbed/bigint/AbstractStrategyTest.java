@@ -15,7 +15,7 @@
  */
 package uk.co.magictractor.zillions.testbed.bigint;
 
-import uk.co.magictractor.zillions.core.environment.Environment;
+import uk.co.magictractor.zillions.environment.Environment;
 
 public abstract class AbstractStrategyTest<T> {
 

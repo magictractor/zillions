@@ -20,8 +20,8 @@ import java.util.Random;
 
 import com.google.common.base.MoreObjects;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.create.RandomStrategy;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.random.RandomStrategy;
 
 public class BigIntegerRandomStrategy implements RandomStrategy {
 

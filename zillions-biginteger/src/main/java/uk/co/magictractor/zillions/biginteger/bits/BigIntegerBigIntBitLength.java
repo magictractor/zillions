@@ -15,9 +15,9 @@
  */
 package uk.co.magictractor.zillions.biginteger.bits;
 
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.bits.BigIntBitLength;
 import uk.co.magictractor.zillions.biginteger.BigIntegerBigInt;
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.api.bits.BigIntBitLength;
 
 public class BigIntegerBigIntBitLength implements BigIntBitLength {
 

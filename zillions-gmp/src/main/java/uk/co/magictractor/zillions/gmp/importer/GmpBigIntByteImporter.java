@@ -19,9 +19,9 @@ import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 
 import com.sun.jna.Memory;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.importer.BigIntByteImporter;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
-import uk.co.magictractor.zillions.core.importer.BigIntByteImporter;
 import uk.co.magictractor.zillions.gmp.GmpBigInt;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;

@@ -17,8 +17,8 @@ package uk.co.magictractor.zillions.biginteger;
 
 import com.google.common.base.MoreObjects;
 
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.create.CreateStrategy;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.create.CreateStrategy;
 
 public class BigIntegerCreateStrategy implements CreateStrategy {
 
