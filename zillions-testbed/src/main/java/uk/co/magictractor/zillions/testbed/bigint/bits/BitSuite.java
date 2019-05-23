@@ -23,9 +23,11 @@ import org.junit.platform.suite.api.IncludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectPackages;
 
 import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @SelectPackages("uk.co.magictractor.zillions.testbed.bigint.bits")
 @IncludeClassNamePatterns("^uk\\.co\\.magictractor\\.zillions\\.testbed\\.bigint\\.bits\\.[^.]*\\.[^.]*Suite$")
+@WithinSuite
 public class BitSuite {
 
     @TestFactory

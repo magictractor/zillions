@@ -23,9 +23,11 @@ import org.junit.platform.suite.api.ExcludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectPackages;
 
 import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @SelectPackages("uk.co.magictractor.zillions.testbed.bigint.arithmetic")
 @ExcludeClassNamePatterns({ "^.*Suite$" })
+@WithinSuite
 public class ArithmeticSuite {
 
     @TestFactory

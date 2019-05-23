@@ -16,7 +16,9 @@
 package uk.co.magictractor.zillions.testbed.strategy.random;
 
 import uk.co.magictractor.zillions.core.random.JavaRandomStrategy;
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
+@WithinSuite
 public class JavaRandomStrategyTest extends RandomStrategyTest {
 
     public JavaRandomStrategyTest() {

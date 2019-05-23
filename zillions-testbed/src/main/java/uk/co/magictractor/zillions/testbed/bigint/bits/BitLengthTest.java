@@ -22,7 +22,9 @@ import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.api.bits.BigIntBitLength;
 import uk.co.magictractor.zillions.environment.BigIntFactory;
 import uk.co.magictractor.zillions.environment.Environment;
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
+@WithinSuite
 public class BitLengthTest {
 
     //    public BitLengthTest() {

@@ -1,4 +1,4 @@
-package uk.co.magictractor.zillions.benchmark;
+package uk.co.magictractor.zillions.testbed.tags;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,9 +7,14 @@ import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.Tag;
 
-@Target({ ElementType.TYPE, ElementType.METHOD })
+/**
+ * <p>
+ * Marker for unit tests which are run using a test suite.
+ * </p>
+ */
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Tag("benchmark")
-public @interface Benchmark {
+@Tag("within-suite")
+public @interface WithinSuite {
 
 }

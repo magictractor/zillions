@@ -26,7 +26,9 @@ import uk.co.magictractor.zillions.api.importer.BigIntByteImporter;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
 import uk.co.magictractor.zillions.environment.BigIntFactory;
 import uk.co.magictractor.zillions.testbed.bigint.AbstractStrategyTest;
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
+@WithinSuite
 public class BigIntByteImporterTest extends AbstractStrategyTest<BigIntByteImporter> {
 
     protected BigIntByteImporterTest() {

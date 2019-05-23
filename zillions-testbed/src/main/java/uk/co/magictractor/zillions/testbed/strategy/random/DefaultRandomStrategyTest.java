@@ -15,6 +15,9 @@
  */
 package uk.co.magictractor.zillions.testbed.strategy.random;
 
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
+
+@WithinSuite
 public class DefaultRandomStrategyTest extends RandomStrategyTest {
 
     public DefaultRandomStrategyTest() {

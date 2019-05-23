@@ -24,8 +24,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.environment.BigIntFactory;
+import uk.co.magictractor.zillions.testbed.tags.Benchmark;
 
 // hmm - put this in new project which could extend all impls?
+@Benchmark
 public class MultiplyBenchmark {
 
     //    public MultiplyBenchmark() {

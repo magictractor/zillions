@@ -22,7 +22,9 @@ import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.api.bits.BigIntBitCount;
 import uk.co.magictractor.zillions.environment.BigIntFactory;
 import uk.co.magictractor.zillions.environment.Environment;
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
+@WithinSuite
 public class BitCountTest /* extends OpTestNoParam */ {
 
     //  public BitCountTest() {

@@ -21,7 +21,9 @@ import static uk.co.magictractor.zillions.environment.BigIntFactory.from;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
+@WithinSuite
 public class ToStringTest {
     @Test
     public void testToStringPositive() {

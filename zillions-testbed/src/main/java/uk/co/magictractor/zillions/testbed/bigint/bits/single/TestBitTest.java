@@ -21,7 +21,9 @@ import org.junit.jupiter.api.Test;
 import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.environment.BigIntFactory;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestSingleParam;
+import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
+@WithinSuite
 public class TestBitTest extends OpTestSingleParam<Integer, Boolean> {
 
     public TestBitTest() {
@@ -52,8 +54,9 @@ public class TestBitTest extends OpTestSingleParam<Integer, Boolean> {
 
     @Test
     public void testInvalidBitNum() {
-        Assertions.assertThatThrownBy(() -> BigIntFactory.from(0).clearBit(-1)).isExactlyInstanceOf(
-            ArithmeticException.class).hasMessage("Negative bit address");
+        Assertions.assertThatThrownBy(() -> BigIntFactory.from(0).clearBit(-1))
+                .isExactlyInstanceOf(ArithmeticException.class)
+                .hasMessage("Negative bit address");
     }
 
 }
