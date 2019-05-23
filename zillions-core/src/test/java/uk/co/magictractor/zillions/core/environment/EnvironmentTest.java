@@ -25,15 +25,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import uk.co.magictractor.zillions.core.create.CreateStrategy;
-import uk.co.magictractor.zillions.core.discovery.SpiDiscoveryStrategy;
 import uk.co.magictractor.zillions.core.junit.SystemPropertiesExtension;
 import uk.co.magictractor.zillions.core.junit.TestContextExtension;
 
 public class EnvironmentTest {
 
     @RegisterExtension
-    public static SystemPropertiesExtension _systemProperties = new SystemPropertiesExtension().withProperty(
-        SpiDiscoveryStrategy.class, "disabled", "false");
+    public static SystemPropertiesExtension _systemProperties = new SystemPropertiesExtension();
+    //.withProperty(SpiDiscoveryStrategy.class, "disabled", "false");
 
     @RegisterExtension
     public static TestContextExtension _testContextRule = new TestContextExtension();
@@ -59,29 +58,22 @@ public class EnvironmentTest {
     @Disabled("Failing - @Disabled while setting up Maven builds")
     public void testSpiFromJavaLibDirectory() {
         // TODO! need to turn off proxies
-        CurrencyNameProvider impl = Environment.getBestAvailableImplementation(CurrencyNameProvider.class);
+        CurrencyNameProvider impl = Environment.findImplementation(CurrencyNameProvider.class);
         // Assert.assertNotNull(impl);
         assertThat(impl).isNotNull();
     }
 
     @Test
-    public void testSpiEnabled() {
-        String actual = Environment.getProperties().getString(
-            "uk.co.magictractor.zillions.core.discovery.SpiDiscoveryStrategy.disabled");
-        assertThat(actual).isEqualTo("false");
-    }
-
-    @Test
     @Disabled("Failing - @Disabled while setting up Maven builds")
     public void testSpiFromJavaLibExtDirectory() {
-        FileSystemProvider impl = Environment.getBestAvailableImplementation(FileSystemProvider.class);
+        FileSystemProvider impl = Environment.findImplementation(FileSystemProvider.class);
         assertThat(impl).isNotNull();
     }
 
     @Test
     public void testSpiFromThisProject() {
         // TODO! bad test - this is a proxy rather than a proper SPI service load.
-        CreateStrategy impl = Environment.getBestAvailableImplementation(CreateStrategy.class);
+        CreateStrategy impl = Environment.findImplementation(CreateStrategy.class);
         assertThat(impl).isNotNull();
     }
 
@@ -95,7 +87,7 @@ public class EnvironmentTest {
         // testee.getImplementation(FileSystemProvider.class);
         System.setProperty("com.sun.nio.zipfs.ZipFileSystemProvider.disabled", "true");
 
-        FileSystemProvider actual = Environment.getBestAvailableImplementation(FileSystemProvider.class);
+        FileSystemProvider actual = Environment.findImplementation(FileSystemProvider.class);
         // Assert.assertEquals(null, actual);
         assertThat(actual).isNull();
     }

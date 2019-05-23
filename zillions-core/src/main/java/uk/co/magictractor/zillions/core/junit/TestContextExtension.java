@@ -65,14 +65,14 @@ public class TestContextExtension extends EnsureRegisteredExtension {
     }
 
     private void modifyTestContext(List<Object> implementations) {
-        TestContext testContext = TestContext.getInstance();
-        for (Object implementation : implementations) {
-            testContext.addImplementation(implementation);
-        }
+        //        TestContext testContext = TestContext.getInstance();
+        //        for (Object implementation : implementations) {
+        //            testContext.addImplementation(implementation);
+        //        }
     }
 
     private void restoreTestContext() {
-        TestContext.getInstance().reset();
+        // TestContext.getInstance().reset();
     }
 
 }

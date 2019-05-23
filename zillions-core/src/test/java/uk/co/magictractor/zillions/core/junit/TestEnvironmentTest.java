@@ -38,9 +38,9 @@ public class TestEnvironmentTest {
     public TestContextExtension _textContextRule = new TestContextExtension();
 
     /**
-     * failing because the first strategy remains in the StrategyListMap, and second
-     * strategy isn't even loaded. want to reset implementations cleanly, but leave
-     * bootstrapped class intact.
+     * failing because the first strategy remains in the StrategyListMap, and
+     * second strategy isn't even loaded. want to reset implementations cleanly,
+     * but leave bootstrapped class intact.
      */
     @Test
     public void t() {
@@ -49,7 +49,7 @@ public class TestEnvironmentTest {
         BigInt i = BigIntFactory.from("1");
         // assertEquals(GmpJnaBigInt.class, i.getClass());
         assertThat(i.getClass()).isEqualTo(NumptyBigInt.class);
-        TestContext.getInstance().reset();
+        // TestContext.getInstance().reset();
 
         _textContextRule.addImplementation(new NoopCreateStrategy());
         BigInt j = BigIntFactory.from("1");
@@ -61,7 +61,7 @@ public class TestEnvironmentTest {
     public void t2() {
 
         _textContextRule.addImplementation(new NoopCreateStrategy());
-        CreateStrategy strategy = Environment.getBestAvailableImplementation(CreateStrategy.class);
+        CreateStrategy strategy = Environment.findImplementation(CreateStrategy.class);
         if (!Proxy.isProxyClass(strategy.getClass())) {
             fail("Strategy implementation should be a proxy for unit tests: " + strategy.getClass().getSimpleName());
         }

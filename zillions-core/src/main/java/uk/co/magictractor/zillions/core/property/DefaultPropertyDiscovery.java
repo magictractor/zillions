@@ -15,11 +15,31 @@
  */
 package uk.co.magictractor.zillions.core.property;
 
-/** Properties are generally accessed via the methods on {@Link Environment}. */
-public interface PropertyStrategy {
+import java.util.Properties;
 
-    boolean containsKey(String key);
+import com.google.common.base.MoreObjects;
 
-    String get(String key);
+public class DefaultPropertyDiscovery implements PropertyDiscovery {
+
+    private Properties _properties;
+
+    public DefaultPropertyDiscovery() {
+        _properties = System.getProperties();
+    }
+
+    @Override
+    public boolean containsKey(String key) {
+        return _properties.containsKey(key);
+    }
+
+    @Override
+    public String getString(String key) {
+        return _properties.getProperty(key);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).toString();
+    }
 
 }

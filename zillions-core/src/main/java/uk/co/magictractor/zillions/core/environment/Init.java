@@ -16,16 +16,18 @@
 package uk.co.magictractor.zillions.core.environment;
 
 /**
- * <p> Strategies can be initialised when added to a StrategyList by implementing this
- * interface. </p>
- *
- * <p> This allows strategy constructors to be minimal, with error handling done by
+ * <p>
+ * Strategies can be initialised when added to a StrategyList by implementing
+ * this interface.
+ * </p>
+ * <p>
+ * This allows strategy constructors to be minimal, with error handling done by
  * StrategyList, which will mark the strategy as unavailable if init() throws an
  * Exception.
  */
 @FunctionalInterface
 public interface Init {
 
-    void init() throws Exception;
+    void init();
 
 }

@@ -15,14 +15,13 @@
  */
 package uk.co.magictractor.zillions.testbed.bigint.bits;
 
-import static uk.co.magictractor.zillions.core.environment.Environment.getBestAvailableImplementation;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.core.api.bits.BigIntBitLength;
+import uk.co.magictractor.zillions.core.environment.Environment;
 
 public class BitLengthTest {
 
@@ -85,7 +84,7 @@ public class BitLengthTest {
     }
 
     private void check(BigInt value, int expected) {
-        int actual = getBestAvailableImplementation(BigIntBitLength.class).bitLength(value);
+        int actual = Environment.findImplementation(BigIntBitLength.class).bitLength(value);
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 

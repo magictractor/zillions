@@ -22,9 +22,9 @@ import uk.co.magictractor.zillions.core.importer.BigIntByteImporter;
 
 public final class BigIntFactory {
 
-    private static final CreateStrategy CREATE = Environment.getBestAvailableImplementation(CreateStrategy.class);
-    private static final RandomStrategy RANDOM = Environment.getBestAvailableImplementation(RandomStrategy.class);
-    private static final BigIntByteImporter BYTE_IMPORTER = Environment.getBestAvailableImplementation(BigIntByteImporter.class);
+    private static final CreateStrategy CREATE = Environment.findImplementation(CreateStrategy.class);
+    private static final RandomStrategy RANDOM = Environment.findImplementation(RandomStrategy.class);
+    private static final BigIntByteImporter BYTE_IMPORTER = Environment.findImplementation(BigIntByteImporter.class);
 
     private BigIntFactory() {
     }

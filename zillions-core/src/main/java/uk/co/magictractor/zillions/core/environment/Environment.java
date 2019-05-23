@@ -15,84 +15,34 @@
  */
 package uk.co.magictractor.zillions.core.environment;
 
-import uk.co.magictractor.zillions.core.api.Strategies;
-import uk.co.magictractor.zillions.core.api.StrategiesFactory;
-import uk.co.magictractor.zillions.core.property.PropertyDecorator;
-import uk.co.magictractor.zillions.core.property.PropertyStrategy;
+import uk.co.magictractor.zillions.core.discovery.BootstrapImplementationDiscovery;
+import uk.co.magictractor.zillions.core.discovery.DefaultImplementationDiscovery;
+import uk.co.magictractor.zillions.core.discovery.ImplementationDiscovery;
+import uk.co.magictractor.zillions.core.property.DefaultPropertyDiscovery;
+import uk.co.magictractor.zillions.core.property.PropertyDiscovery;
 
 public final class Environment {
 
-    private static final StrategiesFactory STRATEGY_FACTORY = new StrategiesFactory();
-    private static final PropertyDecorator PROPERTIES;
+    private static final ImplementationDiscovery IMPLEMENTATION_DISCOVERY;
+    private static final PropertyDiscovery PROPERTY_DISCOVERY;
 
     static {
-        // PROPERTY_LIST = (PropertyStrategyList)
-        // STRATEGY_FACTORY.getStrategyList(PropertyStrategy.class);
-
-        /*
-         * Custom bootstrapping should never be required but can be done. It's intended
-         * that sufficient customisation is using the default bootstrap.
-         */
-        String bootstrapClassName = System.getProperty(Environment.class.getName() + ".bootstrap");
-        BootstrapStrategy bootstrapStrategy;
-        if (bootstrapClassName == null) {
-            bootstrapStrategy = new DefaultBootstrapStrategy();
-        }
-        else {
-            bootstrapStrategy = safeLoadBootstrapClass(bootstrapClassName);
-        }
-
-        PROPERTIES = new PropertyDecorator(STRATEGY_FACTORY.getStrategyListWithoutDiscovery(PropertyStrategy.class));
-
-        bootstrapStrategy.bootstrap(STRATEGY_FACTORY);
+        DefaultImplementationDiscovery bootstrapDiscovery = new BootstrapImplementationDiscovery();
+        PROPERTY_DISCOVERY = bootstrapDiscovery.findOptionalImplementation(PropertyDiscovery.class)
+                .orElseGet(DefaultPropertyDiscovery::new);
+        IMPLEMENTATION_DISCOVERY = bootstrapDiscovery.findOptionalImplementation(ImplementationDiscovery.class)
+                .orElseGet(DefaultImplementationDiscovery::new);
     }
 
     private Environment() {
     }
 
-    private static BootstrapStrategy safeLoadBootstrapClass(String bootstrapClassName) {
-        try {
-            return loadBootstrapClass(bootstrapClassName);
-        }
-        catch (Exception e) {
-            // TODO! what to do now?
-            // Perhaps wire in special strategies.
-            System.err.println("Could not load " + bootstrapClassName);
-            e.printStackTrace(System.err);
-            return null;
-        }
+    public static <T> T findImplementation(Class<T> apiClass) {
+        return IMPLEMENTATION_DISCOVERY.findImplementation(apiClass);
     }
 
-    private static BootstrapStrategy loadBootstrapClass(String bootstrapClassName) throws ReflectiveOperationException {
-        Class<?> bootstrapClass = Class.forName(bootstrapClassName);
-        return (BootstrapStrategy) bootstrapClass.newInstance();
-    }
-
-    public static <S> S getBestAvailableImplementation(Class<S> apiClass) {
-        return getStrategyList(apiClass).bestAvailable();
-    }
-
-    //    public static <S> List<S> getAvailableImplementations(Class<S> apiClass) {
-    //        return getStrategyList(apiClass).allAvailable();
-    //    }
-
-    // TODO! bin or move
-    public static void debugImplementations(Class<?> apiClass) {
-        System.err.println("All implementations of " + apiClass.getSimpleName());
-        getStrategyList(apiClass).strategyHolders().forEach(System.err::println);
-        System.err.println("-------------------------");
-    }
-
-    public static <S> Strategies<S> getStrategyList(Class<S> apiClass) {
-        return STRATEGY_FACTORY.getStrategyList(apiClass);
-    }
-
-    public static StrategiesFactory getImplementations() {
-        return STRATEGY_FACTORY;
-    }
-
-    public static PropertyDecorator getProperties() {
-        return PROPERTIES;
+    public static PropertyDiscovery getProperties() {
+        return PROPERTY_DISCOVERY;
     }
 
 }

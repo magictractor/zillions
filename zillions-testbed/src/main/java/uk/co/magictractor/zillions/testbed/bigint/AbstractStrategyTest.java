@@ -23,7 +23,7 @@ public abstract class AbstractStrategyTest<T> {
 
     protected AbstractStrategyTest(Class<? extends T> clazz) {
         if (clazz.isInterface()) {
-            _impl = Environment.getBestAvailableImplementation(clazz);
+            _impl = Environment.findImplementation(clazz);
         }
         else {
             try {

@@ -15,48 +15,28 @@
  */
 package uk.co.magictractor.zillions.core.property;
 
-import uk.co.magictractor.zillions.core.api.Strategies;
+/** Properties are generally accessed via the methods on {@Link Environment}. */
+public interface PropertyDiscovery {
 
-// TODO! rename - not convinced about "Decorator" here
-public class PropertyDecorator {
-    private Strategies<PropertyStrategy> _propertyStrategies;
+    boolean containsKey(String key);
 
-    public PropertyDecorator(Strategies<PropertyStrategy> propertyStrategies) {
-        _propertyStrategies = propertyStrategies;
-    }
+    String getString(String key);
 
-    public boolean containsKey(String key) {
-        return (findPropertyStrategyContainingKey(key) != null);
-    }
-
-    private PropertyStrategy findPropertyStrategyContainingKey(String key) {
-        for (PropertyStrategy candidate : _propertyStrategies.allAvailable()) {
-            if (candidate.containsKey(key)) {
-                return candidate;
-            }
-        }
-        return null;
-    }
-
-    public String getString(String key) {
-        PropertyStrategy delegate = findPropertyStrategyContainingKey(key);
-        return delegate == null ? null : delegate.get(key);
-    }
-
-    public String getString(Class<?> keyClass, String keyField, String defaultValue) {
+    // TODO! change to Optional<> instead of using defaultValue
+    default String getString(Class<?> keyClass, String keyField, String defaultValue) {
         return getString(key(keyClass, keyField), defaultValue);
     }
 
-    public String getString(String key, String defaultValue) {
+    default String getString(String key, String defaultValue) {
         String value = getString(key);
         return value == null ? defaultValue : value;
     }
 
-    public boolean getBoolean(Class<?> keyClass, String keyField, boolean defaultValue) {
+    default boolean getBoolean(Class<?> keyClass, String keyField, boolean defaultValue) {
         return getBoolean(key(keyClass, keyField), defaultValue);
     }
 
-    public boolean getBoolean(String key, boolean defaultValue) {
+    default boolean getBoolean(String key, boolean defaultValue) {
         String stringValue = getString(key);
         if (stringValue == null) {
             return defaultValue;
@@ -75,7 +55,7 @@ public class PropertyDecorator {
         return result;
     }
 
-    private String key(Class<?> keyClass, String keyField) {
+    default String key(Class<?> keyClass, String keyField) {
         return keyClass.getName() + "." + keyField;
     }
 

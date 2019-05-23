@@ -31,7 +31,7 @@ public class GmpRandomStrategy implements RandomStrategy, Init {
     private final gmp_randstate_t _state = new gmp_randstate_t();
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         __lib.gmp_randinit_default(_state);
     }
 

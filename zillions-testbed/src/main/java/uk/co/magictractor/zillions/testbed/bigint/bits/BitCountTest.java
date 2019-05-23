@@ -15,16 +15,15 @@
  */
 package uk.co.magictractor.zillions.testbed.bigint.bits;
 
-import static uk.co.magictractor.zillions.core.environment.Environment.getBestAvailableImplementation;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.BigIntFactory;
 import uk.co.magictractor.zillions.core.api.bits.BigIntBitCount;
+import uk.co.magictractor.zillions.core.environment.Environment;
 
-public class BitCountTest /*extends OpTestNoParam*/ {
+public class BitCountTest /* extends OpTestNoParam */ {
 
     //  public BitCountTest() {
     //      super(BigInt::bitCount);
@@ -65,7 +64,7 @@ public class BitCountTest /*extends OpTestNoParam*/ {
     }
 
     private void check(BigInt value, int expected) {
-        int actual = getBestAvailableImplementation(BigIntBitCount.class).bitCount(value);
+        int actual = Environment.findImplementation(BigIntBitCount.class).bitCount(value);
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 

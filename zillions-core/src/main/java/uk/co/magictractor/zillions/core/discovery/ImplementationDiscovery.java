@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.core.environment;
+package uk.co.magictractor.zillions.core.discovery;
 
-import uk.co.magictractor.zillions.core.api.StrategiesFactory;
+import java.util.Optional;
 
-public interface BootstrapStrategy {
+public interface ImplementationDiscovery {
 
-    void bootstrap(StrategiesFactory implementations);
+    default <T> T findImplementation(Class<T> apiClass) {
+        return findOptionalImplementation(apiClass)
+                .orElseThrow(() -> new IllegalStateException("No implementation found for " + apiClass));
+    }
+
+    <T> Optional<T> findOptionalImplementation(Class<T> apiClass);
 
 }

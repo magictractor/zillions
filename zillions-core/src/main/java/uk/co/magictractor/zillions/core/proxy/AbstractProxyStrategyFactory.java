@@ -86,12 +86,12 @@ public abstract class AbstractProxyStrategyFactory implements StrategyFactory {
 
             // Priority etc are delegated to this factory/
             if (_interfaceValueSuppliers.containsKey(method.getDeclaringClass())) {
-                System.err.println("interface: " + method.getDeclaringClass().getSimpleName());
+                //System.err.println("interface: " + method.getDeclaringClass().getSimpleName());
                 return _interfaceValueSuppliers.get(method.getDeclaringClass()).get();
             }
 
             // System.err.println("proxy: " + proxy);
-            System.err.println("method: " + method);
+            // System.err.println("method: " + method);
 
             try {
                 return handle(_apiClass, method, args);

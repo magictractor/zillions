@@ -19,27 +19,18 @@ import java.util.Random;
 
 import uk.co.magictractor.zillions.core.BigInt;
 import uk.co.magictractor.zillions.core.environment.Environment;
-import uk.co.magictractor.zillions.core.environment.Priority;
 import uk.co.magictractor.zillions.core.importer.BigIntByteImporter;
 
 /**
  * Uses Java's Random class to generate random bytes which is then imported to
- * the BigInt implementation.
- *
- * This allows the same "random" values to be used for benchmarking across all
- * BigInt implementations.
+ * the BigInt implementation. This allows the same "random" values to be used
+ * for benchmarking across all BigInt implementations.
  */
-public class JavaRandomStrategy implements RandomStrategy, Priority {
+public class JavaRandomStrategy implements RandomStrategy {
 
-    private static final BigIntByteImporter BYTE_IMPORTER = Environment.getBestAvailableImplementation(BigIntByteImporter.class);
+    private static final BigIntByteImporter BYTE_IMPORTER = Environment.findImplementation(BigIntByteImporter.class);
 
     private final Random _randomNumberGenerator = new Random();
-
-    @Override
-    public int getPriority() {
-        // Likely to be used only for testing and benchmarking.
-        return Priority.SPECIFIC_USE;
-    }
 
     @Override
     public BigInt randomise(BigInt rop, int numBits) {

@@ -107,7 +107,7 @@ public class GmpBigIntByteExporter implements BigIntByteExporter {
 
     @Override
     public byte[] asBytes(BigInt op) {
-        int bitLength = Environment.getBestAvailableImplementation(BigIntBitLength.class).bitLength(op);
+        int bitLength = Environment.findImplementation(BigIntBitLength.class).bitLength(op);
         byte[] bytes = new byte[(bitLength + 8) / 8];
         populateBytes(op, bytes);
 

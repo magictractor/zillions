@@ -15,18 +15,9 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import org.junit.jupiter.api.extension.RegisterExtension;
-
-import uk.co.magictractor.zillions.core.junit.TestContextExtension;
-import uk.co.magictractor.zillions.gmp.bits.GmpBigIntBitCount;
-import uk.co.magictractor.zillions.gmp.bits.GmpBigIntBitLength;
 import uk.co.magictractor.zillions.testbed.bigint.BigIntSuite;
 
 public class GmpBigIntSuite extends BigIntSuite {
-
-    @RegisterExtension
-    public static TestContextExtension todo = new TestContextExtension(GmpCreateStrategy.class, GmpBigIntBitCount.class,
-        GmpBigIntBitLength.class);
 
     // Nothing here. Full test suite is inherited from testbed parent suite.
 
