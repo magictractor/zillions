@@ -18,7 +18,6 @@ package uk.co.magictractor.zillions.testbed.bigint.object;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.magictractor.zillions.environment.BigIntFactory.from;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
@@ -41,14 +40,12 @@ public class EqualsTest {
 
     @Test
     public void testEqualsOtherImpl() {
-        Assertions.fail("reinstate test");
-
-        //        BigInt bigInt1 = from(10);
-        //        BigInt bigInt2 = new NumptyBigInt(10);
-        //        // String representations are the same.
-        //        assertThat(bigInt1.toString()).isEqualTo(bigInt1.toString());
-        //        // But equals is false because of the different implementing class.
-        //        assertThat(bigInt1).isNotEqualTo(bigInt2);
+        BigInt bigInt1 = from(0);
+        BigInt bigInt2 = new NoopBigInt();
+        // String representations are the same.
+        assertThat(bigInt1.toString()).isEqualTo(bigInt1.toString());
+        // But equals is false because of the different implementing class.
+        assertThat(bigInt1).isNotEqualTo(bigInt2);
     }
 
 }

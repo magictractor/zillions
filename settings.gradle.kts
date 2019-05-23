@@ -10,6 +10,7 @@
 rootProject.name = "zillions"
 
 include("zillions-api")
+include("zillions-junit")
 include("zillions-env")
 include("zillions-core")
 include("zillions-testbed")
