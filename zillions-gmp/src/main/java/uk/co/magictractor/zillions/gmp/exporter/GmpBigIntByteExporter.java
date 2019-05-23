@@ -20,11 +20,10 @@ import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 import java.util.Arrays;
 
 import uk.co.magictractor.zillions.api.BigInt;
-import uk.co.magictractor.zillions.api.bits.BigIntBitLength;
 import uk.co.magictractor.zillions.api.exporter.BigIntByteExporter;
 import uk.co.magictractor.zillions.core.bits.BitUtils;
-import uk.co.magictractor.zillions.environment.Environment;
 import uk.co.magictractor.zillions.gmp.GmpBigInt;
+import uk.co.magictractor.zillions.gmp.bits.GmpBigIntBitLength;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;
 
@@ -107,7 +106,8 @@ public class GmpBigIntByteExporter implements BigIntByteExporter {
 
     @Override
     public byte[] asBytes(BigInt op) {
-        int bitLength = Environment.findImplementation(BigIntBitLength.class).bitLength(op);
+        // TODO! move bitLength() to shared code
+        int bitLength = new GmpBigIntBitLength().bitLength(op);
         byte[] bytes = new byte[(bitLength + 8) / 8];
         populateBytes(op, bytes);
 

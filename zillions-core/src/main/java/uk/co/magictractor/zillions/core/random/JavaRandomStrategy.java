@@ -18,9 +18,7 @@ package uk.co.magictractor.zillions.core.random;
 import java.util.Random;
 
 import uk.co.magictractor.zillions.api.BigInt;
-import uk.co.magictractor.zillions.api.importer.BigIntByteImporter;
 import uk.co.magictractor.zillions.api.random.RandomStrategy;
-import uk.co.magictractor.zillions.environment.Environment;
 
 /**
  * Uses Java's Random class to generate random bytes which is then imported to
@@ -29,14 +27,24 @@ import uk.co.magictractor.zillions.environment.Environment;
  */
 public class JavaRandomStrategy implements RandomStrategy {
 
-    private static final BigIntByteImporter BYTE_IMPORTER = Environment.findImplementation(BigIntByteImporter.class);
+    //private static final BigIntByteImporter BYTE_IMPORTER = Environment.findImplementation(BigIntByteImporter.class);
 
     private final Random _randomNumberGenerator = new Random();
 
     @Override
     public BigInt randomise(BigInt rop, int numBits) {
         byte[] bytes = generateRandomBytes(numBits);
-        return BYTE_IMPORTER.unsignedFrom(rop, bytes);
+        return importUnsigned(rop, bytes);
+    }
+
+    /**
+     * The only use of Environment is in this method so a subclass could
+     * override only this method and avoid needing to import zillions-env.
+     */
+    protected BigInt importUnsigned(BigInt rop, byte[] bytes) {
+        // TODO! where should JavaRandomStrategy go in order to allow Environment to be used?
+        // return  Environment.findImplementation(BigIntByteImporter.class).unsignedFrom(rop, bytes);
+        throw new UnsupportedOperationException("Environment not available - need to move JavaRandomStrategy");
     }
 
     private byte[] generateRandomBytes(int numBits) {

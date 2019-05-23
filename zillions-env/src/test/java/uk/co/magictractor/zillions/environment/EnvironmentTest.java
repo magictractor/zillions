@@ -15,69 +15,81 @@
  */
 package uk.co.magictractor.zillions.environment;
 
-// TODO! restore once code moved from zillions-core to zillions-junit
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.nio.file.spi.FileSystemProvider;
+import java.util.spi.CurrencyNameProvider;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+
+import uk.co.magictractor.zillions.api.create.CreateStrategy;
+import uk.co.magictractor.zillions.junit.SystemPropertiesExtension;
+import uk.co.magictractor.zillions.junit.TestContextExtension;
+
 public class EnvironmentTest {
 
-    //    @RegisterExtension
-    //    public static SystemPropertiesExtension _systemProperties = new SystemPropertiesExtension();
-    //    //.withProperty(SpiDiscoveryStrategy.class, "disabled", "false");
-    //
-    //    @RegisterExtension
-    //    public static TestContextExtension _testContextRule = new TestContextExtension();
-    //
-    //    @Test
-    //    public void testSystemPropertyIsAvailable() {
-    //        String os = Environment.getProperties().getString("os.name", null);
-    //        assertThat(os).isNotEmpty();
-    //    }
-    //
-    //    @Test
-    //    public void testUpdatedSystemPropertyIsCorrect() {
-    //        String modified = "modified by unit test";
-    //        _systemProperties.withProperty("os.name", modified);
-    //
-    //        String actual = Environment.getProperties().getString("os.name", null);
-    //        assertThat(actual).isEqualTo(modified);
-    //    }
-    //
-    //    // CurrencyNameProvider : https://www.baeldung.com/java-spi is abstract
-    //    // maybe LogbackServletContainerInitializer
-    //    @Test
-    //    @Disabled("Failing - @Disabled while setting up Maven builds")
-    //    public void testSpiFromJavaLibDirectory() {
-    //        // TODO! need to turn off proxies
-    //        CurrencyNameProvider impl = Environment.findImplementation(CurrencyNameProvider.class);
-    //        // Assert.assertNotNull(impl);
-    //        assertThat(impl).isNotNull();
-    //    }
-    //
-    //    @Test
-    //    @Disabled("Failing - @Disabled while setting up Maven builds")
-    //    public void testSpiFromJavaLibExtDirectory() {
-    //        FileSystemProvider impl = Environment.findImplementation(FileSystemProvider.class);
-    //        assertThat(impl).isNotNull();
-    //    }
-    //
-    //    @Test
-    //    public void testSpiFromThisProject() {
-    //        // TODO! bad test - this is a proxy rather than a proper SPI service load.
-    //        CreateStrategy impl = Environment.findImplementation(CreateStrategy.class);
-    //        assertThat(impl).isNotNull();
-    //    }
-    //
-    //    // TODO! this implementation won't be portable
-    //    // TODO! Fails when run in suite because state is not cleared after previous
-    //    // tests
-    //    @Test
-    //    @Disabled("Failing - @Disabled while setting up Maven builds")
-    //    public void testSPICanBeDisabledByProperty() {
-    //        // FileSystemProvider impl =
-    //        // testee.getImplementation(FileSystemProvider.class);
-    //        System.setProperty("com.sun.nio.zipfs.ZipFileSystemProvider.disabled", "true");
-    //
-    //        FileSystemProvider actual = Environment.findImplementation(FileSystemProvider.class);
-    //        // Assert.assertEquals(null, actual);
-    //        assertThat(actual).isNull();
-    //    }
+    @RegisterExtension
+    public static SystemPropertiesExtension _systemProperties = new SystemPropertiesExtension();
+    //.withProperty(SpiDiscoveryStrategy.class, "disabled", "false");
+
+    @RegisterExtension
+    public static TestContextExtension _testContextRule = new TestContextExtension();
+
+    @Test
+    public void testSystemPropertyIsAvailable() {
+        String os = Environment.getProperties().getString("os.name", null);
+        assertThat(os).isNotEmpty();
+    }
+
+    @Test
+    public void testUpdatedSystemPropertyIsCorrect() {
+        String modified = "modified by unit test";
+        _systemProperties.withProperty("os.name", modified);
+
+        String actual = Environment.getProperties().getString("os.name", null);
+        assertThat(actual).isEqualTo(modified);
+    }
+
+    // CurrencyNameProvider : https://www.baeldung.com/java-spi is abstract
+    // maybe LogbackServletContainerInitializer
+    @Test
+    @Disabled("Failing - @Disabled while setting up Maven builds")
+    public void testSpiFromJavaLibDirectory() {
+        // TODO! need to turn off proxies
+        CurrencyNameProvider impl = Environment.findImplementation(CurrencyNameProvider.class);
+        // Assert.assertNotNull(impl);
+        assertThat(impl).isNotNull();
+    }
+
+    @Test
+    @Disabled("Failing - @Disabled while setting up Maven builds")
+    public void testSpiFromJavaLibExtDirectory() {
+        FileSystemProvider impl = Environment.findImplementation(FileSystemProvider.class);
+        assertThat(impl).isNotNull();
+    }
+
+    @Test
+    public void testSpiFromThisProject() {
+        // TODO! bad test - this is a proxy rather than a proper SPI service load.
+        CreateStrategy impl = Environment.findImplementation(CreateStrategy.class);
+        assertThat(impl).isNotNull();
+    }
+
+    // TODO! this implementation won't be portable
+    // TODO! Fails when run in suite because state is not cleared after previous
+    // tests
+    @Test
+    @Disabled("Failing - @Disabled while setting up Maven builds")
+    public void testSPICanBeDisabledByProperty() {
+        // FileSystemProvider impl =
+        // testee.getImplementation(FileSystemProvider.class);
+        System.setProperty("com.sun.nio.zipfs.ZipFileSystemProvider.disabled", "true");
+
+        FileSystemProvider actual = Environment.findImplementation(FileSystemProvider.class);
+        // Assert.assertEquals(null, actual);
+        assertThat(actual).isNull();
+    }
 
 }

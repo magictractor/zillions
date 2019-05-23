@@ -13,5 +13,5 @@ dependencies {
     
     // JavaRandomStrategy uses zillions-env to find a BigIntByteImporter implementation.
     // BitInt implementations could chose to use JavaRandomStrategy but most will provide a custom implementation.
-    implementation(project(":zillions-env"))
+    //implementation(project(":zillions-env"))
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.core.junit;
+package uk.co.magictractor.zillions.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +26,8 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import uk.co.magictractor.zillions.junit.SystemPropertiesExtension;
 
 @ExtendWith(SystemPropertiesExtensionTest.PostTestsCheck.class)
 public class SystemPropertiesExtensionTest {
