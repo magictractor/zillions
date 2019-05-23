@@ -20,8 +20,8 @@ import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 import com.google.common.base.MoreObjects;
 
 import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.api.Init;
 import uk.co.magictractor.zillions.api.random.RandomStrategy;
-import uk.co.magictractor.zillions.core.environment.Init;
 import uk.co.magictractor.zillions.gmp.struct.gmp_randstate_t;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;

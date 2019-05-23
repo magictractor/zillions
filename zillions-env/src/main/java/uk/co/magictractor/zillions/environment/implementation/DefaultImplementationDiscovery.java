@@ -9,7 +9,7 @@ import java.util.ServiceLoader;
 
 import com.google.common.base.MoreObjects;
 
-import uk.co.magictractor.zillions.core.environment.Init;
+import uk.co.magictractor.zillions.api.Init;
 import uk.co.magictractor.zillions.environment.Environment;
 import uk.co.magictractor.zillions.environment.property.PropertyDiscovery;
 
