@@ -15,15 +15,14 @@
  */
 package uk.co.magictractor.zillions.junit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.extension.ExtensionContext;
+import uk.co.magictractor.zillions.junit.extension.AbstractValueChangeExtension;
+import uk.co.magictractor.zillions.junit.extension.CollectionAddValueChange;
+import uk.co.magictractor.zillions.junit.extension.SetterValueChange;
+import uk.co.magictractor.zillions.junit.extension.ValueChange;
 
-public class TestContextExtension extends EnsureRegisteredExtension {
-
-    private List<Object> _pendingImplementations;
+public class TestContextExtension extends AbstractValueChangeExtension {
 
     public TestContextExtension(Object... implementations) {
         addImplementations(implementations);
@@ -34,45 +33,19 @@ public class TestContextExtension extends EnsureRegisteredExtension {
     }
 
     private void addImplementations(Object... implementations) {
-        List<Object> implementationsList = Arrays.asList(implementations);
-        if (isWithinTest()) {
-            // Change the environment immediately.
-            // Because isWithinTest() is true, this Extension must be registered correctly
-            // and after() will be called.
-            modifyTestContext(implementationsList);
-        }
-        else {
-            // Store the changes and change the environment from before().
-            // This ensures that after() will also be called to reinstate the environment.
-            if (_pendingImplementations == null) {
-                _pendingImplementations = new ArrayList<>(implementationsList);
-            }
-            else {
-                _pendingImplementations.addAll(implementationsList);
-            }
+        List<Object> testContextImpls = TestContext.getInstance().getTestImplementations();
+        for (Object implementation : implementations) {
+            addValueChange(new CollectionAddValueChange<>(testContextImpls, implementation));
         }
     }
 
-    // TODO! similar shenanigans to sys.prop.extension?
-    @Override
-    public void before(boolean isBeforeAll, ExtensionContext context) throws Exception {
-        modifyTestContext(_pendingImplementations);
-    }
-
-    @Override
-    public void after(boolean isWithinTest, ExtensionContext context) throws Exception {
-        restoreTestContext();
-    }
-
-    private void modifyTestContext(List<Object> implementations) {
-        //        TestContext testContext = TestContext.getInstance();
-        //        for (Object implementation : implementations) {
-        //            testContext.addImplementation(implementation);
-        //        }
-    }
-
-    private void restoreTestContext() {
-        // TestContext.getInstance().reset();
+    public TestContextExtension disableProxies() {
+        System.err.println("disabledProxies");
+        TestContext context = TestContext.getInstance();
+        ValueChange implProxyValueChange = new SetterValueChange<>(context::isImplementationProxyEnabled,
+            context::setImplementationProxyEnabled, false);
+        addValueChange(implProxyValueChange);
+        return this;
     }
 
 }

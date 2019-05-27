@@ -1,16 +1,16 @@
-package uk.co.magictractor.zillions.environment.implementation;
+package uk.co.magictractor.zillions.environment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ServiceLoader;
 
 import com.google.common.base.MoreObjects;
 
 import uk.co.magictractor.zillions.api.Init;
-import uk.co.magictractor.zillions.environment.Environment;
+import uk.co.magictractor.zillions.api.factory.ImplementationFactory;
+import uk.co.magictractor.zillions.core.factory.MissingImplementationFactory;
 import uk.co.magictractor.zillions.environment.property.PropertyDiscovery;
 
 /**
@@ -25,6 +25,8 @@ import uk.co.magictractor.zillions.environment.property.PropertyDiscovery;
  * </li>
  * <li>Check SPI for an implementation. If multiple implementations are found,
  * an exception is thrown.</li>
+ * <li>If there is a DiscoveryFactory implementation it is given the opportunity
+ * to create, wrap or replace the API class implementation.</li>
  * </ol>
  * This strategy is always used at least once, to find the Discovery strategy
  * and Property strategy implementations to be used. For those, if no
@@ -34,22 +36,32 @@ import uk.co.magictractor.zillions.environment.property.PropertyDiscovery;
 public class DefaultImplementationDiscovery implements ImplementationDiscovery {
 
     private final PropertyDiscovery _properties = initProperties();
+    private final ImplementationFactory _factory = initFactory();
+    private final MissingImplementationFactory _missingFactory = new MissingImplementationFactory();
 
     /**
-     * Cache may contain null values for APIs where no implementating class was
+     * Cache may contain null values for APIs where no implementing class was
      * found.
      */
-    private final Map<Class<?>, Object> _cache = new HashMap<>();
+    private final Map<Class<?>, Object> _cache = initCache();
 
     protected PropertyDiscovery initProperties() {
         return Environment.getProperties();
     }
 
+    protected ImplementationFactory initFactory() {
+        return Environment.getImplementationFactory();
+    }
+
+    protected Map<Class<?>, Object> initCache() {
+        return new HashMap<>();
+    }
+
     @Override
-    public <T> Optional<T> findOptionalImplementation(Class<T> apiClass) {
+    public <T> T findImplementation(Class<T> apiClass) {
         T impl;
         if (_cache.containsKey(apiClass)) {
-            impl = (T) _cache.get(apiClass);
+            impl = apiClass.cast(_cache.get(apiClass));
         }
         else {
             impl = discover(apiClass);
@@ -59,18 +71,29 @@ public class DefaultImplementationDiscovery implements ImplementationDiscovery {
             _cache.put(apiClass, impl);
         }
 
-        return Optional.ofNullable(impl);
+        return impl;
     }
 
     private <T> T discover(Class<T> apiClass) {
         T impl;
 
         impl = discoverImplementationViaSystemProperty(apiClass);
-        if (impl != null) {
-            return impl;
+
+        if (impl == null) {
+            impl = discoverImplementationViaSpi(apiClass);
         }
 
-        impl = discoverImplementationViaSpi(apiClass);
+        /**
+         * Call factory even if an impl has been found. The factory may replace
+         * it, or wrap it, or return it unmodified.
+         */
+        if (_factory != null) {
+            impl = _factory.createInstance(apiClass, impl);
+        }
+
+        if (impl == null) {
+            impl = createMissingImplementation(apiClass);
+        }
 
         return impl;
     }
@@ -110,6 +133,10 @@ public class DefaultImplementationDiscovery implements ImplementationDiscovery {
         }
 
         return impl;
+    }
+
+    protected <T> T createMissingImplementation(Class<T> apiClass) {
+        return _missingFactory.createInstance(apiClass, null);
     }
 
     protected <T> List<T> spiLoadList(Class<T> apiClass) {

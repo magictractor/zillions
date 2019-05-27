@@ -13,19 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.core.environment;
+package uk.co.magictractor.zillions.environment;
 
-/**
- * <p>
- * * When strategies for any apiClass are discovered, all StrategyFactory
- * implentations are given an opportunity to create an implementation for the
- * API.
- * <p>
- * This is used in zillions-core unit tests to create proxies which allow
- * apiClass implementations to be changed between tests.
- */
-public interface StrategyFactory {
+public interface ImplementationDiscovery {
 
-    <S> S createInstance(Class<S> apiClass);
+    <T> T findImplementation(Class<T> apiClass);
 
 }

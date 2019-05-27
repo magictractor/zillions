@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.core.proxy;
+package uk.co.magictractor.zillions.core.factory;
 
 import java.lang.reflect.Method;
 
-public abstract class AbstractDelegatingStrategyFactory extends AbstractProxyStrategyFactory {
+public abstract class AbstractDelegatingImplementationFactory extends AbstractProxyImplementationFactory {
 
     @Override
-    protected final Object handle(Class<?> apiClass, Method method, Object[] args) throws Throwable {
-        Object delegate = findDelegate(apiClass);
+    protected final <T> Object handle(Class<T> apiClass, T defaultImplementation, Method method, Object[] args)
+            throws Throwable {
+        Object delegate = findDelegate(apiClass, defaultImplementation);
         if (delegate == null) {
             throw new IllegalStateException("No delegate found for API class " + apiClass + " in " + this);
         }
         return method.invoke(delegate, args);
     }
 
-    protected abstract <S> S findDelegate(Class<S> apiClass);
+    protected abstract <T> T findDelegate(Class<T> apiClass, T defaultImplementation);
 
 }

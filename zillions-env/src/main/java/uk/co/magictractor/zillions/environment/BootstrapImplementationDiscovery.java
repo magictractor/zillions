@@ -1,5 +1,6 @@
-package uk.co.magictractor.zillions.environment.implementation;
+package uk.co.magictractor.zillions.environment;
 
+import uk.co.magictractor.zillions.api.factory.ImplementationFactory;
 import uk.co.magictractor.zillions.environment.property.DefaultPropertyDiscovery;
 import uk.co.magictractor.zillions.environment.property.PropertyDiscovery;
 
@@ -12,6 +13,17 @@ public class BootstrapImplementationDiscovery extends DefaultImplementationDisco
     @Override
     protected PropertyDiscovery initProperties() {
         return new DefaultPropertyDiscovery();
+    }
+
+    @Override
+    protected ImplementationFactory initFactory() {
+        // No ImplementationFactory during bootstrap.
+        return null;
+    }
+
+    @Override
+    protected <T> T createMissingImplementation(Class<T> apiClass) {
+        return null;
     }
 
 }

@@ -21,6 +21,7 @@ import uk.co.magictractor.zillions.api.BigInt;
  * A useless implementation of BigInt. Always has a value of zero, and all
  * operations have no effect. Just used by some unit tests.
  */
+// TODO! rename to be consistent with Spring NoOpCache and new NoOpMap
 public class NoopBigInt implements BigInt {
 
     @Override

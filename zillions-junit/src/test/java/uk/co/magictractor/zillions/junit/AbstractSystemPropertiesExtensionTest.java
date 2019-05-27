@@ -16,46 +16,48 @@
 package uk.co.magictractor.zillions.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import uk.co.magictractor.zillions.junit.SystemPropertiesExtension;
+import uk.co.magictractor.zillions.junit.extension.SystemPropertiesExtension;
 
-@ExtendWith(SystemPropertiesExtensionTest.PostTestsCheck.class)
-public class SystemPropertiesExtensionTest {
+public abstract class AbstractSystemPropertiesExtensionTest {
 
-    private static final String STATIC_KEY_FIELD = "__unitTest__static_field";
-    private static final String STATIC_KEY_BEFORE_ALL = "__unitTest__static_before_all";
+    protected static final String STATIC_KEY_FIELD = "__unitTest__static_field";
+    protected static final String STATIC_KEY_BEFORE_ALL = "__unitTest__static_before_all";
     private static final String STATIC_KEY_BEFORE_EACH = "__unitTest__static_before_each";
     private static final String INSTANCE_KEY_FIELD = "__unitTest__instance_field";
     private static final String INSTANCE_KEY_BEFORE_EACH = "__unitTest__instance_before_each";
-    private static final String INITIAL_VALUE = "999";
+    protected static final String INITIAL_VALUE = "999";
+
+    // So a distinct copy is used for the PER_METHOD and PER_CLASS subclasses.
+    protected abstract SystemPropertiesExtension getStaticExtension();
 
     @RegisterExtension
-    public static SystemPropertiesExtension STATIC_EXTENSION = new SystemPropertiesExtension().withProperty(
-        STATIC_KEY_FIELD, INITIAL_VALUE);
+    public SystemPropertiesExtension _instanceExtension = new SystemPropertiesExtension()
+            .withProperty(INSTANCE_KEY_FIELD, INITIAL_VALUE);
 
+    /*
+     * Hash @Order annotation so it is applied first. More importantly it is
+     * applied last for afterEach() and afterAll() callbacks.
+     */
+    @Order(1)
     @RegisterExtension
-    public SystemPropertiesExtension _instanceExtension = new SystemPropertiesExtension().withProperty(
-        INSTANCE_KEY_FIELD, INITIAL_VALUE);
-
-    @BeforeAll
-    public static void beforeAll() {
-        // Note that extension beforeAll() has already been called at this point.
-        STATIC_EXTENSION.withProperty(STATIC_KEY_BEFORE_ALL, INITIAL_VALUE);
-    }
+    public static PostTestsCheck _postTestsCheck = new PostTestsCheck();
 
     @BeforeEach
     public void beforeEach() {
-        STATIC_EXTENSION.withProperty(STATIC_KEY_BEFORE_EACH, INITIAL_VALUE);
+        getStaticExtension().withProperty(STATIC_KEY_BEFORE_EACH, INITIAL_VALUE);
         _instanceExtension.withProperty(INSTANCE_KEY_BEFORE_EACH, INITIAL_VALUE);
     }
 
@@ -80,9 +82,10 @@ public class SystemPropertiesExtensionTest {
     }
 
     private void setExtensionValues(String value) {
-        STATIC_EXTENSION.withProperty(STATIC_KEY_FIELD, value);
-        STATIC_EXTENSION.withProperty(STATIC_KEY_BEFORE_ALL, value);
-        STATIC_EXTENSION.withProperty(STATIC_KEY_BEFORE_EACH, value);
+        SystemPropertiesExtension staticExtension = getStaticExtension();
+        staticExtension.withProperty(STATIC_KEY_FIELD, value);
+        staticExtension.withProperty(STATIC_KEY_BEFORE_ALL, value);
+        staticExtension.withProperty(STATIC_KEY_BEFORE_EACH, value);
         _instanceExtension.withProperty(INSTANCE_KEY_FIELD, value);
         _instanceExtension.withProperty(INSTANCE_KEY_BEFORE_EACH, value);
     }
@@ -92,21 +95,28 @@ public class SystemPropertiesExtensionTest {
     }
 
     private static void checkSystemPropertyValues(String expectedValue) {
-        checkSystemPropertyValues(expectedValue, expectedValue);
+        checkSystemPropertyValues(expectedValue, expectedValue, null);
     }
 
-    private static void checkSystemPropertyValues(String classScopedValue, String methodScopedValue) {
-        // Perhaps use assertAll once formatting rules have been configured
-        // Assertions.assertAll(() ->
-        // assertThat(System.getProperty(STATIC_KEY)).isEqualTo(expectedValue),
-        // () -> assertThat(System.getProperty(INSTANCE_KEY)).isEqualTo(expectedValue));
+    private static void checkSystemPropertyValues(String classScopedValue, String methodScopedValue,
+            Lifecycle lifecycle) {
+        Assertions.assertAll(
+            () -> checkSystemPropertyValue(STATIC_KEY_FIELD, classScopedValue),
+            () -> checkSystemPropertyValue(STATIC_KEY_BEFORE_ALL, classScopedValue),
+            // A static field, but the value was set just for the scope of the method in @BeforeEach.
+            () -> checkSystemPropertyValue(STATIC_KEY_BEFORE_EACH, methodScopedValue),
+            // TODO! add comment explaining this
+            () -> checkSystemPropertyValue(INSTANCE_KEY_FIELD,
+                PER_CLASS.equals(lifecycle) ? classScopedValue : methodScopedValue),
+            () -> checkSystemPropertyValue(INSTANCE_KEY_BEFORE_EACH, methodScopedValue));
+    }
 
-        assertThat(System.getProperty(STATIC_KEY_FIELD)).isEqualTo(classScopedValue);
-        assertThat(System.getProperty(STATIC_KEY_BEFORE_ALL)).isEqualTo(classScopedValue);
-        // A static field, but the value was set just for the scope of the method in @BeforeEach.
-        assertThat(System.getProperty(STATIC_KEY_BEFORE_EACH)).isEqualTo(methodScopedValue);
-        assertThat(System.getProperty(INSTANCE_KEY_FIELD)).isEqualTo(methodScopedValue);
-        assertThat(System.getProperty(INSTANCE_KEY_BEFORE_EACH)).isEqualTo(methodScopedValue);
+    private static void checkSystemPropertyValue(String propertyName, String expectedValue) {
+        String actualValue = System.getProperty(propertyName);
+        assertThat(actualValue)
+                .withFailMessage("Unexpected value for system property %1s: expected %2s, was %3s", propertyName,
+                    expectedValue, actualValue)
+                .isEqualTo(expectedValue);
     }
 
     public static class PostTestsCheck implements BeforeAllCallback, AfterEachCallback, AfterAllCallback {
@@ -118,22 +128,17 @@ public class SystemPropertiesExtensionTest {
 
         @Override
         public void afterEach(ExtensionContext context) {
-            System.err.println("STATIC_KEY_FIELD: " + System.getProperty(STATIC_KEY_FIELD));
-            System.err.println("STATIC_KEY_BEFORE_ALL: " + System.getProperty(STATIC_KEY_BEFORE_ALL));
-            System.err.println("STATIC_KEY_BEFORE_EACH: " + System.getProperty(STATIC_KEY_BEFORE_EACH));
-            System.err.println("INSTANCE_KEY_FIELD: " + System.getProperty(INSTANCE_KEY_FIELD));
-            System.err.println("INSTANCE_KEY_BEFORE_EACH: " + System.getProperty(INSTANCE_KEY_BEFORE_EACH));
-
+            System.err.println("PostTestsCheck.afterEach");
             // Check that static scoped values remain, and method scoped values have been restored.
-            checkSystemPropertyValues(INITIAL_VALUE, null);
+            checkSystemPropertyValues(INITIAL_VALUE, null, context.getTestInstanceLifecycle().get());
         }
 
         @Override
         public void afterAll(ExtensionContext context) {
+            System.err.println("PostTestsCheck.afterAll");
             // Check that all properties have been restored.
             checkSystemPropertyValues(null);
         }
-
     }
 
 }

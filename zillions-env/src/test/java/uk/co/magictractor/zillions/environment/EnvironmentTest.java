@@ -17,8 +17,6 @@ package uk.co.magictractor.zillions.environment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.nio.file.spi.FileSystemProvider;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.engine.JupiterTestEngine;
@@ -27,17 +25,16 @@ import org.junit.platform.engine.TestEngine;
 import uk.co.magictractor.zillions.environment.dummy.Single;
 import uk.co.magictractor.zillions.environment.dummy.SingleOne;
 import uk.co.magictractor.zillions.environment.dummy.SingleOther;
-import uk.co.magictractor.zillions.junit.SystemPropertiesExtension;
 import uk.co.magictractor.zillions.junit.TestContextExtension;
+import uk.co.magictractor.zillions.junit.extension.SystemPropertiesExtension;
 
-//  TODO! will need to turn off proxies here once they have been restored for other tests
 public class EnvironmentTest {
 
     @RegisterExtension
     public static SystemPropertiesExtension _systemProperties = new SystemPropertiesExtension();
 
     @RegisterExtension
-    public static TestContextExtension _testContextRule = new TestContextExtension();
+    public static TestContextExtension _testContextRule = new TestContextExtension().disableProxies();
 
     @Test
     public void testSystemPropertyIsAvailable() {
@@ -55,13 +52,6 @@ public class EnvironmentTest {
     }
 
     @Test
-    public void testSpiFromJava() {
-        FileSystemProvider impl = Environment.findImplementation(FileSystemProvider.class);
-        // Don't check the exact type, it will vary depending on Java versions and platforms.
-        assertThat(impl).isNotNull();
-    }
-
-    @Test
     public void testSpiFromThirdPartyLib() {
         TestEngine impl = Environment.findImplementation(TestEngine.class);
         assertThat(impl).isExactlyInstanceOf(JupiterTestEngine.class);
@@ -70,6 +60,7 @@ public class EnvironmentTest {
     @Test
     public void testSpiFromThisProject() {
         Single impl = Environment.findImplementation(Single.class);
+        impl.doSomething();
         assertThat(impl).isExactlyInstanceOf(SingleOne.class);
     }
 

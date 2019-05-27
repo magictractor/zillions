@@ -1,7 +1,3 @@
-plugins {
-    id("java-library")
-}
-
 dependencies {
     api(project(":zillions-core"))
     api(project(":zillions-env"))
@@ -11,3 +7,5 @@ dependencies {
     implementation("org.junit.platform:junit-platform-launcher:1.4.2")
     api("org.assertj:assertj-core:3.11.1")
 }
+
+description = 'Zillions test suite'

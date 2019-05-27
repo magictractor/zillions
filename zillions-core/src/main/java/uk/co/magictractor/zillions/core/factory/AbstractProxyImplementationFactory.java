@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.core.proxy;
+package uk.co.magictractor.zillions.core.factory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -25,9 +25,9 @@ import java.util.function.Supplier;
 
 import com.google.common.base.MoreObjects;
 
-import uk.co.magictractor.zillions.core.environment.StrategyFactory;
+import uk.co.magictractor.zillions.api.factory.ImplementationFactory;
 
-public abstract class AbstractProxyStrategyFactory implements StrategyFactory {
+public abstract class AbstractProxyImplementationFactory implements ImplementationFactory {
 
     // Perhaps allow null values for marker interfaces
     // TODO! would be ropey with super interfaces
@@ -35,29 +35,24 @@ public abstract class AbstractProxyStrategyFactory implements StrategyFactory {
 
     // Only a no-args constructor because strategy factories are generally wired in
     // via SPI
-    public AbstractProxyStrategyFactory() {
+    public AbstractProxyImplementationFactory() {
     }
 
     protected void addInterface(Class<?> interfaceClass, Supplier<?> interfaceValueSupplier) {
         // TODO! assert that the interface class is a marker interface or functional
-        // interface
-        // and that it does not have a superclass
+        // interface and that it does not have a superclass
         _interfaceValueSuppliers.put(interfaceClass, interfaceValueSupplier);
     }
 
     @Override
-    public <S> S createInstance(Class<S> apiClass) {
+    public <T> T createInstance(Class<T> apiClass, T defaultImplementation) {
 
-        // TODO! change tests so that this isn't required
-        // Some tests use Java SPI classes which are abstract without an interface
         if (!apiClass.isInterface()) {
-            System.err.println("API class is not an interface so cannot be proxied: " + apiClass.getName());
-            // return apiCla
             throw new IllegalArgumentException(
                 "API class is not an interface so cannot be proxied: " + apiClass.getName());
         }
 
-        ClassLoader classLoader = AbstractProxyStrategyFactory.class.getClassLoader();
+        ClassLoader classLoader = AbstractProxyImplementationFactory.class.getClassLoader();
 
         Class<?>[] proxyInterfaces = new Class<?>[_interfaceValueSuppliers.size() + 1];
         proxyInterfaces[0] = apiClass;
@@ -66,15 +61,20 @@ public abstract class AbstractProxyStrategyFactory implements StrategyFactory {
             proxyInterfaces[i++] = interfaceClass;
         }
 
-        return (S) Proxy.newProxyInstance(classLoader, proxyInterfaces, new StrategyFactoryInvocationHandler(apiClass));
+        Object proxy = Proxy.newProxyInstance(classLoader, proxyInterfaces,
+            new StrategyFactoryInvocationHandler(apiClass, defaultImplementation));
+
+        return apiClass.cast(proxy);
     }
 
-    private class StrategyFactoryInvocationHandler implements InvocationHandler {
+    private class StrategyFactoryInvocationHandler<T> implements InvocationHandler {
 
-        private final Class<?> _apiClass;
+        private final Class<T> _apiClass;
+        private final T _defaultImplementation;
 
-        StrategyFactoryInvocationHandler(Class<?> apiClass) {
+        StrategyFactoryInvocationHandler(Class<T> apiClass, T defaultImplementation) {
             _apiClass = apiClass;
+            _defaultImplementation = defaultImplementation;
         }
 
         @Override
@@ -84,17 +84,12 @@ public abstract class AbstractProxyStrategyFactory implements StrategyFactory {
                 return handleToString(_apiClass);
             }
 
-            // Priority etc are delegated to this factory/
             if (_interfaceValueSuppliers.containsKey(method.getDeclaringClass())) {
-                //System.err.println("interface: " + method.getDeclaringClass().getSimpleName());
                 return _interfaceValueSuppliers.get(method.getDeclaringClass()).get();
             }
 
-            // System.err.println("proxy: " + proxy);
-            // System.err.println("method: " + method);
-
             try {
-                return handle(_apiClass, method, args);
+                return handle(_apiClass, _defaultImplementation, method, args);
             }
             catch (InvocationTargetException e) {
                 // Unwrap and rethrow original exception.
@@ -103,10 +98,11 @@ public abstract class AbstractProxyStrategyFactory implements StrategyFactory {
         }
     }
 
-    abstract Object handle(Class<?> apiClass, Method method, Object[] args) throws Throwable;
+    protected abstract <T> Object handle(Class<T> apiClass, T defaultImplementation, Method method, Object[] args)
+            throws Throwable;
 
     protected String handleToString(Class<?> apiClass) {
-        // TODO! ToStringBuilder
+        // TODO! MoreObjects.toStringHelper
         return getClass().getSimpleName() + "[apiClass=" + apiClass.getName() + "]";
     }
 

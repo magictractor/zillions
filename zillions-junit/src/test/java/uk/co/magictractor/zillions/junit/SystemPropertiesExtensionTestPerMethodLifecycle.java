@@ -34,8 +34,8 @@ import uk.co.magictractor.zillions.junit.extension.SystemPropertiesExtension;
  * both tests.
  * </p>
  */
-@TestInstance(Lifecycle.PER_CLASS)
-public class SystemPropertiesExtensionTestPerClassLifecycle extends AbstractSystemPropertiesExtensionTest {
+@TestInstance(Lifecycle.PER_METHOD)
+public class SystemPropertiesExtensionTestPerMethodLifecycle extends AbstractSystemPropertiesExtensionTest {
 
     @RegisterExtension
     public static SystemPropertiesExtension STATIC_EXTENSION = new SystemPropertiesExtension()

@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.junit;
+package uk.co.magictractor.zillions.api.factory;
 
-import uk.co.magictractor.zillions.core.proxy.AbstractDelegatingStrategyFactory;
+/**
+ * <p>
+ * * When strategies for any apiClass are discovered, all StrategyFactory
+ * implentations are given an opportunity to create an implementation for the
+ * API.
+ * </p>
+ * <p>
+ * This is used in zillions-core unit tests to create proxies which allow
+ * apiClass implementations to be changed between tests.
+ * </p>
+ */
+public interface ImplementationFactory {
 
-public class TestContextProxyStrategyFactory extends AbstractDelegatingStrategyFactory {
-
-    @Override
-    protected <S> S findDelegate(Class<S> apiClass) {
-        // add debug statements?
-        //      S impl = TestContext.getInstance().getTestImplementation(apiClass);
-        //     return impl;
-
-        throw new UnsupportedOperationException("TODO");
-    }
+    <T> T createInstance(Class<T> apiClass, T defaultImplementation);
 
 }

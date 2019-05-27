@@ -1,6 +1,2 @@
-plugins {
-    id("java-library")
-}
-
 dependencies {
 }

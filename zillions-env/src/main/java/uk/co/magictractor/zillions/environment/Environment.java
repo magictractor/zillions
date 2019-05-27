@@ -15,23 +15,30 @@
  */
 package uk.co.magictractor.zillions.environment;
 
-import uk.co.magictractor.zillions.environment.implementation.BootstrapImplementationDiscovery;
-import uk.co.magictractor.zillions.environment.implementation.DefaultImplementationDiscovery;
-import uk.co.magictractor.zillions.environment.implementation.ImplementationDiscovery;
+import java.util.function.Supplier;
+
+import uk.co.magictractor.zillions.api.factory.ImplementationFactory;
 import uk.co.magictractor.zillions.environment.property.DefaultPropertyDiscovery;
 import uk.co.magictractor.zillions.environment.property.PropertyDiscovery;
 
 public final class Environment {
 
-    private static final ImplementationDiscovery IMPLEMENTATION_DISCOVERY;
     private static final PropertyDiscovery PROPERTY_DISCOVERY;
+    private static final ImplementationDiscovery IMPLEMENTATION_DISCOVERY;
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY;
 
     static {
         DefaultImplementationDiscovery bootstrapDiscovery = new BootstrapImplementationDiscovery();
-        PROPERTY_DISCOVERY = bootstrapDiscovery.findOptionalImplementation(PropertyDiscovery.class)
-                .orElseGet(DefaultPropertyDiscovery::new);
-        IMPLEMENTATION_DISCOVERY = bootstrapDiscovery.findOptionalImplementation(ImplementationDiscovery.class)
-                .orElseGet(DefaultImplementationDiscovery::new);
+        PROPERTY_DISCOVERY = coalesce(bootstrapDiscovery.findImplementation(PropertyDiscovery.class),
+            DefaultPropertyDiscovery::new);
+        IMPLEMENTATION_FACTORY = bootstrapDiscovery.findImplementation(ImplementationFactory.class);
+        // ImplementationDiscovery last because most implementations refer to the previous values.
+        IMPLEMENTATION_DISCOVERY = coalesce(bootstrapDiscovery.findImplementation(ImplementationDiscovery.class),
+            DefaultImplementationDiscovery::new);
+    }
+
+    private static <T> T coalesce(T discovered, Supplier<T> defaultSupplier) {
+        return discovered == null ? defaultSupplier.get() : discovered;
     }
 
     private Environment() {
@@ -43,6 +50,10 @@ public final class Environment {
 
     public static PropertyDiscovery getProperties() {
         return PROPERTY_DISCOVERY;
+    }
+
+    /* default */ static ImplementationFactory getImplementationFactory() {
+        return IMPLEMENTATION_FACTORY;
     }
 
 }
