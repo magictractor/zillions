@@ -62,7 +62,7 @@ public abstract class AbstractProxyImplementationFactory implements Implementati
         }
 
         Object proxy = Proxy.newProxyInstance(classLoader, proxyInterfaces,
-            new StrategyFactoryInvocationHandler(apiClass, defaultImplementation));
+            new StrategyFactoryInvocationHandler<>(apiClass, defaultImplementation));
 
         return apiClass.cast(proxy);
     }

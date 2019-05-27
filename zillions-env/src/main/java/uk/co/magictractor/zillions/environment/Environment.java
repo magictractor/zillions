@@ -37,10 +37,6 @@ public final class Environment {
             DefaultImplementationDiscovery::new);
     }
 
-    private static <T> T coalesce(T discovered, Supplier<T> defaultSupplier) {
-        return discovered == null ? defaultSupplier.get() : discovered;
-    }
-
     private Environment() {
     }
 
@@ -54,6 +50,10 @@ public final class Environment {
 
     /* default */ static ImplementationFactory getImplementationFactory() {
         return IMPLEMENTATION_FACTORY;
+    }
+
+    private static <T> T coalesce(T discovered, Supplier<T> defaultSupplier) {
+        return discovered == null ? defaultSupplier.get() : discovered;
     }
 
 }

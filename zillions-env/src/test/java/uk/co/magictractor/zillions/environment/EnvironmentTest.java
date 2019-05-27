@@ -71,4 +71,5 @@ public class EnvironmentTest {
         Single impl = Environment.findImplementation(Single.class);
         assertThat(impl).isExactlyInstanceOf(SingleOther.class);
     }
+
 }
