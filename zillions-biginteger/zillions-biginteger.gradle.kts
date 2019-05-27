@@ -3,4 +3,4 @@ dependencies {
     testImplementation(project(":zillions-testbed"))
 }
 
-description = 'BigInteger BigInt implementation'
+description = "BigInteger BigInt implementation"

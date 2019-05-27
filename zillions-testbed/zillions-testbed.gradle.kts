@@ -8,4 +8,4 @@ dependencies {
     api("org.assertj:assertj-core:3.11.1")
 }
 
-description = 'Zillions test suite'
+description = "Zillions test suite"

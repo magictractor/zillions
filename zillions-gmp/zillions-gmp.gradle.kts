@@ -4,4 +4,4 @@ dependencies {
     testImplementation(project(":zillions-testbed"))
 }
 
-description = 'GMP BigInt implementation'
+description = "GMP BigInt implementation"

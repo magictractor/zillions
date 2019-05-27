@@ -12,4 +12,4 @@ dependencies {
     //implementation(project(":zillions-env"))
 }
 
-description = 'Zillions core classes'
+description = "Zillions core classes"
