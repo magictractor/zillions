@@ -22,6 +22,7 @@ allprojects {
 subprojects {
 
     apply(plugin="java-library")
+    apply(plugin="jacoco")
     apply(plugin="checkstyle")
 
     dependencies {
@@ -47,6 +48,7 @@ subprojects {
                 excludeTags("within-suite")
             }
         }
+        finalizedBy("jacocoTestReport")
     }
 
 }

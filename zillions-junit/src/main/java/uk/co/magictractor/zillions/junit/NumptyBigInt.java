@@ -20,12 +20,10 @@ import uk.co.magictractor.zillions.api.BigInt;
 /**
  * A very simple implementation of BigInt which only has correct behaviour for
  * relatively small numbers, because it is implemented with operations on a
- * long.
- *
- * The "big number" tests don't hit this. Tests in zillions-core probably won't
- * exercise this class, just create instances. Tests in zillions-testbed may use
- * this to test the behaviour of BigInt.equals() and BigInt.compare() with other
- * types of BigInt implementations.
+ * long. The "big number" tests don't hit this. Tests in zillions-core probably
+ * won't exercise this class, just create instances. Tests in zillions-testbed
+ * may use this to test the behaviour of BigInt.equals() and BigInt.compare()
+ * with other types of BigInt implementations.
  */
 public class NumptyBigInt implements BigInt {
 
@@ -47,7 +45,7 @@ public class NumptyBigInt implements BigInt {
     }
 
     @Override
-    public BigInt add(long y) {
+    public BigInt add(int y) {
         _x += y;
         return this;
     }
@@ -59,7 +57,7 @@ public class NumptyBigInt implements BigInt {
     }
 
     @Override
-    public BigInt subtract(long y) {
+    public BigInt subtract(int y) {
         _x -= y;
         return this;
     }
@@ -71,7 +69,7 @@ public class NumptyBigInt implements BigInt {
     }
 
     @Override
-    public BigInt multiply(long y) {
+    public BigInt multiply(int y) {
         _x *= y;
         return this;
     }

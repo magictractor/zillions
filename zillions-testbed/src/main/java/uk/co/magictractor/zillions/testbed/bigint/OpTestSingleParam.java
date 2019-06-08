@@ -39,6 +39,10 @@ public abstract class OpTestSingleParam<PARAM, RESULT> extends OpTest<RESULT> {
         check(BigIntFactory.from(x), from(_paramClass, y), resultFrom(expected));
     }
 
+    protected void check(long x, long y, String expected) {
+        check(BigIntFactory.from(x), from(_paramClass, y), resultFrom(expected));
+    }
+
     protected void check(String x, String y, String expected) {
         check(BigIntFactory.from(x), from(_paramClass, y), resultFrom(expected));
     }

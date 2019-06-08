@@ -33,4 +33,19 @@ public class MultiplyTest extends OpTestBigIntParam {
         check(10, 4, 40);
     }
 
+    @Test
+    public void testMultiplySmallNegativeNumbers() {
+        check(-10, -4, 40);
+    }
+
+    @Test
+    public void testMultiplySmallNegativeBySmallPositive() {
+        check(-10, 4, -40);
+    }
+
+    @Test
+    public void testMultiplySmallPositiveBySmallNegative() {
+        check(10, -4, -40);
+    }
+
 }

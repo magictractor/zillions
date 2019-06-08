@@ -18,13 +18,13 @@ package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
-import uk.co.magictractor.zillions.testbed.bigint.OpTestBigIntParam;
+import uk.co.magictractor.zillions.testbed.bigint.OpTestIntParam;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
-public class SubtractTest extends OpTestBigIntParam {
+public class SubtractIntTest extends OpTestIntParam {
 
-    public SubtractTest() {
+    public SubtractIntTest() {
         super(BigInt::subtract);
     }
 
@@ -58,6 +58,18 @@ public class SubtractTest extends OpTestBigIntParam {
     @Test
     public void testSubtractSmallNegPosNeg() {
         check(-10, 4, -14);
+    }
+
+    // -9,223,372,036,854,775,808    9,223,372,036,854,775,807
+    // -2,147,483,648                2,147,483,647
+    @Test
+    public void testSubtractMaxInteger() {
+        check(-10, Integer.MAX_VALUE, "-2147483657");
+    }
+
+    @Test
+    public void testSubtractMinInteger() {
+        check(100, Integer.MIN_VALUE, "2147483748");
     }
 
 }

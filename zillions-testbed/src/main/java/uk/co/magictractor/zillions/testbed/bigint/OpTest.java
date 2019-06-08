@@ -54,8 +54,13 @@ public abstract class OpTest<RESULT> {
         if (BigInt.class.equals(targetClass)) {
             result = BigIntFactory.from(value);
         }
+        else if (Long.class.equals(targetClass)) {
+            result = value;
+        }
         else if (Integer.class.equals(targetClass)) {
-            // TODO! range assertions
+            if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
+                throw new IllegalArgumentException("Value out of range for an integer: " + value);
+            }
             result = Integer.valueOf((int) value);
         }
         else {

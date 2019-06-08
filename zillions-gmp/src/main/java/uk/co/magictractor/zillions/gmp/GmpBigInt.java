@@ -40,8 +40,8 @@ public class GmpBigInt implements BigInt {
 
     /**
      * Constructor for an initialised mpz_t with unspecified value (is zero).
-     *
-     * For use by Gmp strategy implementations to create a blank initialised mpz_t.
+     * For use by Gmp strategy implementations to create a blank initialised
+     * mpz_t.
      */
     public GmpBigInt() {
         __lib.mpz_init(_mpz);
@@ -63,7 +63,7 @@ public class GmpBigInt implements BigInt {
     }
 
     @Override
-    public BigInt add(long y) {
+    public BigInt add(int y) {
         if (y >= 0) {
             __lib.mpz_add_ui(_mpz, _mpz, y);
         }
@@ -80,7 +80,7 @@ public class GmpBigInt implements BigInt {
     }
 
     @Override
-    public BigInt subtract(long y) {
+    public BigInt subtract(int y) {
         if (y >= 0) {
             __lib.mpz_sub_ui(_mpz, _mpz, y);
         }
@@ -98,7 +98,7 @@ public class GmpBigInt implements BigInt {
     }
 
     @Override
-    public BigInt multiply(long y) {
+    public BigInt multiply(int y) {
         swap();
         __lib.mpz_mul_si(_mpz, _alt, y);
         return this;

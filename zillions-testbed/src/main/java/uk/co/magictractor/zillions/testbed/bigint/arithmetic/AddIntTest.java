@@ -18,46 +18,46 @@ package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
-import uk.co.magictractor.zillions.testbed.bigint.OpTestBigIntParam;
+import uk.co.magictractor.zillions.testbed.bigint.OpTestIntParam;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
-public class SubtractTest extends OpTestBigIntParam {
+public class AddIntTest extends OpTestIntParam {
 
-    public SubtractTest() {
-        super(BigInt::subtract);
+    public AddIntTest() {
+        super(BigInt::add);
+    }
+
+    // PosPosNeg not possible
+    @Test
+    public void testAddPosPosPos() {
+        check(10, 4, 14);
     }
 
     @Test
-    public void testSubtractSmallPosPosPos() {
-        check(10, 4, 6);
+    public void testAddPosNegPos() {
+        check(10, -4, 6);
     }
 
     @Test
-    public void testSubtractSmallPosPosNeg() {
-        check(4, 10, -6);
+    public void testAddPosNegNeg() {
+        check(4, -10, -6);
     }
 
-    // PosNegNeg not possible
+    // NegNegPos not possible
     @Test
-    public void testSubtractSmallPosNegPos() {
-        check(4, -10, 14);
-    }
-
-    @Test
-    public void testSubtractSmallNegNegPos() {
-        check(-4, -10, 6);
+    public void testAddNegNegNeg() {
+        check(-4, -10, -14);
     }
 
     @Test
-    public void testSubtractSmallNegNegNeg() {
-        check(-10, -4, -6);
+    public void testAddNegPosPos() {
+        check(-4, 10, 6);
     }
 
-    //   NegPosPos not possible
     @Test
-    public void testSubtractSmallNegPosNeg() {
-        check(-10, 4, -14);
+    public void testAddNegPosNeg() {
+        check(-10, 4, -6);
     }
 
 }

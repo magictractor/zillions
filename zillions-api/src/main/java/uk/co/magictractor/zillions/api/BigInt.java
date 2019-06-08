@@ -20,12 +20,10 @@ package uk.co.magictractor.zillions.api;
  * BigInt implementations are mutable. All methods should return "this" to allow
  * daisy chaining of operations.
  * </p>
- *
  * <p>
  * As well as the methods defined on this interface, implementations will
  * require implementations of toString(), equals() and hashCode().
  * </p>
- *
  * <p>
  * Note that for a different BigInt implementation with the same numeric value,
  * equals() should return false. All other methods which have a BigInt parameter
@@ -38,15 +36,15 @@ public interface BigInt extends EnhancedComparable<BigInt> {
 
     BigInt add(BigInt y);
 
-    BigInt add(long y);
+    BigInt add(int y);
 
     BigInt subtract(BigInt y);
 
-    BigInt subtract(long y);
+    BigInt subtract(int y);
 
     BigInt multiply(BigInt y);
 
-    BigInt multiply(long y);
+    BigInt multiply(int y);
 
     /** Negate value. */
     BigInt negate();
@@ -70,8 +68,8 @@ public interface BigInt extends EnhancedComparable<BigInt> {
     // also andNot() in BigInteger
 
     /**
-     * For these ops, bit 0 is the least significant bit. Big operations should act
-     * on a 2's complement representation of the number.
+     * For these ops, bit 0 is the least significant bit. Big operations should
+     * act on a 2's complement representation of the number.
      * https://en.wikipedia.org/wiki/Two%27s_complement
      */
 

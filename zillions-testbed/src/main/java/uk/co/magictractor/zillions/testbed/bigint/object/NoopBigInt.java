@@ -35,7 +35,7 @@ public class NoopBigInt implements BigInt {
     }
 
     @Override
-    public BigInt add(long y) {
+    public BigInt add(int y) {
         return this;
     }
 
@@ -45,7 +45,7 @@ public class NoopBigInt implements BigInt {
     }
 
     @Override
-    public BigInt subtract(long y) {
+    public BigInt subtract(int y) {
         return this;
     }
 
@@ -55,7 +55,7 @@ public class NoopBigInt implements BigInt {
     }
 
     @Override
-    public BigInt multiply(long y) {
+    public BigInt multiply(int y) {
         return this;
     }
 

@@ -18,46 +18,44 @@ package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
-import uk.co.magictractor.zillions.testbed.bigint.OpTestBigIntParam;
+import uk.co.magictractor.zillions.testbed.bigint.OpTestIntParam;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
-public class SubtractTest extends OpTestBigIntParam {
+public class MultiplyIntTest extends OpTestIntParam {
 
-    public SubtractTest() {
-        super(BigInt::subtract);
+    public MultiplyIntTest() {
+        super(BigInt::multiply);
     }
 
     @Test
-    public void testSubtractSmallPosPosPos() {
-        check(10, 4, 6);
+    public void testMultiplySmallPositiveNumbers() {
+        check(10, 4, 40);
     }
 
     @Test
-    public void testSubtractSmallPosPosNeg() {
-        check(4, 10, -6);
-    }
-
-    // PosNegNeg not possible
-    @Test
-    public void testSubtractSmallPosNegPos() {
-        check(4, -10, 14);
+    public void testMultiplySmallNegativeNumbers() {
+        check(-10, -4, 40);
     }
 
     @Test
-    public void testSubtractSmallNegNegPos() {
-        check(-4, -10, 6);
+    public void testMultiplySmallNegativeBySmallPositive() {
+        check(-10, 4, -40);
     }
 
     @Test
-    public void testSubtractSmallNegNegNeg() {
-        check(-10, -4, -6);
+    public void testMultiplySmallPositiveBySmallNegative() {
+        check(10, -4, -40);
     }
 
-    //   NegPosPos not possible
     @Test
-    public void testSubtractSmallNegPosNeg() {
-        check(-10, 4, -14);
+    public void testMultiplyByMinInteger() {
+        check(11, Integer.MIN_VALUE, "-23622320128");
+    }
+
+    @Test
+    public void testMultiplyByMaxInteger() {
+        check(1234, Integer.MAX_VALUE, "2649994820398");
     }
 
 }

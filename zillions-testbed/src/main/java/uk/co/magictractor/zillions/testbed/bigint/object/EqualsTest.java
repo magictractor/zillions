@@ -34,6 +34,19 @@ public class EqualsTest {
     }
 
     @Test
+    public void testEqualsFalse() {
+        BigInt bigInt1 = from(10);
+        BigInt bigInt2 = from(11);
+        assertThat(bigInt1).isNotEqualTo(bigInt2);
+    }
+
+    @Test
+    public void testEqualsNull() {
+        BigInt bigInt1 = from(10);
+        assertThat(bigInt1).isNotEqualTo(null);
+    }
+
+    @Test
     public void testEqualsIgnoresLeadingZero() {
         BigInt bigInt1 = from("10");
         BigInt bigInt2 = from("010");

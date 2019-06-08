@@ -47,7 +47,7 @@ public class BigIntegerBigInt implements BigInt {
     }
 
     @Override
-    public BigInt add(long y) {
+    public BigInt add(int y) {
         _bigInteger = _bigInteger.add(BigInteger.valueOf(y));
         return this;
     }
@@ -59,7 +59,7 @@ public class BigIntegerBigInt implements BigInt {
     }
 
     @Override
-    public BigInt subtract(long y) {
+    public BigInt subtract(int y) {
         _bigInteger = _bigInteger.subtract(BigInteger.valueOf(y));
         return this;
     }
@@ -71,7 +71,7 @@ public class BigIntegerBigInt implements BigInt {
     }
 
     @Override
-    public BigInt multiply(long y) {
+    public BigInt multiply(int y) {
         _bigInteger = _bigInteger.multiply(BigInteger.valueOf(y));
         return this;
     }
