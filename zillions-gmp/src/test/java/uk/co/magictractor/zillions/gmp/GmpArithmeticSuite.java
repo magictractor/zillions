@@ -20,7 +20,7 @@ import org.junit.platform.suite.api.IncludeClassNamePatterns;
 import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
 
 // temp
-@IncludeClassNamePatterns(".*SubtractLongTest.*")
+@IncludeClassNamePatterns(".*Subtract.*")
 public class GmpArithmeticSuite extends ArithmeticSuite {
 
     // Nothing here. Full test suite is inherited from testbed parent suite.

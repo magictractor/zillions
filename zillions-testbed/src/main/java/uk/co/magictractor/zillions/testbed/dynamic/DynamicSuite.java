@@ -108,7 +108,17 @@ public class DynamicSuite {
         _suiteTestClasses = suiteTestClasses;
     }
 
-    public Stream<DynamicNode> stream() {
+    public Stream<DynamicNode> suiteOfSiblingTestClasses() {
+        //return _suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
+        return stream();
+    }
+
+    public Stream<DynamicNode> suiteOfSuitesInChildPackages() {
+        //return _suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
+        return stream();
+    }
+
+    private Stream<DynamicNode> stream() {
         return _suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
     }
 

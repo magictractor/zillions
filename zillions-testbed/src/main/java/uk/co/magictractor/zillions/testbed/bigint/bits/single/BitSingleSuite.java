@@ -32,7 +32,7 @@ public class BitSingleSuite {
 
     @TestFactory
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(this).stream();
+        return new DynamicSuite(this).suiteOfSiblingTestClasses();
     }
 
 }

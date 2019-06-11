@@ -18,8 +18,10 @@ package uk.co.magictractor.zillions.testbed.dynamic;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.Filter;
 import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
@@ -41,83 +43,90 @@ import org.junit.platform.suite.api.SelectPackages;
 
 public class SuiteRequestBuilder {
 
-    private final Class<?> _suiteClass;
-    private List<Filter<?>> _filters;
+    private List<DiscoverySelector> _discoverySelectors = new ArrayList<>();
+
+    /**
+     * Filters which are applied to test classes only. These filters are not
+     * applied to nested suites. Whether a test represents a suite is determined
+     * by _suitePredicate.
+     */
+    private List<Filter<?>> _testFilters = new ArrayList<>();
+    //private DiscoveryFilter<String> _isSuiteFilter = (s) -> s.endsWith("Suite") ? FilterResult.included("is a suite class") : FilterResult.excluded("is a suite class")
 
     public SuiteRequestBuilder(Class<?> suiteClass) {
-        _suiteClass = suiteClass;
+        readAnnotations(suiteClass);
     }
 
     public LauncherDiscoveryRequest build() {
         LauncherDiscoveryRequestBuilder builder = LauncherDiscoveryRequestBuilder.request();
 
-        addSelectors(builder);
+        if (_discoverySelectors.isEmpty()) {
+            throw new IllegalStateException("There are no DiscoverySelectors - the suite is misconfigured");
+        }
+        builder.selectors(_discoverySelectors);
 
+        // Handle nested suites
         // TODO! this could be a smidge more efficient
-        for (Filter<?> filter : filters()) {
+        for (Filter<?> filter : _testFilters) {
             builder.filters(filter);
         }
 
         return builder.build();
     }
 
-    private void addSelectors(LauncherDiscoveryRequestBuilder builder) {
-        boolean hasSelect = false;
-
-        SelectClasses selectClasses = _suiteClass.getAnnotation(SelectClasses.class);
-        if (selectClasses != null) {
-            hasSelect = true;
-            for (Class<?> selectClass : selectClasses.value()) {
-                builder.selectors(DiscoverySelectors.selectClass(selectClass));
-            }
-        }
-
-        SelectPackages selectPackages = _suiteClass.getAnnotation(SelectPackages.class);
-        if (selectPackages != null) {
-            hasSelect = true;
-            for (String selectPackage : selectPackages.value()) {
-                builder.selectors(DiscoverySelectors.selectPackage(selectPackage));
-            }
-        }
-
-        if (!hasSelect) {
-            throw new IllegalStateException(
-                _suiteClass + " is used as a suite but is not annotated with @SelectClasses or @SelectPackages");
-        }
-    }
-
-    public List<Filter<?>> filters() {
-        if (_filters == null) {
-            initFilters();
-        }
-        return _filters;
-    }
-
-    private void initFilters() {
-        _filters = new ArrayList<>();
+    private void readAnnotations(Class<?> suiteClass) {
+        _testFilters = new ArrayList<>();
 
         // Similar to JUnitPlatform.addFiltersFromAnnotations()
-        addFilter(ExcludeClassNamePatterns.class, a -> ClassNameFilter.excludeClassNamePatterns(a.value()));
-        addFilter(IncludeClassNamePatterns.class, a -> ClassNameFilter.includeClassNamePatterns(a.value()));
-        addFilter(ExcludePackages.class, a -> PackageNameFilter.excludePackageNames(a.value()));
-        addFilter(IncludePackages.class, a -> PackageNameFilter.includePackageNames(a.value()));
-        addFilter(ExcludeTags.class, a -> TagFilter.excludeTags(a.value()));
-        addFilter(IncludeTags.class, a -> TagFilter.includeTags(a.value()));
-        addFilter(ExcludeEngines.class, a -> EngineFilter.excludeEngines(a.value()));
-        addFilter(IncludeEngines.class, a -> EngineFilter.includeEngines(a.value()));
+        handleFilterAnnotation(suiteClass, ExcludeClassNamePatterns.class,
+            a -> ClassNameFilter.excludeClassNamePatterns(a.value()));
+        handleFilterAnnotation(suiteClass, IncludeClassNamePatterns.class,
+            a -> ClassNameFilter.includeClassNamePatterns(a.value()));
+        handleFilterAnnotation(suiteClass, ExcludePackages.class,
+            a -> PackageNameFilter.excludePackageNames(a.value()));
+        handleFilterAnnotation(suiteClass, IncludePackages.class,
+            a -> PackageNameFilter.includePackageNames(a.value()));
+        handleFilterAnnotation(suiteClass, ExcludeTags.class, a -> TagFilter.excludeTags(a.value()));
+        handleFilterAnnotation(suiteClass, IncludeTags.class, a -> TagFilter.includeTags(a.value()));
+        handleFilterAnnotation(suiteClass, ExcludeEngines.class, a -> EngineFilter.excludeEngines(a.value()));
+        handleFilterAnnotation(suiteClass, IncludeEngines.class, a -> EngineFilter.includeEngines(a.value()));
+
+        handleAnnotation(suiteClass, SelectClasses.class,
+            a -> addDiscoverySelectors(a.value(), v -> DiscoverySelectors.selectClass(v)));
+        handleAnnotation(suiteClass, SelectPackages.class,
+            a -> addDiscoverySelectors(a.value(), v -> DiscoverySelectors.selectPackage(v)));
+
+        // very temporary!!
+        //        if (!_testFilters.isEmpty()) {
+        //            throw new IllegalStateException("Suite annotations should be removed for now");
+        //        }
+
     }
 
-    private <A extends Annotation> void addFilter(Class<A> annotationClass, Function<A, Filter<?>> filterFunction) {
-        A annotation = _suiteClass.getAnnotation(annotationClass);
+    private <A extends Annotation> void handleFilterAnnotation(Class<?> suiteClass, Class<A> annotationClass,
+            Function<A, Filter<?>> filterFunction) {
+        handleAnnotation(suiteClass, annotationClass, (a) -> {
+            _testFilters.add(filterFunction.apply(a));
+        });
+    }
+
+    private <V> void addDiscoverySelectors(V[] values, Function<V, DiscoverySelector> selectorFunction) {
+        for (V value : values) {
+            _discoverySelectors.add(selectorFunction.apply(value));
+        }
+    }
+
+    private <A extends Annotation> void handleAnnotation(Class<?> suiteClass, Class<A> annotationClass,
+            Consumer<A> annotationConsumer) {
+        A annotation = suiteClass.getAnnotation(annotationClass);
         if (annotation != null) {
-            Filter<?> filter = filterFunction.apply(annotation);
-            _filters.add(filter);
+            annotationConsumer.accept(annotation);
         }
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[suiteClass=" + _suiteClass + "]";
+        return getClass().getSimpleName() + "[suiteClass=" + /* _suiteClass + */ "]";
     }
 
 }
