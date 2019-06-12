@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.ExcludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectPackages;
 
-import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @SelectPackages("uk.co.magictractor.zillions.testbed.bigint.bits.shift")

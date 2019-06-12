@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.IncludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectPackages;
 
-import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
 
 // JUnit5 suite support coming.
 // See https://github.com/junit-team/junit5/issues/744.

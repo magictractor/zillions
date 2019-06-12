@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.dynamic;
+package uk.co.magictractor.zillions.testbed.suite;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

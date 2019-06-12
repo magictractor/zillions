@@ -21,9 +21,9 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.platform.suite.api.SelectClasses;
 
-import uk.co.magictractor.zillions.testbed.dynamic.DynamicSuite;
 import uk.co.magictractor.zillions.testbed.strategy.exporter.BigIntByteExporterTest;
 import uk.co.magictractor.zillions.testbed.strategy.importer.BigIntByteImporterTest;
+import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
 
 /** Suite which runs the core strategy implementations. */
 @SelectClasses({ BigIntByteImporterTest.class, BigIntByteExporterTest.class })
