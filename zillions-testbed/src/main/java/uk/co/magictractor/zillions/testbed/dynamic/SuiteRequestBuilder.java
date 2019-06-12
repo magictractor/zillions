@@ -41,9 +41,16 @@ import org.junit.platform.suite.api.IncludeTags;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.SelectPackages;
 
+import uk.co.magictractor.zillions.testbed.suite.filter.ChildPackageFilter;
+import uk.co.magictractor.zillions.testbed.suite.filter.SamePackageFilter;
+
 public class SuiteRequestBuilder {
 
+    private final String _suiteClassName;
+
     private List<DiscoverySelector> _discoverySelectors = new ArrayList<>();
+
+    private Filter<?> _packageFilter;
 
     /**
      * Filters which are applied to test classes only. These filters are not
@@ -54,6 +61,7 @@ public class SuiteRequestBuilder {
     //private DiscoveryFilter<String> _isSuiteFilter = (s) -> s.endsWith("Suite") ? FilterResult.included("is a suite class") : FilterResult.excluded("is a suite class")
 
     public SuiteRequestBuilder(Class<?> suiteClass) {
+        _suiteClassName = suiteClass.getName();
         readAnnotations(suiteClass);
     }
 
@@ -103,6 +111,34 @@ public class SuiteRequestBuilder {
 
     }
 
+    public void addSamePackageFilter() {
+        //        Filter<String> filter = className -> isSamePackage(className)
+        //                ? FilterResult.included("is in the same package as the suite class")
+        //                : FilterResult.excluded("is in a difference package than the suite class");
+        addPackageFilter(new SamePackageFilter(_suiteClassName));
+    }
+
+    public void addChildPackageFilter() {
+        //        Filter<String> filter = className -> isChildPackage(className)
+        //                ? FilterResult.included("is in a child package of the suite class")
+        //                : FilterResult.excluded("is in a package which is not a child of the suite class");
+        addPackageFilter(new ChildPackageFilter(_suiteClassName));
+    }
+
+    private void addPackageFilter(Filter<?> filter) {
+        if (_packageFilter != null) {
+            throw new IllegalStateException("package filter has already been set");
+        }
+    }
+
+    //    private boolean isSamePackage(String className) {
+    //        return className.startsWith(_suiteClassName + ".");
+    //    }
+
+    //    private boolean isChildPackage(String className) {
+    //        return true;
+    //    }
+
     private <A extends Annotation> void handleFilterAnnotation(Class<?> suiteClass, Class<A> annotationClass,
             Function<A, Filter<?>> filterFunction) {
         handleAnnotation(suiteClass, annotationClass, (a) -> {
@@ -126,7 +162,7 @@ public class SuiteRequestBuilder {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[suiteClass=" + /* _suiteClass + */ "]";
+        return getClass().getSimpleName() + "[suiteClass=" + _suiteClassName + "]";
     }
 
 }
