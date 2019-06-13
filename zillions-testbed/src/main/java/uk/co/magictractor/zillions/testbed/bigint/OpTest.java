@@ -43,6 +43,9 @@ public abstract class OpTest<RESULT> {
         if (BigInt.class.equals(targetClass)) {
             result = BigIntFactory.from(value);
         }
+        else if (Integer.class.equals(targetClass)) {
+            result = Integer.parseInt(value);
+        }
         else {
             throw new IllegalStateException("Code needs modified to convert String to " + targetClass.getSimpleName());
         }

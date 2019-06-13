@@ -77,6 +77,12 @@ public class BigIntegerBigInt implements BigInt {
     }
 
     @Override
+    public BigInt pow(int exponent) {
+        _bigInteger = _bigInteger.pow(exponent);
+        return this;
+    }
+
+    @Override
     public BigInt negate() {
         _bigInteger = _bigInteger.negate();
         return this;

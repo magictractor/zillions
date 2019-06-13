@@ -59,6 +59,8 @@ public interface GmpLib {
 
     void mpz_mul_si(mpz_t rop, mpz_t op1, NativeLong op2);
 
+    void mpz_pow_ui(mpz_t rop, mpz_t base, NativeLong exp);
+
     void mpz_neg(mpz_t rop, mpz_t op);
 
     void mpz_abs(mpz_t rop, mpz_t op);

@@ -1,12 +1,12 @@
 == BigInt method names and behaviour
 
-BigInt's method names and behaviour are based on Java's BigInteger class.
+BigInt's method names and behaviour are based on Java's BigInteger class. Exceptions thrown are also based on BigInteger's behaviour.
 
 This satisfies the "principle of least astonishment". Java developers familiar with BigInteger should find BigInt easy to use.
 
 Having the same behaviour means that a reference implementation of BigInt which wraps BigInteger is very simple and easy to maintain. When new features are added to BigInt, the test suite is usually run again the BigInteger implementation first and then other BigInt implementations are added.
 
-Examples where BigInt implementations have made adjustments to standardise behaviour include the bit length and bit count implementations for negative values.
+Examples where BigInt implementations have made adjustments to standardise behaviour include the bit length and bit count implementations for negative values with GmpLib.
 
 
 == BigInt mutability

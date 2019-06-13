@@ -107,6 +107,16 @@ public class GmpBigInt implements BigInt {
     }
 
     @Override
+    public BigInt pow(int exponent) {
+        if (exponent < 0) {
+            throw new ArithmeticException("Negative exponent");
+        }
+        swap();
+        __lib.mpz_pow_ui(_mpz, _alt, new NativeLong(exponent));
+        return this;
+    }
+
+    @Override
     public BigInt negate() {
         __lib.mpz_neg(_mpz, _mpz);
         return this;

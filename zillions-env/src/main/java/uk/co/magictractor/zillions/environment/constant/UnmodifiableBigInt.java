@@ -85,6 +85,11 @@ public class UnmodifiableBigInt implements BigInt {
     }
 
     @Override
+    public BigInt pow(int exponent) {
+        throw boom();
+    }
+
+    @Override
     public BigInt negate() {
         throw boom();
     }

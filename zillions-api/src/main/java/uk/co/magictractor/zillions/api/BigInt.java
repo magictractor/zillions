@@ -46,6 +46,8 @@ public interface BigInt extends EnhancedComparable<BigInt> {
 
     BigInt multiply(int y);
 
+    BigInt pow(int exponent);
+
     /** Negate value. */
     BigInt negate();
 

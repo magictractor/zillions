@@ -87,6 +87,9 @@ public class JnaGmpLib implements GmpLib, Library {
     public native void mpz_mul_si(mpz_t rop, mpz_t op1, NativeLong op2);
 
     @Override
+    public native void mpz_pow_ui(mpz_t rop, mpz_t base, NativeLong exp);
+
+    @Override
     public native void mpz_neg(mpz_t rop, mpz_t op);
 
     @Override

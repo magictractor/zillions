@@ -59,6 +59,11 @@ public class NoOpBigInt implements BigInt {
     }
 
     @Override
+    public BigInt pow(int exponent) {
+        return this;
+    }
+
+    @Override
     public BigInt and(BigInt y) {
         return this;
     }
