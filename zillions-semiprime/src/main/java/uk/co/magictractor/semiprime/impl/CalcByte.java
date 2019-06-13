@@ -1,5 +1,7 @@
 package uk.co.magictractor.semiprime.impl;
 
+import com.google.common.base.MoreObjects;
+
 import uk.co.magictractor.zillions.api.BigInt;
 
 public class CalcByte {
@@ -14,6 +16,24 @@ public class CalcByte {
         this._leftByte = leftByte;
         this._rightByte = rightByte;
         this._carried = carried;
+    }
+
+    public int left() {
+        return _leftByte;
+    }
+
+    public int right() {
+        return _rightByte;
+    }
+
+    public BigInt carried() {
+        return _carried;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("left", _leftByte).add("right", _rightByte).add("carried",
+            _carried).toString();
     }
 
 }
