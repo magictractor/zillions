@@ -16,6 +16,7 @@
 package uk.co.magictractor.zillions.gmp;
 
 import com.sun.jna.Memory;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
@@ -36,27 +37,27 @@ public interface GmpLib {
     // for copy
     void mpz_init_set(mpz_t rop, mpz_t op);
 
-    void mpz_init_set_si(mpz_t rop, long op);
+    void mpz_init_set_si(mpz_t rop, NativeLong op);
 
     int mpz_init_set_str(mpz_t rop, String str, int base);
 
     void mpz_set(mpz_t rop, mpz_t op);
 
-    void mpz_set_si(mpz_t rop, long op);
+    void mpz_set_si(mpz_t rop, NativeLong op);
 
     void mpz_clear(mpz_t x);
 
     void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
 
-    void mpz_add_ui(mpz_t rop, mpz_t op1, long op2);
+    void mpz_add_ui(mpz_t rop, mpz_t op1, NativeLong op2);
 
     void mpz_sub(mpz_t rop, mpz_t op1, mpz_t op2);
 
-    void mpz_sub_ui(mpz_t rop, mpz_t op1, long op2);
+    void mpz_sub_ui(mpz_t rop, mpz_t op1, NativeLong op2);
 
     void mpz_mul(mpz_t rop, mpz_t op1, mpz_t op2);
 
-    void mpz_mul_si(mpz_t rop, mpz_t op1, long op2);
+    void mpz_mul_si(mpz_t rop, mpz_t op1, NativeLong op2);
 
     void mpz_neg(mpz_t rop, mpz_t op);
 
@@ -68,7 +69,7 @@ public interface GmpLib {
     int mpz_cmp(mpz_t op1, mpz_t op2);
 
     // least significant bits, used for hashCode()
-    long mpz_get_si(mpz_t op);
+    NativeLong mpz_get_si(mpz_t op);
 
     void mpz_and(mpz_t rop, mpz_t op1, mpz_t op2);
 
@@ -100,19 +101,18 @@ public interface GmpLib {
     mp_bitcnt_t mpz_popcount(mpz_t op);
 
     /**
-     * Set rop to op1 times 2 raised to op2. This operation can also be defined as a
-     * left shift by op2 bits.
+     * Set rop to op1 times 2 raised to op2. This operation can also be defined
+     * as a left shift by op2 bits.
      */
     void mpz_mul_2exp(mpz_t rop, mpz_t op1, mp_bitcnt_t op2);
 
     /**
-     * From https://gmplib.org/manual/Integer-Division.html#Integer-Division
-     *
-     * For positive n both mpz_fdiv_q_2exp and mpz_tdiv_q_2exp are simple bitwise
-     * right shifts. For negative n, mpz_fdiv_q_2exp is effectively an arithmetic
-     * right shift treating n as twos complement the same as the bitwise logical
-     * functions do, whereas mpz_tdiv_q_2exp effectively treats n as sign and
-     * magnitude.
+     * From https://gmplib.org/manual/Integer-Division.html#Integer-Division For
+     * positive n both mpz_fdiv_q_2exp and mpz_tdiv_q_2exp are simple bitwise
+     * right shifts. For negative n, mpz_fdiv_q_2exp is effectively an
+     * arithmetic right shift treating n as twos complement the same as the
+     * bitwise logical functions do, whereas mpz_tdiv_q_2exp effectively treats
+     * n as sign and magnitude.
      */
     void mpz_fdiv_q_2exp(mpz_t q, mpz_t n, mp_bitcnt_t b);
 
@@ -123,9 +123,9 @@ public interface GmpLib {
     void mpz_urandomb(mpz_t rop, gmp_randstate_t state, mp_bitcnt_t n);
 
     /**
-     * Initialize state with a default algorithm. This will be a compromise between
-     * speed and randomness, and is recommended for applications with no special
-     * requirements. Currently this is gmp_randinit_mt.
+     * Initialize state with a default algorithm. This will be a compromise
+     * between speed and randomness, and is recommended for applications with no
+     * special requirements. Currently this is gmp_randinit_mt.
      */
     // https://gmplib.org/manual/Random-State-Initialization.html#Random-State-Initialization
     void gmp_randinit_default(gmp_randstate_t state);

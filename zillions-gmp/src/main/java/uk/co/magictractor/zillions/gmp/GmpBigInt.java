@@ -17,6 +17,8 @@ package uk.co.magictractor.zillions.gmp;
 
 import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 
+import com.sun.jna.NativeLong;
+
 import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.gmp.struct.mp_bitcnt_t;
 import uk.co.magictractor.zillions.gmp.struct.mpz_t;
@@ -35,7 +37,7 @@ public class GmpBigInt implements BigInt {
     }
 
     public GmpBigInt(long x) {
-        __lib.mpz_init_set_si(_mpz, x);
+        __lib.mpz_init_set_si(_mpz, new NativeLong(x));
     }
 
     /**
@@ -65,10 +67,10 @@ public class GmpBigInt implements BigInt {
     @Override
     public BigInt add(int y) {
         if (y >= 0) {
-            __lib.mpz_add_ui(_mpz, _mpz, y);
+            __lib.mpz_add_ui(_mpz, _mpz, new NativeLong(y));
         }
         else {
-            __lib.mpz_sub_ui(_mpz, _mpz, -y);
+            __lib.mpz_sub_ui(_mpz, _mpz, new NativeLong(-y));
         }
         return this;
     }
@@ -82,10 +84,10 @@ public class GmpBigInt implements BigInt {
     @Override
     public BigInt subtract(int y) {
         if (y >= 0) {
-            __lib.mpz_sub_ui(_mpz, _mpz, y);
+            __lib.mpz_sub_ui(_mpz, _mpz, new NativeLong(y));
         }
         else {
-            __lib.mpz_add_ui(_mpz, _mpz, -y);
+            __lib.mpz_add_ui(_mpz, _mpz, new NativeLong(-y));
         }
         return this;
     }
@@ -100,7 +102,7 @@ public class GmpBigInt implements BigInt {
     @Override
     public BigInt multiply(int y) {
         swap();
-        __lib.mpz_mul_si(_mpz, _alt, y);
+        __lib.mpz_mul_si(_mpz, _alt, new NativeLong(y));
         return this;
     }
 
@@ -211,7 +213,7 @@ public class GmpBigInt implements BigInt {
 
     @Override
     public int hashCode() {
-        long leastSignificantLong = __lib.mpz_get_si(_mpz);
+        long leastSignificantLong = __lib.mpz_get_si(_mpz).longValue();
         return (int) (leastSignificantLong ^ (leastSignificantLong >>> 32));
     }
 

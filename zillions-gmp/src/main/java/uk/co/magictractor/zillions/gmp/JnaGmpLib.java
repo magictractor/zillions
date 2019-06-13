@@ -22,6 +22,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
@@ -53,7 +54,7 @@ public class JnaGmpLib implements GmpLib, Library {
     public native void mpz_init_set(mpz_t rop, mpz_t op);
 
     @Override
-    public native void mpz_init_set_si(mpz_t rop, long op);
+    public native void mpz_init_set_si(mpz_t rop, NativeLong op);
 
     @Override
     public native int mpz_init_set_str(mpz_t rop, String str, int base);
@@ -62,7 +63,7 @@ public class JnaGmpLib implements GmpLib, Library {
     public native void mpz_set(mpz_t rop, mpz_t op);
 
     @Override
-    public native void mpz_set_si(mpz_t rop, long op);
+    public native void mpz_set_si(mpz_t rop, NativeLong op);
 
     @Override
     public native void mpz_clear(mpz_t x);
@@ -71,19 +72,19 @@ public class JnaGmpLib implements GmpLib, Library {
     public native void mpz_add(mpz_t rop, mpz_t op1, mpz_t op2);
 
     @Override
-    public native void mpz_add_ui(mpz_t rop, mpz_t op1, long op2);
+    public native void mpz_add_ui(mpz_t rop, mpz_t op1, NativeLong op2);
 
     @Override
     public native void mpz_sub(mpz_t rop, mpz_t op1, mpz_t op2);
 
     @Override
-    public native void mpz_sub_ui(mpz_t rop, mpz_t op1, long op2);
+    public native void mpz_sub_ui(mpz_t rop, mpz_t op1, NativeLong op2);
 
     @Override
     public native void mpz_mul(mpz_t rop, mpz_t op1, mpz_t op2);
 
     @Override
-    public native void mpz_mul_si(mpz_t rop, mpz_t op1, long op2);
+    public native void mpz_mul_si(mpz_t rop, mpz_t op1, NativeLong op2);
 
     @Override
     public native void mpz_neg(mpz_t rop, mpz_t op);
@@ -98,7 +99,7 @@ public class JnaGmpLib implements GmpLib, Library {
     public native int mpz_cmp(mpz_t op1, mpz_t op2);
 
     @Override
-    public native long mpz_get_si(mpz_t op);
+    public native NativeLong mpz_get_si(mpz_t op);
 
     @Override
     public native void mpz_and(mpz_t rop, mpz_t op1, mpz_t op2);

@@ -18,6 +18,7 @@ package uk.co.magictractor.zillions.gmp.importer;
 import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 
 import com.sun.jna.Memory;
+import com.sun.jna.NativeLong;
 
 import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.api.importer.BigIntByteImporter;
@@ -40,7 +41,7 @@ public class GmpBigIntByteImporter implements BigIntByteImporter {
             mpz_t mpz = x.getInternalValue();
             // Use the alternate value to prevent creating and throwing away an mpz_t.
             mpz_t alt = x.getAlternateInternalValue();
-            __lib.mpz_set_si(alt, 1L);
+            __lib.mpz_set_si(alt, new NativeLong(1));
             __lib.mpz_mul_2exp(alt, alt, new mp_bitcnt_t(bytes.length * 8));
             __lib.mpz_sub(mpz, mpz, alt);
         }
