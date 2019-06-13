@@ -120,7 +120,7 @@ public class BigIntByteExporterTest extends AbstractStrategyTest<BigIntByteExpor
             56, 201, 113, 27, 228);
     }
 
-    private void check(long value, int... expectedBytesAsInts) {
+    private void check(int value, int... expectedBytesAsInts) {
         check(BigIntFactory.from(value), expectedBytesAsInts);
     }
 

@@ -18,6 +18,7 @@ package uk.co.magictractor.zillions.gmp;
 import static uk.co.magictractor.zillions.gmp.GmpLibInstance.__lib;
 
 import com.google.common.base.MoreObjects;
+import com.sun.jna.NativeLong;
 
 import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.api.Init;
@@ -37,7 +38,9 @@ public class GmpRandomStrategy implements RandomStrategy, Init {
 
     @Override
     public void setSeed(long seed) {
-        __lib.gmp_randseed(_state, new GmpBigInt(seed).getInternalValue());
+        mpz_t mpz = new mpz_t();
+        __lib.mpz_init_set_si(mpz, new NativeLong(seed));
+        __lib.gmp_randseed(_state, mpz);
     }
 
     @Override

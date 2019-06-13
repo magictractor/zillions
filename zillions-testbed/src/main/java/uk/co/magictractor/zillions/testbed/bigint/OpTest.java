@@ -30,7 +30,7 @@ public abstract class OpTest<RESULT> {
         return from(_resultClass, value);
     }
 
-    protected RESULT resultFrom(long value) {
+    protected RESULT resultFrom(int value) {
         return from(_resultClass, value);
     }
 
@@ -49,7 +49,7 @@ public abstract class OpTest<RESULT> {
         return (T) result;
     }
 
-    protected <T> T from(Class<T> targetClass, long value) {
+    protected <T> T from(Class<T> targetClass, int value) {
         Object result;
         if (BigInt.class.equals(targetClass)) {
             result = BigIntFactory.from(value);
@@ -61,7 +61,7 @@ public abstract class OpTest<RESULT> {
             if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
                 throw new IllegalArgumentException("Value out of range for an integer: " + value);
             }
-            result = Integer.valueOf((int) value);
+            result = Integer.valueOf(value);
         }
         else {
             throw new IllegalStateException("Code needs modified to convert long to " + targetClass.getSimpleName());

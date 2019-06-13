@@ -31,11 +31,11 @@ public class OpTestNoParam<RESULT> extends OpTest<RESULT> {
         _op = op;
     }
 
-    protected void check(long x, long expected) {
+    protected void check(int x, int expected) {
         check(BigIntFactory.from(x), resultFrom(expected));
     }
 
-    protected void check(BigInt x, long expected) {
+    protected void check(BigInt x, int expected) {
         check(x, resultFrom(expected));
     }
 

@@ -36,7 +36,7 @@ public class GmpBigInt implements BigInt {
         }
     }
 
-    public GmpBigInt(long x) {
+    public GmpBigInt(int x) {
         __lib.mpz_init_set_si(_mpz, new NativeLong(x));
     }
 

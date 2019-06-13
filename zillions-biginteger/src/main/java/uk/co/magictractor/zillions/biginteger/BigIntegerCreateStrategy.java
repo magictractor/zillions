@@ -32,7 +32,7 @@ public class BigIntegerCreateStrategy implements CreateStrategy {
     }
 
     @Override
-    public BigInt fromLong(long value) {
+    public BigInt fromInt(int value) {
         return new BigIntegerBigInt(value);
     }
 

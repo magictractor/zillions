@@ -36,7 +36,7 @@ public class GmpCreateStrategy implements CreateStrategy {
     }
 
     @Override
-    public BigInt fromLong(long value) {
+    public BigInt fromInt(int value) {
         return new GmpBigInt(value);
     }
 

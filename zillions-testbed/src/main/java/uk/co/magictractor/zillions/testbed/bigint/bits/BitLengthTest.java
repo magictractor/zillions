@@ -81,7 +81,7 @@ public class BitLengthTest {
         check(-257, 9);
     }
 
-    private void check(long value, int expected) {
+    private void check(int value, int expected) {
         check(BigIntFactory.from(value), expected);
     }
 

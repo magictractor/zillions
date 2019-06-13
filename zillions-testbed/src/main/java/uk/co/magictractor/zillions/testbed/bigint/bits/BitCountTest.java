@@ -61,7 +61,7 @@ public class BitCountTest /* extends OpTestNoParam */ {
         check(-0x99, 3);
     }
 
-    private void check(long value, int expected) {
+    private void check(int value, int expected) {
         check(BigIntFactory.from(value), expected);
     }
 

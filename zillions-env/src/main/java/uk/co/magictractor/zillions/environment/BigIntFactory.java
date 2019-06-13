@@ -33,8 +33,8 @@ public final class BigIntFactory {
         return CREATE.fromString(decimal);
     }
 
-    public static BigInt from(long value) {
-        return CREATE.fromLong(value);
+    public static BigInt from(int value) {
+        return CREATE.fromInt(value);
     }
 
     public static BigInt from(byte[] bytes) {

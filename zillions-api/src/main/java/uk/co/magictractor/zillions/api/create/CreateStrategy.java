@@ -32,6 +32,6 @@ public interface CreateStrategy {
 
     BigInt fromString(String decimal);
 
-    BigInt fromLong(long value);
+    BigInt fromInt(int value);
 
 }
