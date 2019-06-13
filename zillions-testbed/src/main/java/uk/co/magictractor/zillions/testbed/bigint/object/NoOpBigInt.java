@@ -22,11 +22,11 @@ import uk.co.magictractor.zillions.api.BigInt;
  * operations have no effect. Just used by some unit tests.
  */
 // TODO! rename to be consistent with Spring NoOpCache and new NoOpMap
-public class NoopBigInt implements BigInt {
+public class NoOpBigInt implements BigInt {
 
     @Override
-    public NoopBigInt copy() {
-        return new NoopBigInt();
+    public NoOpBigInt copy() {
+        return new NoOpBigInt();
     }
 
     @Override
@@ -131,7 +131,7 @@ public class NoopBigInt implements BigInt {
 
     @Override
     public boolean equals(Object other) {
-        return (other instanceof NoopBigInt);
+        return (other instanceof NoOpBigInt);
     }
 
     @Override

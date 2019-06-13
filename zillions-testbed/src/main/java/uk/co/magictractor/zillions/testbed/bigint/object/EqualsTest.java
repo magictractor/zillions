@@ -56,7 +56,7 @@ public class EqualsTest {
     @Test
     public void testEqualsOtherImpl() {
         BigInt bigInt1 = from(0);
-        BigInt bigInt2 = new NoopBigInt();
+        BigInt bigInt2 = new NoOpBigInt();
         // String representations are the same.
         assertThat(bigInt1.toString()).isEqualTo(bigInt1.toString());
         // But equals is false because of the different implementing class.
