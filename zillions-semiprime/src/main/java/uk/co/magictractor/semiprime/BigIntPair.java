@@ -1,6 +1,6 @@
 package uk.co.magictractor.semiprime;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
 
 public class BigIntPair {
 

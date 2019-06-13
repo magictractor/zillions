@@ -1,6 +1,6 @@
 package uk.co.magictractor.semiprime.impl;
 
-import uk.co.magictractor.zillions.core.BigInt;
+import uk.co.magictractor.zillions.api.BigInt;
 
 public class CalcByte {
 

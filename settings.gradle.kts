@@ -16,6 +16,7 @@ include("zillions-core")
 include("zillions-testbed")
 include("zillions-biginteger")
 include("zillions-gmp")
+include("zillions-semiprime")
 
 // Trick copied from https://github.com/robfletcher/strikt/blob/master/settings.gradle.kts
 // Explained at http://www.developerphil.com/renaming-your-gradle-build-files

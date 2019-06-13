@@ -2,8 +2,8 @@ package uk.co.magictractor.semiprime.impl;
 
 import uk.co.magictractor.semiprime.BigIntPair;
 import uk.co.magictractor.semiprime.api.Semiprime;
-import uk.co.magictractor.zillions.core.BigInt;
-import uk.co.magictractor.zillions.core.BigIntFactory;
+import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.environment.BigIntFactory;
 
 public class SemiprimeImpl implements Semiprime {
 
