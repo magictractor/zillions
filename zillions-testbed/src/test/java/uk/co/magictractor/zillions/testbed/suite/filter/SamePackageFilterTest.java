@@ -23,9 +23,23 @@ import org.junit.platform.engine.FilterResult;
 public class SamePackageFilterTest {
 
     @Test
+    public void testSelf() {
+        SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
+        FilterResult filterResult = filter.apply("a.b.c.Suite");
+        assertExcluded(filterResult);
+    }
+
+    @Test
     public void testSamePackage() {
         SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
         FilterResult filterResult = filter.apply("a.b.c.Test");
+        assertIncluded(filterResult);
+    }
+
+    @Test
+    public void testSuiteInSamePackage() {
+        SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
+        FilterResult filterResult = filter.apply("a.b.c.OtherSuite");
         assertIncluded(filterResult);
     }
 

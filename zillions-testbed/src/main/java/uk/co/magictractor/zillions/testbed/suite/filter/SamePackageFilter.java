@@ -20,11 +20,13 @@ import org.junit.platform.engine.FilterResult;
 
 public class SamePackageFilter implements Filter<String> {
 
+    private final String _suiteClassName;
     private final String _suitePackagePlusDot;
     private FilterResult _included = FilterResult.included("is in the same package as the suite class");
     private FilterResult _excluded = FilterResult.excluded("is in a different package than the suite class");
 
     public SamePackageFilter(String suiteClassName) {
+        _suiteClassName = suiteClassName;
         _suitePackagePlusDot = suiteClassName.substring(0, suiteClassName.lastIndexOf(".") + 1);
     }
 
@@ -39,7 +41,8 @@ public class SamePackageFilter implements Filter<String> {
 
     private boolean isIncluded(String testClassName) {
         return testClassName.startsWith(_suitePackagePlusDot)
-                && testClassName.indexOf(".", _suitePackagePlusDot.length()) == -1;
+                && testClassName.indexOf(".", _suitePackagePlusDot.length()) == -1
+                && !_suiteClassName.equals(testClassName);
     }
 
 }
