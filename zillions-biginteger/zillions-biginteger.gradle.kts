@@ -1,5 +1,5 @@
 dependencies {
-    implementation(project(":zillions-core"))
+    implementation(project(":zillions-api"))
     testImplementation(project(":zillions-testbed"))
 }
 
