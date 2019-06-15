@@ -27,13 +27,11 @@ import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
 // JUnit5 suite support coming.
 // See https://github.com/junit-team/junit5/issues/744.
 
-@SelectPackages("uk.co.magictractor.zillions.testbed.bigint")
-@IncludeClassNamePatterns("^uk\\.co\\.magictractor\\.zillions\\.testbed\\.bigint\\.[^.]*\\.[^.]*Suite$")
 public abstract class BigIntSuite {
 
     @TestFactory
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(this).suiteOfSuitesInChildPackages();
+        return new DynamicSuite(BigIntSuite.class).selectSuitesInChildPackages().stream();
     }
 
 }

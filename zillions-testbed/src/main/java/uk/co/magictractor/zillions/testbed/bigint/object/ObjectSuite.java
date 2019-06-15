@@ -32,7 +32,7 @@ public class ObjectSuite {
 
     @TestFactory
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(this).suiteOfSiblingTestClasses();
+        return new DynamicSuite(ObjectSuite.class).selectOthersInPackage().stream();
     }
 
 }

@@ -31,7 +31,7 @@ public abstract class StrategySuite {
 
     @TestFactory
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(this).suiteOfSuitesInChildPackages();
+        return new DynamicSuite(StrategySuite.class).selectSuitesInChildPackages().stream();
     }
 
 }

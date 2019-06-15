@@ -24,13 +24,12 @@ import org.junit.platform.suite.api.SelectClasses;
 import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
-@SelectClasses({ DefaultRandomStrategyTest.class, JavaRandomStrategyTest.class })
 @WithinSuite
 public class RandomSuite {
 
     @TestFactory
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(this).suiteOfSiblingTestClasses();
+        return new DynamicSuite(RandomSuite.class).selectOthersInPackage().stream();
     }
 
 }

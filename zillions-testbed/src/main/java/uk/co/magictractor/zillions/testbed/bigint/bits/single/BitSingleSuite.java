@@ -25,14 +25,12 @@ import org.junit.platform.suite.api.SelectPackages;
 import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
-@SelectPackages("uk.co.magictractor.zillions.testbed.bigint.bits.single")
-@ExcludeClassNamePatterns({ "^.*Suite$" })
 @WithinSuite
 public class BitSingleSuite {
 
     @TestFactory
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(this).suiteOfSiblingTestClasses();
+        return new DynamicSuite(BitSingleSuite.class).selectOthersInPackage().stream();
     }
 
 }

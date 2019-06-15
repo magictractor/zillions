@@ -15,10 +15,12 @@
  */
 package uk.co.magictractor.zillions.testbed.suite.filter;
 
-import org.junit.platform.engine.Filter;
 import org.junit.platform.engine.FilterResult;
+import org.junit.platform.engine.discovery.PackageNameFilter;
 
-public class ChildPackageFilter implements Filter<String> {
+import com.google.common.base.MoreObjects;
+
+public class ChildPackageFilter implements PackageNameFilter {
 
     private final String _suitePackagePlusDot;
     private FilterResult _included = FilterResult.included("is in a child package of the suite class");
@@ -33,10 +35,20 @@ public class ChildPackageFilter implements Filter<String> {
     }
 
     @Override
-    public FilterResult apply(String testClassName) {
-        return isIncluded(testClassName) ? _included : _excluded;
+    public FilterResult apply(String testPackageName) {
+        return isIncluded(testPackageName) ? _included : _excluded;
     }
 
+    //    private boolean isIncluded(String testPackageName) {
+    //        boolean isIncluded = testPackageName.startsWith(_suitePackagePlusDot)
+    //                && testPackageName.indexOf(".", _suitePackagePlusDot.length()) == -1;
+    //
+    //        System.out.println("CPF: " + testPackageName + " -> " + isIncluded);
+    //
+    //        return isIncluded;
+    //    }
+
+    // TODO! add debug
     private boolean isIncluded(String testClassName) {
         if (!testClassName.startsWith(_suitePackagePlusDot)) {
             return false;
@@ -48,8 +60,13 @@ public class ChildPackageFilter implements Filter<String> {
             return false;
         }
 
-        // Check for decendants beneath child packages.
+        // Check for packages beneath child packages.
         return testClassName.indexOf(".", lastDotIndex + 1) == -1;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("suitePackagePlusDot", _suitePackagePlusDot).toString();
     }
 
 }

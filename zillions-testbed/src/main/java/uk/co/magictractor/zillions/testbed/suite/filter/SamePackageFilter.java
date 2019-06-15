@@ -15,10 +15,12 @@
  */
 package uk.co.magictractor.zillions.testbed.suite.filter;
 
-import org.junit.platform.engine.Filter;
 import org.junit.platform.engine.FilterResult;
+import org.junit.platform.engine.discovery.ClassNameFilter;
 
-public class SamePackageFilter implements Filter<String> {
+import com.google.common.base.MoreObjects;
+
+public class SamePackageFilter implements ClassNameFilter {
 
     private final String _suiteClassName;
     private final String _suitePackagePlusDot;
@@ -40,9 +42,18 @@ public class SamePackageFilter implements Filter<String> {
     }
 
     private boolean isIncluded(String testClassName) {
-        return testClassName.startsWith(_suitePackagePlusDot)
+        boolean isIncluded = testClassName.startsWith(_suitePackagePlusDot)
                 && testClassName.indexOf(".", _suitePackagePlusDot.length()) == -1
                 && !_suiteClassName.equals(testClassName);
+
+        System.out.println(testClassName + " -> " + isIncluded);
+
+        return isIncluded;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("suitePackagePlusDot", _suitePackagePlusDot).toString();
     }
 
 }

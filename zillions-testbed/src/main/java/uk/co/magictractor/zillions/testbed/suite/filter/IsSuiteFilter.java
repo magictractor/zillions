@@ -18,10 +18,12 @@ package uk.co.magictractor.zillions.testbed.suite.filter;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.junit.platform.engine.Filter;
 import org.junit.platform.engine.FilterResult;
+import org.junit.platform.engine.discovery.ClassNameFilter;
 
-public class IsSuiteFilter implements Filter<String> {
+import com.google.common.base.MoreObjects;
+
+public class IsSuiteFilter implements ClassNameFilter {
 
     private final Supplier<Predicate<String>> _suitePredicateSupplier;
     private FilterResult _included = FilterResult.included("is a suite");
@@ -37,7 +39,16 @@ public class IsSuiteFilter implements Filter<String> {
     }
 
     private boolean isIncluded(String testClassName) {
-        return _suitePredicateSupplier.get().test(testClassName);
+        boolean isIncluded = _suitePredicateSupplier.get().test(testClassName);
+
+        System.err.println("ISF: " + testClassName + " -> " + isIncluded);
+
+        return isIncluded;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).toString();
     }
 
 }
