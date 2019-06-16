@@ -18,19 +18,17 @@ package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
-import org.junit.jupiter.api.TestFactory;
 
-import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.suite.Suite;
+import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
-// temp to confirm problem with annotations not being read from impl. - yup that's the problem
-// @IncludeClassNamePatterns(".*Subtract.*")
 public class ArithmeticSuite {
 
-    @TestFactory
+    @Suite
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(ArithmeticSuite.class).selectOthersInPackage().stream();
+        return new SuiteStreamBuilder().selectOthersInPackage().build();
     }
 
 }

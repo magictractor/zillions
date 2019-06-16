@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.Filter;
 import org.junit.platform.engine.discovery.ClassNameFilter;
@@ -41,6 +42,8 @@ import org.junit.platform.suite.api.IncludePackages;
 import org.junit.platform.suite.api.IncludeTags;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.SelectPackages;
+
+import com.google.common.base.MoreObjects;
 
 import uk.co.magictractor.zillions.testbed.suite.filter.ChildPackageFilter;
 import uk.co.magictractor.zillions.testbed.suite.filter.IsSuiteFilter;
@@ -78,9 +81,33 @@ import uk.co.magictractor.zillions.testbed.suite.filter.SamePackageFilter;
  * extension in Attic)</li>
  * </ul>
  */
-public class DynamicSuite {
+public class SuiteStreamBuilder {
 
-    private final Class<?> _suiteClass;
+    /**
+     * <p>
+     * The test class where this builder instance was created.
+     * </p>
+     * <p>
+     * Methods such as {@link #selectOthersInPackage()} and
+     * {@link #selectSuitesInChildPackages()} are relative to this class.
+     * </p>
+     */
+    private final Class<?> _suiteBaseClass;
+
+    /**
+     * <p>
+     * The test class being executed. This may be a subclass of _suiteBaseClass.
+     * </p>
+     * <p>
+     * This class, and its ancestors, may have annotations which restrict the
+     * test classes included in this instance of the suite. These annotations
+     * can be useful during development, to focus only on one area of
+     * functionality. Annotations could also be used to permanently remove tests
+     * from an instance of a suite, although Assumptions could be better
+     * solution in that case.
+     * </p>
+     */
+    private final Class<?> _suiteInstanceClass;
 
     private List<DiscoverySelector> _discoverySelectors = new ArrayList<>();
 
@@ -98,12 +125,10 @@ public class DynamicSuite {
      * There is no <code>DynamicSuite(Object suite)</code> constructor because
      * subclasses on the suite may be in a different package.
      */
-    public DynamicSuite(Class<?> suiteClass) {
-        _suiteClass = suiteClass;
-    }
-
-    public Class<?> getSuiteClass() {
-        return _suiteClass;
+    public SuiteStreamBuilder() {
+        ExtensionContext context = SuiteExtension.remove();
+        _suiteBaseClass = context.getRequiredTestMethod().getDeclaringClass();
+        _suiteInstanceClass = context.getTestInstance().get().getClass();
     }
 
     public List<DiscoverySelector> getDiscoverySelectors() {
@@ -118,39 +143,39 @@ public class DynamicSuite {
         return _isSuitePredicate;
     }
 
-    public DynamicSuite selectOthersInPackage() {
-        _discoverySelectors.add(DiscoverySelectors.selectPackage(getSuitePackage()));
-        _testFilters.add(new SamePackageFilter(_suiteClass));
+    public SuiteStreamBuilder selectOthersInPackage() {
+        _discoverySelectors.add(DiscoverySelectors.selectPackage(getSuiteBasePackage()));
+        _testFilters.add(new SamePackageFilter(_suiteBaseClass));
         return this;
     }
 
-    public DynamicSuite selectSuitesInChildPackages() {
-        _discoverySelectors.add(DiscoverySelectors.selectPackage(getSuitePackage()));
-        _testFilters.add(new ChildPackageFilter(_suiteClass));
+    public SuiteStreamBuilder selectSuitesInChildPackages() {
+        _discoverySelectors.add(DiscoverySelectors.selectPackage(getSuiteBasePackage()));
+        _testFilters.add(new ChildPackageFilter(_suiteBaseClass));
         _testFilters.add(new IsSuiteFilter(this::isSuitePredicate));
         return this;
     }
 
-    public DynamicSuite withSuitePredicate(Predicate<String> suitePredicate) {
+    public SuiteStreamBuilder withSuitePredicate(Predicate<String> suitePredicate) {
         _isSuitePredicate = suitePredicate;
         return this;
     }
 
-    public DynamicSuite withoutAnnotations() {
+    public SuiteStreamBuilder withoutAnnotations() {
         _includeAnnotations = false;
         return this;
     }
 
-    public DynamicSuite withAnnotations() {
+    public SuiteStreamBuilder withAnnotations() {
         _includeAnnotations = true;
         return this;
     }
 
-    private String getSuitePackage() {
-        return _suiteClass.getPackage().getName();
+    private String getSuiteBasePackage() {
+        return _suiteBaseClass.getPackage().getName();
     }
 
-    public Stream<DynamicNode> stream() {
+    public Stream<DynamicNode> build() {
         // TODO!  guard against reading annotations multiple times
         // if stream() is called more than once
         if (_includeAnnotations) {
@@ -196,16 +221,18 @@ public class DynamicSuite {
 
     private <A extends Annotation> void handleAnnotation(Class<A> annotationClass,
             Consumer<A> annotationConsumer) {
-        A annotation = _suiteClass.getAnnotation(annotationClass);
+        A annotation = _suiteInstanceClass.getAnnotation(annotationClass);
         if (annotation != null) {
-            System.err.println("Handling annotation " + annotation);
             annotationConsumer.accept(annotation);
         }
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[suiteClass=" + _suiteClass.getName() + "]";
+        return MoreObjects.toStringHelper(this)
+                .add("_suiteBaseClass", _suiteBaseClass.getName())
+                .add("_suiteInstanceClass", _suiteInstanceClass.getName())
+                .toString();
     }
 
 }

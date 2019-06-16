@@ -18,19 +18,17 @@ package uk.co.magictractor.zillions.testbed.bigint.bits;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
-import org.junit.jupiter.api.TestFactory;
-import org.junit.platform.suite.api.IncludeClassNamePatterns;
-import org.junit.platform.suite.api.SelectPackages;
 
-import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.suite.Suite;
+import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
 public class BitSuite {
 
-    @TestFactory
+    @Suite
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(BitSuite.class).selectSuitesInChildPackages().stream();
+        return new SuiteStreamBuilder().selectSuitesInChildPackages().build();
     }
 
 }

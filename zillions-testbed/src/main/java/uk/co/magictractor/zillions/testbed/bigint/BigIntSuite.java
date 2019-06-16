@@ -18,20 +18,18 @@ package uk.co.magictractor.zillions.testbed.bigint;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
-import org.junit.jupiter.api.TestFactory;
-import org.junit.platform.suite.api.IncludeClassNamePatterns;
-import org.junit.platform.suite.api.SelectPackages;
 
-import uk.co.magictractor.zillions.testbed.suite.DynamicSuite;
+import uk.co.magictractor.zillions.testbed.suite.Suite;
+import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
 
 // JUnit5 suite support coming.
 // See https://github.com/junit-team/junit5/issues/744.
 
 public abstract class BigIntSuite {
 
-    @TestFactory
+    @Suite
     public Stream<DynamicNode> suiteFactory() {
-        return new DynamicSuite(BigIntSuite.class).selectSuitesInChildPackages().stream();
+        return new SuiteStreamBuilder().selectSuitesInChildPackages().build();
     }
 
 }

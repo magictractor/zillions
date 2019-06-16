@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.strategy.random;
+package uk.co.magictractor.zillions.testbed.suite;
 
-import java.util.stream.Stream;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import uk.co.magictractor.zillions.testbed.suite.Suite;
-import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
-import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
-
-@WithinSuite
-public class RandomSuite {
-
-    @Suite
-    public Stream<DynamicNode> suiteFactory() {
-        return new SuiteStreamBuilder().selectOthersInPackage().build();
-    }
+@Target({ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@TestFactory
+@ExtendWith(SuiteExtension.class)
+public @interface Suite {
 
 }

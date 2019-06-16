@@ -19,7 +19,7 @@ import org.junit.platform.suite.api.IncludeClassNamePatterns;
 
 import uk.co.magictractor.zillions.testbed.bigint.arithmetic.ArithmeticSuite;
 
-// temp
+// temp @Include
 @IncludeClassNamePatterns(".*Subtract.*")
 public class GmpArithmeticSuite extends ArithmeticSuite {
 

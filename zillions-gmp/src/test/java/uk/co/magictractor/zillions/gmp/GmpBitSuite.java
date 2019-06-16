@@ -13,22 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.strategy.random;
+package uk.co.magictractor.zillions.gmp;
 
-import java.util.stream.Stream;
+import uk.co.magictractor.zillions.testbed.bigint.bits.BitSuite;
 
-import org.junit.jupiter.api.DynamicNode;
+public class GmpBitSuite extends BitSuite {
 
-import uk.co.magictractor.zillions.testbed.suite.Suite;
-import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
-import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
-
-@WithinSuite
-public class RandomSuite {
-
-    @Suite
-    public Stream<DynamicNode> suiteFactory() {
-        return new SuiteStreamBuilder().selectOthersInPackage().build();
-    }
+    // Nothing here. Full test suite is inherited from testbed parent suite.
 
 }

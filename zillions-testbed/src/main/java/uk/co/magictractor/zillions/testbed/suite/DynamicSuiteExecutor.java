@@ -97,13 +97,13 @@ public class DynamicSuiteExecutor {
     //        return dynamicSuite._suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
     //    }
 
-    public Stream<DynamicNode> execute(DynamicSuite dynamicSuite) {
+    public Stream<DynamicNode> execute(SuiteStreamBuilder dynamicSuite) {
         // private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
 
         // DynamicSuiteBuilder requestBuilder = new DynamicSuiteBuilder(suiteClass);
 
         SharedState state = STATE.get();
-        Deque<DynamicSuite> executing = state._executing;
+        Deque<SuiteStreamBuilder> executing = state._executing;
         SuiteExecutionListener suiteExecutionListener = state._suiteExecutionListener;
 
         boolean isOuterSuite = executing.isEmpty();
@@ -129,7 +129,7 @@ public class DynamicSuiteExecutor {
         }
     }
 
-    private LauncherDiscoveryRequest buildLauncherDiscoveryRequest(DynamicSuite dynamicSuite) {
+    private LauncherDiscoveryRequest buildLauncherDiscoveryRequest(SuiteStreamBuilder dynamicSuite) {
         LauncherDiscoveryRequestBuilder builder = LauncherDiscoveryRequestBuilder.request();
 
         List<DiscoverySelector> discoverySelectors = dynamicSuite.getDiscoverySelectors();
@@ -261,7 +261,7 @@ public class DynamicSuiteExecutor {
 
     /** State shared between a test suite and any child suites of that suite. */
     private static final class SharedState {
-        private final Deque<DynamicSuite> _executing = new ArrayDeque<>();
+        private final Deque<SuiteStreamBuilder> _executing = new ArrayDeque<>();
         private final SuiteExecutionListener _suiteExecutionListener = new SuiteExecutionListener();
     }
 

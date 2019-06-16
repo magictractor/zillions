@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.strategy.random;
+package uk.co.magictractor.zillions.testbed.strategy.importer;
 
 import java.util.stream.Stream;
 
@@ -24,7 +24,7 @@ import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
-public class RandomSuite {
+public class ImporterSuite {
 
     @Suite
     public Stream<DynamicNode> suiteFactory() {
