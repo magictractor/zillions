@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @TestFactory
-@ExtendWith(SuiteExtension.class)
+@ExtendWith(CaptureContextExtension.class)
 public @interface Suite {
 
 }

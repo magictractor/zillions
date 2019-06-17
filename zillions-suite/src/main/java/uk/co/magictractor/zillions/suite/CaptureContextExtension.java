@@ -20,11 +20,18 @@ import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
+ * <p>
+ * Capture the test context which is then available for suite builders. This
+ * allows builders to determine the base class for the suite when selecting
+ * tests and nested suites relative to the suite.
+ * </p>
+ * <p>
  * Default visibility because this extension should not be used directly. Tests
  * should use the @Suite annotation which combines @TestFactory and this
  * extension.
+ * </p>
  */
-/* default */ class SuiteExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+/* default */ class CaptureContextExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
     private static final ThreadLocal<ExtensionContext> CONTEXT = new ThreadLocal<>();
 

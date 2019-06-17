@@ -126,7 +126,7 @@ public class SuiteStreamBuilder {
      * subclasses on the suite may be in a different package.
      */
     public SuiteStreamBuilder() {
-        ExtensionContext context = SuiteExtension.remove();
+        ExtensionContext context = CaptureContextExtension.remove();
         _suiteBaseClass = context.getRequiredTestMethod().getDeclaringClass();
         _suiteInstanceClass = context.getTestInstance().get().getClass();
     }
