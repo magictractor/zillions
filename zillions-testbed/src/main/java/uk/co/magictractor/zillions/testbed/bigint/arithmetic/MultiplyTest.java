@@ -18,8 +18,8 @@ package uk.co.magictractor.zillions.testbed.bigint.arithmetic;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.suite.WithinSuite;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestBigIntParam;
-import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
 public class MultiplyTest extends OpTestBigIntParam {

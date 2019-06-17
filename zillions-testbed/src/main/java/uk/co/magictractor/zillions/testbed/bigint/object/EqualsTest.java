@@ -21,7 +21,7 @@ import static uk.co.magictractor.zillions.environment.BigIntFactory.from;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
-import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
+import uk.co.magictractor.zillions.suite.WithinSuite;
 
 @WithinSuite
 public class EqualsTest {

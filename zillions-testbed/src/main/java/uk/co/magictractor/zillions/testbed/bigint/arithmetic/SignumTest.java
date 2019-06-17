@@ -19,8 +19,8 @@ import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.environment.BigIntFactory;
+import uk.co.magictractor.zillions.suite.WithinSuite;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestNoParam;
-import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
 public class SignumTest extends OpTestNoParam<Integer> {

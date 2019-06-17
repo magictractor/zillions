@@ -18,8 +18,8 @@ package uk.co.magictractor.zillions.testbed.bigint.bits.shift;
 import org.junit.jupiter.api.Test;
 
 import uk.co.magictractor.zillions.api.BigInt;
+import uk.co.magictractor.zillions.suite.WithinSuite;
 import uk.co.magictractor.zillions.testbed.bigint.OpTestIntParam;
-import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite
 public class ShiftLeftTest extends OpTestIntParam {

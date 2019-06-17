@@ -23,7 +23,7 @@ import org.junit.platform.suite.api.SelectPackages;
 
 import uk.co.magictractor.zillions.suite.Suite;
 import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
-import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
+import uk.co.magictractor.zillions.suite.WithinSuite;
 
 @SelectPackages("uk.co.magictractor.zillions.testbed.bigint.object")
 @ExcludeClassNamePatterns({ "^.*Suite$" })
