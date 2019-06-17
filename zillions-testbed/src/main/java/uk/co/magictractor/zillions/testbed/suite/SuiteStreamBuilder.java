@@ -113,8 +113,8 @@ public class SuiteStreamBuilder {
 
     /**
      * Filters which are applied to test classes only. These filters are not
-     * applied to nested suites. Whether a test represents a suite is determined
-     * by _suitePredicate.
+     * applied to nested suites. Whether a test class represents a suite is
+     * determined by _suitePredicate.
      */
     private List<Filter<?>> _testFilters = new ArrayList<>();
 

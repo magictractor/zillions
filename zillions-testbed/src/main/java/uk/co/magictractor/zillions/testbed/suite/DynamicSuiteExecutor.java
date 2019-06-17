@@ -54,53 +54,7 @@ public class DynamicSuiteExecutor {
         }
     };
 
-    //    private final List<Class<?>> _suiteTestClasses;
-    //
-    //    /**
-    //     * Constructor typically used within a method annotated by @TestFactory in a
-    //     * test class which has suite annotations.
-    //     *
-    //     * <pre>
-    //     * &#64;TestFactory
-    //     * public Stream<DynamicNode> suiteFactory() {
-    //     *     return new DynamicSuite(this).stream();
-    //     * }
-    //     * </pre>
-    //     */
-    //    public DynamicSuiteExecutor(Object suiteTest) {
-    //        this(Collections.singletonList(suiteTest.getClass()));
-    //    }
-    //
-    //    public DynamicSuiteExecutor(Class<?> suiteTestClass) {
-    //        this(Collections.singletonList((Class<?>) suiteTestClass));
-    //    }
-    //
-    //    /**
-    //     * @param suiteTestClasses test classes which are annotated
-    //     *        with @SelectClasses
-    //     */
-    //    public DynamicSuiteExecutor(Class<?>... suiteTestClasses) {
-    //        this(Arrays.asList(suiteTestClasses));
-    //    }
-    //
-    //    public DynamicSuiteExecutor(List<Class<?>> suiteTestClasses) {
-    //        System.err.println("new DynamicSuite: " + suiteTestClasses);
-    //
-    //        if (suiteTestClasses == null || suiteTestClasses.isEmpty()) {
-    //            throw new IllegalArgumentException("suiteTestClasses must not be null or empty");
-    //        }
-    //
-    //        _suiteTestClasses = suiteTestClasses;
-    //    }
-
-    //    public Stream<DynamicNode> execute(DynamicSuiteBuilder dynamicSuite) {
-    //        return dynamicSuite._suiteTestClasses.stream().map(this::streamForSuite).flatMap(i -> i);
-    //    }
-
     public Stream<DynamicNode> execute(SuiteStreamBuilder dynamicSuite) {
-        // private Stream<DynamicNode> streamForSuite(Class<?> suiteClass) {
-
-        // DynamicSuiteBuilder requestBuilder = new DynamicSuiteBuilder(suiteClass);
 
         SharedState state = STATE.get();
         Deque<SuiteStreamBuilder> executing = state._executing;
