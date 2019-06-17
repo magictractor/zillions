@@ -19,8 +19,8 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 
-import uk.co.magictractor.zillions.testbed.suite.Suite;
-import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
+import uk.co.magictractor.zillions.suite.Suite;
+import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @WithinSuite

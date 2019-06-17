@@ -21,8 +21,8 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.platform.suite.api.ExcludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectPackages;
 
-import uk.co.magictractor.zillions.testbed.suite.Suite;
-import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
+import uk.co.magictractor.zillions.suite.Suite;
+import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
 import uk.co.magictractor.zillions.testbed.tags.WithinSuite;
 
 @SelectPackages("uk.co.magictractor.zillions.testbed.bigint.object")

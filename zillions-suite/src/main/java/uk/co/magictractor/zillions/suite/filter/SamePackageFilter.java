@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.suite.filter;
+package uk.co.magictractor.zillions.suite.filter;
 
 import org.junit.platform.engine.FilterResult;
 import org.junit.platform.engine.discovery.ClassNameFilter;

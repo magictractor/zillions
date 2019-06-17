@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.suite;
+package uk.co.magictractor.zillions.suite;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -45,9 +45,9 @@ import org.junit.platform.suite.api.SelectPackages;
 
 import com.google.common.base.MoreObjects;
 
-import uk.co.magictractor.zillions.testbed.suite.filter.ChildPackageFilter;
-import uk.co.magictractor.zillions.testbed.suite.filter.IsSuiteFilter;
-import uk.co.magictractor.zillions.testbed.suite.filter.SamePackageFilter;
+import uk.co.magictractor.zillions.suite.filter.ChildPackageFilter;
+import uk.co.magictractor.zillions.suite.filter.IsSuiteFilter;
+import uk.co.magictractor.zillions.suite.filter.SamePackageFilter;
 
 /**
  * <p>

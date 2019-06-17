@@ -19,8 +19,8 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 
-import uk.co.magictractor.zillions.testbed.suite.Suite;
-import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
+import uk.co.magictractor.zillions.suite.Suite;
+import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
 
 // JUnit5 suite support coming.
 // See https://github.com/junit-team/junit5/issues/744.

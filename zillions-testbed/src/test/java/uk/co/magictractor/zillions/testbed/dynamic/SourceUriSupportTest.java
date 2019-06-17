@@ -29,7 +29,7 @@ import org.junit.platform.engine.discovery.DiscoverySelectors;
 
 import com.google.common.collect.Iterables;
 
-import uk.co.magictractor.zillions.testbed.suite.SourceUriSupport;
+import uk.co.magictractor.zillions.suite.SourceUriSupport;
 
 public class SourceUriSupportTest {
 

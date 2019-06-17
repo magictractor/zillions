@@ -20,10 +20,10 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.platform.suite.api.SelectClasses;
 
+import uk.co.magictractor.zillions.suite.Suite;
+import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
 import uk.co.magictractor.zillions.testbed.strategy.exporter.BigIntByteExporterTest;
 import uk.co.magictractor.zillions.testbed.strategy.importer.BigIntByteImporterTest;
-import uk.co.magictractor.zillions.testbed.suite.Suite;
-import uk.co.magictractor.zillions.testbed.suite.SuiteStreamBuilder;
 
 /** Suite which runs the core strategy implementations. */
 @SelectClasses({ BigIntByteImporterTest.class, BigIntByteExporterTest.class })
