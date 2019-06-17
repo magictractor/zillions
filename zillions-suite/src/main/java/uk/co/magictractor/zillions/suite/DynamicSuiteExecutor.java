@@ -92,12 +92,23 @@ public class DynamicSuiteExecutor {
         }
         builder.selectors(discoverySelectors);
 
-        // TODO! get some filters from parent suites
-        for (Filter<?> filter : dynamicSuite.getTestFilters()) {
-            builder.filters(filter);
-        }
+        builder.filters(allFilters(dynamicSuite));
 
         return builder.build();
+    }
+
+    private Filter<?>[] allFilters(SuiteStreamBuilder dynamicSuite) {
+        List<Filter<?>> filters = new ArrayList<>();
+
+        STATE.get()._executing.stream()
+                .map(SuiteStreamBuilder::getTestFilters)
+                .forEach(filters::addAll);
+
+        filters.addAll(dynamicSuite.getTestFilters());
+
+        Filter<?>[] filtersArray = new Filter[filters.size()];
+        filters.toArray(filtersArray);
+        return filtersArray;
     }
 
     private static final class DynamicContainerInfo {
