@@ -17,10 +17,12 @@ package uk.co.magictractor.zillions.suite;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
@@ -28,11 +30,19 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.Filter;
 import org.junit.platform.engine.FilterResult;
+import org.junit.platform.engine.TestSource;
 import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.engine.discovery.PackageNameFilter;
+import org.junit.platform.engine.support.descriptor.ClassSource;
 import org.junit.platform.launcher.EngineFilter;
+import org.junit.platform.launcher.Launcher;
+import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.TagFilter;
+import org.junit.platform.launcher.TestIdentifier;
+import org.junit.platform.launcher.TestPlan;
+import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
+import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.suite.api.ExcludeClassNamePatterns;
 import org.junit.platform.suite.api.ExcludeEngines;
 import org.junit.platform.suite.api.ExcludePackages;
@@ -45,6 +55,7 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.SelectPackages;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Iterables;
 
 import uk.co.magictractor.zillions.suite.filter.ChildPackageFilter;
 import uk.co.magictractor.zillions.suite.filter.IfElseFilter;
@@ -147,21 +158,45 @@ public class SuiteStreamBuilder {
     }
 
     public SuiteStreamBuilder selectOthersInPackage() {
-        _discoverySelectors.add(DiscoverySelectors.selectPackage(getSuiteBasePackage()));
-        _testFilters.add(new SamePackageFilter(_suiteBaseClass));
+        selectClasses(new SamePackageFilter(_suiteBaseClass));
         return this;
     }
 
     public SuiteStreamBuilder selectSuitesInChildPackages() {
-        _discoverySelectors.add(DiscoverySelectors.selectPackage(getSuiteBasePackage()));
-        _testFilters.add(new ChildPackageFilter(_suiteBaseClass));
-        _testFilters.add(new IsSuiteFilter(this::isSuitePredicate));
+        selectClasses(new ChildPackageFilter(_suiteBaseClass), new IsSuiteFilter(this::isSuitePredicate));
         return this;
     }
 
-    public SuiteStreamBuilder withSuitePredicate(Predicate<String> suitePredicate) {
-        _isSuitePredicate = suitePredicate;
+    public SuiteStreamBuilder selectClasses(Filter<?>... filters) {
+        Launcher launcher = LauncherFactory.create();
+        LauncherDiscoveryRequest launcherDiscoveryRequest = LauncherDiscoveryRequestBuilder
+                .request()
+                .selectors(DiscoverySelectors.selectPackage(getSuiteBasePackage()))
+                .filters(filters)
+                .build();
+        TestPlan testPlan = launcher.discover(launcherDiscoveryRequest);
+
+        for (Class<?> testClass : getTestClasses(testPlan)) {
+            _discoverySelectors.add(DiscoverySelectors.selectClass(testClass));
+        }
+
         return this;
+    }
+
+    private Collection<Class<?>> getTestClasses(TestPlan testPlan) {
+        TestIdentifier root = Iterables.getOnlyElement(testPlan.getRoots());
+        return testPlan.getChildren(root)
+                .stream()
+                .map(this::getTestSourceClass)
+                .collect(Collectors.toList());
+    }
+
+    private Class<?> getTestSourceClass(TestIdentifier testIdentifier) {
+        TestSource source = testIdentifier.getSource().get();
+        if (source instanceof ClassSource) {
+            return ((ClassSource) source).getJavaClass();
+        }
+        throw new IllegalArgumentException("Code should be modified to handle source type " + source.getClass());
     }
 
     public SuiteStreamBuilder withoutAnnotations() {

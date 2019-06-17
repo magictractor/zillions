@@ -18,15 +18,11 @@ package uk.co.magictractor.zillions.testbed.bigint.object;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
-import org.junit.platform.suite.api.ExcludeClassNamePatterns;
-import org.junit.platform.suite.api.SelectPackages;
 
 import uk.co.magictractor.zillions.suite.Suite;
 import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
 import uk.co.magictractor.zillions.suite.WithinSuite;
 
-@SelectPackages("uk.co.magictractor.zillions.testbed.bigint.object")
-@ExcludeClassNamePatterns({ "^.*Suite$" })
 @WithinSuite
 public class ObjectSuite {
 
