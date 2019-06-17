@@ -200,6 +200,7 @@ public class DynamicSuiteExecutor {
             return DynamicTest.dynamicTest(displayName, testSourceUri, executable);
         }
 
+        // TODO! confusing name, since it doesn't return anything
         private void returnOriginalTestExecutionResult(TestExecutionResult testExecutionResult) throws Throwable {
 
             if (testExecutionResult.getThrowable().isPresent()) {
@@ -292,6 +293,11 @@ public class DynamicSuiteExecutor {
                 //                    throw new IllegalStateException(
                 //                        "executionFinished() for a contained other than the current container");
                 //                }
+
+                // TODO! make this configurable?
+                if (_mostRecentContainer._childTests.isEmpty() && _mostRecentContainer._childContainers.isEmpty()) {
+                    _mostRecentContainer._parentContainerInfo._childContainers.remove(_mostRecentContainer);
+                }
 
                 _mostRecentContainer = _mostRecentContainer._parentContainerInfo;
             }
