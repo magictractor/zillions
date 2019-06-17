@@ -27,6 +27,7 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.Filter;
+import org.junit.platform.engine.FilterResult;
 import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.engine.discovery.PackageNameFilter;
@@ -46,7 +47,9 @@ import org.junit.platform.suite.api.SelectPackages;
 import com.google.common.base.MoreObjects;
 
 import uk.co.magictractor.zillions.suite.filter.ChildPackageFilter;
+import uk.co.magictractor.zillions.suite.filter.IfElseFilter;
 import uk.co.magictractor.zillions.suite.filter.IsSuiteFilter;
+import uk.co.magictractor.zillions.suite.filter.PreserveInterfaceFilter;
 import uk.co.magictractor.zillions.suite.filter.SamePackageFilter;
 
 /**
@@ -209,7 +212,13 @@ public class SuiteStreamBuilder {
     private <A extends Annotation> void handleFilterAnnotation(Class<A> annotationClass,
             Function<A, Filter<?>> filterFunction) {
         handleAnnotation(annotationClass, (a) -> {
-            _testFilters.add(filterFunction.apply(a));
+            Filter baseFilter = filterFunction.apply(a);
+            // Ignore the filter for suites.
+            Filter notSuiteFilter = new IfElseFilter(this::isSuitePredicate, FilterResult.included("is a suite"),
+                baseFilter);
+            // But need to preserve PostDiscoveryFilter and DiscoveryFilter interfaces.
+            Filter preserveInterfaceFilter = PreserveInterfaceFilter.preserveInterface(baseFilter, notSuiteFilter);
+            _testFilters.add(preserveInterfaceFilter);
         });
     }
 
