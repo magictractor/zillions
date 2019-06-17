@@ -9,6 +9,7 @@
 
 rootProject.name = "zillions"
 
+include("zillions-suite")
 include("zillions-api")
 include("zillions-junit")
 include("zillions-env")

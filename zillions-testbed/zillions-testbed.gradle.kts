@@ -1,5 +1,6 @@
 dependencies {
     api(project(":zillions-env"))
+    api(project(":zillions-suite"))
     // junit-jupiter-params for @ParameterizedTests
     api("org.junit.jupiter:junit-jupiter-params:5.4.2")
     api("org.junit.platform:junit-platform-suite-api:1.4.2")
@@ -7,4 +8,4 @@ dependencies {
     api("org.assertj:assertj-core:3.11.1")
 }
 
-description = "Zillions test suite"
+description = "Zillions testbed"
