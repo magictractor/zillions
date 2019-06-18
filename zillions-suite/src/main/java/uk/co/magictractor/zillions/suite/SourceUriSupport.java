@@ -49,10 +49,9 @@ public final class SourceUriSupport {
             return fromClassName(className);
         }
         else if (source instanceof MethodSource) {
-            //            MethodSource methodSource = (MethodSource) source;
-            //            return fromMethod(methodSource.getClassName(), methodSource.getMethodName(),
-            //                methodSource.getMethodParameterTypes());
-            return null;
+            MethodSource methodSource = (MethodSource) source;
+            return fromMethod(methodSource.getClassName(), methodSource.getMethodName(),
+                methodSource.getMethodParameterTypes());
         }
         else {
             // TODO! log a warning.
@@ -62,7 +61,6 @@ public final class SourceUriSupport {
         }
     }
 
-    // See https://github.com/junit-team/junit5/issues/1850
     public static URI fromMethod(Method method) {
 
         String methodParameterTypes = null;
@@ -87,24 +85,25 @@ public final class SourceUriSupport {
     }
 
     private static URI fromMethod(String className, String methodName, String methodParameterTypes) {
-        String path = pathFromClassName(className) + "#" + methodName;
+        String path = pathFromClassName(className);
+        String fragment = methodName;
         if (methodParameterTypes != null) {
-            path += methodParameterTypes;
+            fragment += methodParameterTypes;
         }
-        return createUri("method", path, null);
+        return createUri("method", path, null, fragment);
     }
 
     public static URI fromClassName(String className) {
-        return createUri("classpath", pathFromClassName(className), null);
+        return createUri("classpath", pathFromClassName(className), null, null);
     }
 
     private static String pathFromClassName(String className) {
         return "/" + className.replace('.', '/');
     }
 
-    private static URI createUri(String scheme, String path, String query) {
+    private static URI createUri(String scheme, String path, String query, String fragment) {
         try {
-            return new URI(scheme, null, path, query, null);
+            return new URI(scheme, null, path, query, fragment);
         }
         catch (URISyntaxException e) {
             throw new IllegalStateException(e);
