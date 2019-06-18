@@ -88,7 +88,8 @@ public class DynamicSuiteExecutor {
 
         List<DiscoverySelector> discoverySelectors = dynamicSuite.getDiscoverySelectors();
         if (dynamicSuite.getDiscoverySelectors().isEmpty()) {
-            throw new IllegalStateException("There are no DiscoverySelectors - the suite is misconfigured");
+            throw new IllegalStateException("There are no DiscoverySelectors - the "
+                    + dynamicSuite.getClass().getSimpleName() + " is misconfigured");
         }
         builder.selectors(discoverySelectors);
 

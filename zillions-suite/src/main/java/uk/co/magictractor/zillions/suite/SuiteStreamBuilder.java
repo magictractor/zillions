@@ -158,16 +158,27 @@ public class SuiteStreamBuilder {
     }
 
     public SuiteStreamBuilder selectOthersInPackage() {
-        selectClasses(new SamePackageFilter(_suiteBaseClass));
+        Collection<Class<?>> selected = selectClasses(new SamePackageFilter(_suiteBaseClass));
+
+        if (selected.isEmpty()) {
+            throw new IllegalStateException("Nothing else in package to select");
+        }
+
         return this;
     }
 
     public SuiteStreamBuilder selectSuitesInChildPackages() {
-        selectClasses(new ChildPackageFilter(_suiteBaseClass), new IsSuiteFilter(this::isSuitePredicate));
+        Collection<Class<?>> selected = selectClasses(new ChildPackageFilter(_suiteBaseClass),
+            new IsSuiteFilter(this::isSuitePredicate));
+
+        if (selected.isEmpty()) {
+            throw new IllegalStateException("No child packages to select");
+        }
+
         return this;
     }
 
-    public SuiteStreamBuilder selectClasses(Filter<?>... filters) {
+    private Collection<Class<?>> selectClasses(Filter<?>... filters) {
         Launcher launcher = LauncherFactory.create();
         LauncherDiscoveryRequest launcherDiscoveryRequest = LauncherDiscoveryRequestBuilder
                 .request()
@@ -175,12 +186,13 @@ public class SuiteStreamBuilder {
                 .filters(filters)
                 .build();
         TestPlan testPlan = launcher.discover(launcherDiscoveryRequest);
+        Collection<Class<?>> selected = getTestClasses(testPlan);
 
-        for (Class<?> testClass : getTestClasses(testPlan)) {
+        for (Class<?> testClass : selected) {
             _discoverySelectors.add(DiscoverySelectors.selectClass(testClass));
         }
 
-        return this;
+        return selected;
     }
 
     private Collection<Class<?>> getTestClasses(TestPlan testPlan) {
