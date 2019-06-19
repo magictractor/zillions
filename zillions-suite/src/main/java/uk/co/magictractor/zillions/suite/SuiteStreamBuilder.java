@@ -15,12 +15,9 @@
  */
 package uk.co.magictractor.zillions.suite;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,38 +26,22 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.Filter;
-import org.junit.platform.engine.FilterResult;
 import org.junit.platform.engine.TestSource;
-import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
-import org.junit.platform.engine.discovery.PackageNameFilter;
 import org.junit.platform.engine.support.descriptor.ClassSource;
-import org.junit.platform.launcher.EngineFilter;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
-import org.junit.platform.launcher.TagFilter;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
-import org.junit.platform.suite.api.ExcludeClassNamePatterns;
-import org.junit.platform.suite.api.ExcludeEngines;
-import org.junit.platform.suite.api.ExcludePackages;
-import org.junit.platform.suite.api.ExcludeTags;
-import org.junit.platform.suite.api.IncludeClassNamePatterns;
-import org.junit.platform.suite.api.IncludeEngines;
-import org.junit.platform.suite.api.IncludePackages;
-import org.junit.platform.suite.api.IncludeTags;
-import org.junit.platform.suite.api.SelectClasses;
-import org.junit.platform.suite.api.SelectPackages;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Iterables;
 
+import uk.co.magictractor.zillions.suite.annotations.JUnit4SuiteAnnotationReader;
 import uk.co.magictractor.zillions.suite.filter.ChildPackageFilter;
-import uk.co.magictractor.zillions.suite.filter.IfElseFilter;
 import uk.co.magictractor.zillions.suite.filter.IsSuiteFilter;
-import uk.co.magictractor.zillions.suite.filter.PreserveInterfaceFilter;
 import uk.co.magictractor.zillions.suite.filter.SamePackageFilter;
 
 /**
@@ -97,30 +78,8 @@ import uk.co.magictractor.zillions.suite.filter.SamePackageFilter;
  */
 public class SuiteStreamBuilder {
 
-    /**
-     * <p>
-     * The test class where this builder instance was created.
-     * </p>
-     * <p>
-     * Methods such as {@link #selectOthersInPackage()} and
-     * {@link #selectSuitesInChildPackages()} are relative to this class.
-     * </p>
-     */
     private final Class<?> _suiteBaseClass;
 
-    /**
-     * <p>
-     * The test class being executed. This may be a subclass of _suiteBaseClass.
-     * </p>
-     * <p>
-     * This class, and its ancestors, may have annotations which restrict the
-     * test classes included in this instance of the suite. These annotations
-     * can be useful during development, to focus only on one area of
-     * functionality. Annotations could also be used to permanently remove tests
-     * from an instance of a suite, although Assumptions could be better
-     * solution in that case.
-     * </p>
-     */
     private final Class<?> _suiteInstanceClass;
 
     private List<DiscoverySelector> _discoverySelectors = new ArrayList<>();
@@ -145,6 +104,36 @@ public class SuiteStreamBuilder {
         _suiteInstanceClass = context.getTestInstance().get().getClass();
     }
 
+    /**
+     * <p>
+     * The test class where this builder instance was created.
+     * </p>
+     * <p>
+     * Methods such as {@link #selectOthersInPackage()} and
+     * {@link #selectSuitesInChildPackages()} are relative to this class.
+     * </p>
+     */
+    public Class<?> getSuiteBaseClass() {
+        return _suiteBaseClass;
+    }
+
+    /**
+     * <p>
+     * The test class being executed. This may be a subclass of _suiteBaseClass.
+     * </p>
+     * <p>
+     * This class, and its ancestors, may have annotations which restrict the
+     * test classes included in this instance of the suite. These annotations
+     * can be useful during development, to focus only on one area of
+     * functionality. Annotations could also be used to permanently remove tests
+     * from an instance of a suite, although Assumptions could be better
+     * solution in that case.
+     * </p>
+     */
+    public Class<?> getSuiteInstanceClass() {
+        return _suiteInstanceClass;
+    }
+
     public List<DiscoverySelector> getDiscoverySelectors() {
         return _discoverySelectors;
     }
@@ -153,7 +142,7 @@ public class SuiteStreamBuilder {
         return _testFilters;
     }
 
-    private Predicate<String> isSuitePredicate() {
+    public Predicate<String> isSuitePredicate() {
         return _isSuitePredicate;
     }
 
@@ -211,6 +200,16 @@ public class SuiteStreamBuilder {
         throw new IllegalArgumentException("Code should be modified to handle source type " + source.getClass());
     }
 
+    public SuiteStreamBuilder select(DiscoverySelector discoverySelector) {
+        _discoverySelectors.add(discoverySelector);
+        return this;
+    }
+
+    public SuiteStreamBuilder filter(Filter<?> filter) {
+        _testFilters.add(filter);
+        return this;
+    }
+
     public SuiteStreamBuilder withoutAnnotations() {
         _includeAnnotations = false;
         return this;
@@ -229,58 +228,11 @@ public class SuiteStreamBuilder {
         // TODO!  guard against reading annotations multiple times
         // if stream() is called more than once
         if (_includeAnnotations) {
-            readAnnotations();
+            // TODO! SPI? other readers, check whether api project is present
+            new JUnit4SuiteAnnotationReader().readAnnotations(this);
         }
 
         return new DynamicSuiteExecutor().execute(this);
-    }
-
-    private void readAnnotations() {
-        // Similar to JUnitPlatform.addFiltersFromAnnotations()
-        handleFilterAnnotation(ExcludeClassNamePatterns.class,
-            a -> ClassNameFilter.excludeClassNamePatterns(a.value()));
-        handleFilterAnnotation(IncludeClassNamePatterns.class,
-            a -> ClassNameFilter.includeClassNamePatterns(a.value()));
-        handleFilterAnnotation(ExcludePackages.class,
-            a -> PackageNameFilter.excludePackageNames(a.value()));
-        handleFilterAnnotation(IncludePackages.class,
-            a -> PackageNameFilter.includePackageNames(a.value()));
-        handleFilterAnnotation(ExcludeTags.class, a -> TagFilter.excludeTags(a.value()));
-        handleFilterAnnotation(IncludeTags.class, a -> TagFilter.includeTags(a.value()));
-        handleFilterAnnotation(ExcludeEngines.class, a -> EngineFilter.excludeEngines(a.value()));
-        handleFilterAnnotation(IncludeEngines.class, a -> EngineFilter.includeEngines(a.value()));
-
-        handleAnnotation(SelectClasses.class,
-            a -> addDiscoverySelectors(a.value(), v -> DiscoverySelectors.selectClass(v)));
-        handleAnnotation(SelectPackages.class,
-            a -> addDiscoverySelectors(a.value(), v -> DiscoverySelectors.selectPackage(v)));
-    }
-
-    private <A extends Annotation> void handleFilterAnnotation(Class<A> annotationClass,
-            Function<A, Filter<?>> filterFunction) {
-        handleAnnotation(annotationClass, (a) -> {
-            Filter baseFilter = filterFunction.apply(a);
-            // Ignore the filter for suites.
-            Filter notSuiteFilter = new IfElseFilter(this::isSuitePredicate, FilterResult.included("is a suite"),
-                baseFilter);
-            // But need to preserve PostDiscoveryFilter and DiscoveryFilter interfaces.
-            Filter preserveInterfaceFilter = PreserveInterfaceFilter.preserveInterface(baseFilter, notSuiteFilter);
-            _testFilters.add(preserveInterfaceFilter);
-        });
-    }
-
-    private <V> void addDiscoverySelectors(V[] values, Function<V, DiscoverySelector> selectorFunction) {
-        for (V value : values) {
-            _discoverySelectors.add(selectorFunction.apply(value));
-        }
-    }
-
-    private <A extends Annotation> void handleAnnotation(Class<A> annotationClass,
-            Consumer<A> annotationConsumer) {
-        A annotation = _suiteInstanceClass.getAnnotation(annotationClass);
-        if (annotation != null) {
-            annotationConsumer.accept(annotation);
-        }
     }
 
     @Override
