@@ -24,6 +24,9 @@ import org.junit.platform.launcher.PostDiscoveryFilter;
 
 public final class PreserveInterfaceFilter {
 
+    private PreserveInterfaceFilter() {
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> Filter<T> preserveInterface(Filter<T> baseFilter, Filter<T> wrappedFilter) {
         if (baseFilter instanceof ClassNameFilter) {
@@ -41,7 +44,7 @@ public final class PreserveInterfaceFilter {
         }
     }
 
-    public static class AbstractPreserveInterfaceFilter<T> implements Filter<T> {
+    public abstract static class AbstractPreserveInterfaceFilter<T> implements Filter<T> {
 
         private Filter<T> _wrappedFilter;
 

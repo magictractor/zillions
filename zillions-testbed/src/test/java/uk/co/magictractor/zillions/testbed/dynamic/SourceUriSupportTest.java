@@ -21,13 +21,13 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.List;
 
+import com.google.common.collect.Iterables;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.support.ReflectionSupport;
 import org.junit.platform.commons.util.ReflectionUtils;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
-
-import com.google.common.collect.Iterables;
 
 import uk.co.magictractor.zillions.suite.SourceUriSupport;
 

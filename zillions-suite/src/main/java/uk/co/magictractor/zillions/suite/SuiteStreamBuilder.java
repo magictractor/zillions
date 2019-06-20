@@ -22,6 +22,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.Iterables;
+
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.engine.DiscoverySelector;
@@ -35,9 +38,6 @@ import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.Iterables;
 
 import uk.co.magictractor.zillions.suite.annotations.JUnit4SuiteAnnotationReader;
 import uk.co.magictractor.zillions.suite.filter.ChildPackageFilter;

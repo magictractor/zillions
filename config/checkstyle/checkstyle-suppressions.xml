@@ -12,7 +12,7 @@
 	<!-- No naming checks on classes which use same names as corresponding C/C++ 
 		classes and functions -->
 	<suppress files="Lib\.java" checks="MethodName" />
-	<suppress files="[\\/]struct[\\/].*\.java$" checks="(TypeName|MemberName)" />
+	<suppress files="[\\/]struct[\\/].*\.java$" checks="(TypeName|MemberName|VisibilityModifier)" />
 
 	<!-- Ignore anything in target directory -->
 	<suppress files="[\\/]target[\\/]" checks=".*" />

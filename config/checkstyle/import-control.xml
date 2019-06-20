@@ -9,6 +9,7 @@
 	<allow pkg="java.io" />
 	<allow pkg="java.nio" />
 	<allow pkg="java.net" />
+	<allow pkg="java.lang.annotation" />
 	<allow pkg="java.lang.reflect" />
 	<!-- For ThreadMXBean which looks like it's insufficient for CPU time recording. 
 		Revisit, and likely remove, later. -->

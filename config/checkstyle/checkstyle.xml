@@ -195,7 +195,8 @@
 				value="Use more meaningful Exception. Typically IllegalStateException, IllegalArgumentException, or custom NotYetImplementedException. To downgrade checked Exception to RuntimeException use custom ForcedRuntimeException." />
 			<metadata name="uk.co.magictractor.sun" value="added" />
 		</module>
-		<module name="RegexpSinglelineJava">
+		<!-- Removed due to false positives in escaped URLs -->
+		<!-- <module name="RegexpSinglelineJava">
 			<property name="format" value="%\d+[^\$]" />
 			<property name="message"
 				value="Format string contains potentially invalid parameter - use '$' after %&lt;num&gt;" />
@@ -207,7 +208,7 @@
 			<metadata name="uk.co.magictractor.checkstyle.opinion"
 				value="Avoids arguments like %1 being passed to String.format() which results in an error." />
 			<metadata name="uk.co.magictractor.sun" value="added" />
-		</module>
+		</module> -->
 		<module name="Indentation">
 			<property name="severity" value="ignore" />
 			<metadata name="uk.co.magictractor.checkstyle.description"
@@ -558,6 +559,8 @@
 				value="We agree that a host of Exceptions on public classes and interfaces is undesirable. However, there are cases when a number of Exceptions is correct, such as in private methods, where Exceptions are handled by a calling class. It's common for the private class to declare multiple exceptions, such as DOMException and IOException." />
 		</module>
 		<module name="VisibilityModifier">
+		    <!-- Checkstyle does not yet relax this rule for JUnit 5 annotations - defaults OK for Junit 4 -->
+		    <property name="ignoreAnnotationCanonicalNames" value="org.junit.jupiter.api.extension.RegisterExtension"/>
 			<metadata name="uk.co.magictractor.checkstyle.description"
 				value="Checks visibility of class members." />
 			<metadata name="uk.co.magictractor.checkstyle.opinion"

@@ -18,10 +18,10 @@ package uk.co.magictractor.zillions.suite.filter;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import com.google.common.base.MoreObjects;
+
 import org.junit.platform.engine.FilterResult;
 import org.junit.platform.engine.discovery.ClassNameFilter;
-
-import com.google.common.base.MoreObjects;
 
 public class IsSuiteFilter implements ClassNameFilter {
 
