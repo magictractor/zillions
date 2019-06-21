@@ -30,7 +30,6 @@ import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.Filter;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.TestExecutionResult.Status;
-import org.junit.platform.engine.reporting.ReportEntry;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.TestExecutionListener;
@@ -38,6 +37,8 @@ import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.opentest4j.TestAbortedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DynamicSuiteExecutor {
 
@@ -113,6 +114,9 @@ public class DynamicSuiteExecutor {
     }
 
     private static final class DynamicContainerInfo {
+
+        private static final Logger LOGGER = LoggerFactory.getLogger(DynamicContainerInfo.class);
+
         private final TestIdentifier _containerIdentifier;
         // null at top
         private DynamicContainerInfo _parentContainerInfo;
@@ -139,7 +143,7 @@ public class DynamicSuiteExecutor {
         private DynamicContainer toDynamicContainer() {
 
             String displayName = _containerIdentifier.getDisplayName();
-            System.err.println("createDynamicContainer: " + displayName);
+            LOGGER.trace("toDynamicContainer() for container '{}'", displayName);
 
             /**
              * <p>
@@ -234,13 +238,15 @@ public class DynamicSuiteExecutor {
 
     private static final class SuiteExecutionListener implements TestExecutionListener {
 
+        private static final Logger LOGGER = LoggerFactory.getLogger(SuiteExecutionListener.class);
+
         private DynamicContainerInfo _topContainer;
         private DynamicContainerInfo _mostRecentContainer;
         private boolean _startInnerSuite;
 
         @Override
         public void executionStarted(TestIdentifier testIdentifier) {
-            System.out.println("executionStarted: " + testIdentifier);
+            LOGGER.trace("executionStarted: {}", testIdentifier);
 
             checkParentContainer(testIdentifier);
 
@@ -281,7 +287,7 @@ public class DynamicSuiteExecutor {
 
         @Override
         public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-            System.out.println("executionFinished: " + testIdentifier + "  result " + testExecutionResult);
+            LOGGER.trace("executionFinished: {} -> {}", testIdentifier, testExecutionResult);
 
             // TODO! check for anything started but not finished/skipped?
             if (testIdentifier.isContainer()) {
@@ -319,20 +325,8 @@ public class DynamicSuiteExecutor {
             }
         }
 
-        // TODO! probably not needed
-        @Override
-        public void dynamicTestRegistered(TestIdentifier testIdentifier) {
-            System.err.println("dynamicTestRegistered: " + testIdentifier);
-        }
-
         public void startInnerSuite() {
             _startInnerSuite = true;
-        }
-
-        // TODO! probably not needed
-        @Override
-        public void reportingEntryPublished(TestIdentifier testIdentifier, ReportEntry entry) {
-            System.err.println("reportingEntryPublished: " + entry);
         }
 
         private void addTest(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {

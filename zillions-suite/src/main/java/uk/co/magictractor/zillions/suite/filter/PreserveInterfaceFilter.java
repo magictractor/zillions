@@ -59,24 +59,24 @@ public final class PreserveInterfaceFilter {
     }
 
     public static final class PreserveClassNameFilter extends AbstractPreserveInterfaceFilter<String>
-            implements ClassNameFilter
-    {
+            implements ClassNameFilter {
+
         public PreserveClassNameFilter(Filter<String> wrappedFilter) {
             super(wrappedFilter);
         }
     }
 
     public static final class PreservePackageNameFilter extends AbstractPreserveInterfaceFilter<String>
-            implements PackageNameFilter
-    {
+            implements PackageNameFilter {
+
         public PreservePackageNameFilter(Filter<String> wrappedFilter) {
             super(wrappedFilter);
         }
     }
 
     public static final class PreservePostDiscoveryFilter extends AbstractPreserveInterfaceFilter<TestDescriptor>
-            implements PostDiscoveryFilter
-    {
+            implements PostDiscoveryFilter {
+
         public PreservePostDiscoveryFilter(Filter<TestDescriptor> wrappedFilter) {
             super(wrappedFilter);
         }

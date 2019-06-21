@@ -24,8 +24,12 @@ import org.junit.platform.engine.support.descriptor.ClassSource;
 import org.junit.platform.engine.support.descriptor.ClasspathResourceSource;
 import org.junit.platform.engine.support.descriptor.MethodSource;
 import org.junit.platform.launcher.TestIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class SourceUriSupport {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SourceUriSupport.class);
 
     private SourceUriSupport() {
     }
@@ -54,9 +58,7 @@ public final class SourceUriSupport {
                 methodSource.getMethodParameterTypes());
         }
         else {
-            // TODO! log a warning.
-            System.err.println(
-                "Code needs modified to create a URI for source type " + source.getClass().getSimpleName());
+            LOGGER.warn("Code needs modified to create a URI for source type {}", source.getClass().getSimpleName());
             return null;
         }
     }

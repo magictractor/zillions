@@ -52,11 +52,9 @@ public class IfElseFilter<T> implements Filter<T> {
     @Override
     public FilterResult apply(T object) {
         if (_ifPredicateSupplier.get().test(object)) {
-            System.err.println("then");
             return _thenFilter.apply(object);
         }
         else {
-            System.err.println("else");
             return _elseFilter.apply(object);
         }
     }

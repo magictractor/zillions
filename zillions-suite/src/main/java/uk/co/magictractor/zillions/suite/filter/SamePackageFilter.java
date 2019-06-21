@@ -19,8 +19,12 @@ import com.google.common.base.MoreObjects;
 
 import org.junit.platform.engine.FilterResult;
 import org.junit.platform.engine.discovery.ClassNameFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SamePackageFilter implements ClassNameFilter {
+
+    private final Logger _logger = LoggerFactory.getLogger(getClass());
 
     private final String _suiteClassName;
     private final String _suitePackagePlusDot;
@@ -45,8 +49,7 @@ public class SamePackageFilter implements ClassNameFilter {
         boolean isIncluded = testClassName.startsWith(_suitePackagePlusDot)
                 && testClassName.indexOf(".", _suitePackagePlusDot.length()) == -1
                 && !_suiteClassName.equals(testClassName);
-
-        System.out.println(testClassName + " -> " + isIncluded);
+        _logger.debug("isIncluded({}) -> {}", testClassName, isIncluded);
 
         return isIncluded;
     }

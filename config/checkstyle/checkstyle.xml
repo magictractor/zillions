@@ -271,6 +271,8 @@
 			<metadata name="uk.co.magictractor.sun" value="added" />
 		</module>
 		<module name="DeclarationOrder">
+		    <!-- Don't check the ordering of public, protected, private - the results are sometimes whiffy -->
+		    <property name="ignoreModifiers" value="true" />
 			<metadata name="uk.co.magictractor.checkstyle.description"
 				value="Checks that the parts of a class or interface declaration appear in the order suggested by the Code Conventions for the Java Programming Language." />
 			<metadata name="uk.co.magictractor.checkstyle.opinion"

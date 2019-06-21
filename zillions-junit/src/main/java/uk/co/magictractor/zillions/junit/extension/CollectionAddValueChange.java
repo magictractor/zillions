@@ -17,7 +17,12 @@ package uk.co.magictractor.zillions.junit.extension;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CollectionAddValueChange<T> implements ValueChange {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CollectionAddValueChange.class);
 
     private final Collection<T> _collection;
     private final T _addValue;
@@ -33,7 +38,7 @@ public class CollectionAddValueChange<T> implements ValueChange {
         _alreadyContained = _collection.contains(_addValue);
         if (_alreadyContained) {
             _collection.add(_addValue);
-            System.out.println("added value " + _addValue);
+            LOGGER.debug("added value to collection: {}", _addValue);
         }
     }
 
@@ -41,7 +46,7 @@ public class CollectionAddValueChange<T> implements ValueChange {
     public void revert() {
         if (!_alreadyContained) {
             _collection.remove(_addValue);
-            System.out.println("removed value " + _addValue);
+            LOGGER.debug("removed value from collection: {}", _addValue);
         }
     }
 

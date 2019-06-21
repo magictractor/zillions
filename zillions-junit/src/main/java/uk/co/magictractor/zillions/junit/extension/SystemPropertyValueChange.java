@@ -15,13 +15,16 @@
  */
 package uk.co.magictractor.zillions.junit.extension;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SystemPropertyValueChange implements ValueChange {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SystemPropertyValueChange.class);
 
     private final String _key;
     private final String _newValue;
     private String _originalValue;
-    // TODO! bin this
-    private boolean _isApplied;
 
     public SystemPropertyValueChange(String key, String newValue) {
         _key = key;
@@ -31,22 +34,19 @@ public class SystemPropertyValueChange implements ValueChange {
     @Override
     public void apply() {
         _originalValue = System.setProperty(_key, _newValue);
-        _isApplied = true;
+        LOGGER.debug("system property set: {} -> {}", _key, _newValue);
     }
 
     @Override
     public void revert() {
-        if (!_isApplied) {
-            throw new IllegalStateException("not applied");
-        }
 
         if (_originalValue == null) {
-            System.err.println("revert " + _key + " cleared");
             System.clearProperty(_key);
+            LOGGER.debug("system property cleared: {}", _key);
         }
         else {
-            System.err.println("revert " + _key + " -> " + _originalValue);
             System.setProperty(_key, _originalValue);
+            LOGGER.debug("system property reverted: {} -> {}", _key, _originalValue);
         }
     }
 

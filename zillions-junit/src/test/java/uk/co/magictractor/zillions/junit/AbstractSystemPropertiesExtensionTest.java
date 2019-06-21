@@ -28,6 +28,8 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.co.magictractor.zillions.junit.extension.SystemPropertiesExtension;
 
@@ -121,21 +123,23 @@ public abstract class AbstractSystemPropertiesExtensionTest {
 
     public static class PostTestsCheck implements BeforeAllCallback, AfterEachCallback, AfterAllCallback {
 
+        private static final Logger LOGGER = LoggerFactory.getLogger(PostTestsCheck.class);
+
         @Override
         public void beforeAll(ExtensionContext context) {
-            System.err.println("PostTestsCheck.beforeAll");
+            LOGGER.trace("beforeAll");
         }
 
         @Override
         public void afterEach(ExtensionContext context) {
-            System.err.println("PostTestsCheck.afterEach");
+            LOGGER.trace("afterEach");
             // Check that static scoped values remain, and method scoped values have been restored.
             checkSystemPropertyValues(INITIAL_VALUE, null, context.getTestInstanceLifecycle().get());
         }
 
         @Override
         public void afterAll(ExtensionContext context) {
-            System.err.println("PostTestsCheck.afterAll");
+            LOGGER.trace("afterAll");
             // Check that all properties have been restored.
             checkSystemPropertyValues(null);
         }

@@ -40,11 +40,12 @@ public class TestContextExtension extends AbstractValueChangeExtension {
     }
 
     public TestContextExtension disableProxies() {
-        System.err.println("disabledProxies");
         TestContext context = TestContext.getInstance();
         ValueChange implProxyValueChange = new SetterValueChange<>(context::isImplementationProxyEnabled,
             context::setImplementationProxyEnabled, false);
         addValueChange(implProxyValueChange);
+
+        getLogger().debug("disabled proxies");
         return this;
     }
 

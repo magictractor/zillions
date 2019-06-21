@@ -22,8 +22,12 @@ import com.google.common.base.MoreObjects;
 
 import org.junit.platform.engine.FilterResult;
 import org.junit.platform.engine.discovery.ClassNameFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IsSuiteFilter implements ClassNameFilter {
+
+    private final Logger _logger = LoggerFactory.getLogger(getClass());
 
     private final Supplier<Predicate<String>> _suitePredicateSupplier;
     private FilterResult _included = FilterResult.included("is a suite");
@@ -40,8 +44,7 @@ public class IsSuiteFilter implements ClassNameFilter {
 
     private boolean isIncluded(String testClassName) {
         boolean isIncluded = _suitePredicateSupplier.get().test(testClassName);
-
-        System.err.println("ISF: " + testClassName + " -> " + isIncluded);
+        _logger.debug("isIncluded({}) -> {}", testClassName, isIncluded);
 
         return isIncluded;
     }

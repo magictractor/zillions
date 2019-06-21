@@ -26,17 +26,17 @@ import java.util.stream.Collectors;
  */
 /* default */ final class TestContext {
 
-    private static TestContext INSTANCE = new TestContext();
+    private static final TestContext INSTANCE = new TestContext();
 
     private final List<Object> _testImplementations = new ArrayList<>();
     //     TODO! better name
     private boolean _isImplementationProxyEnabled = true;
 
-    public static TestContext getInstance() {
-        return INSTANCE;
+    private TestContext() {
     }
 
-    private TestContext() {
+    public static TestContext getInstance() {
+        return INSTANCE;
     }
 
     public boolean isImplementationProxyEnabled() {

@@ -25,9 +25,14 @@ import java.util.function.Supplier;
 
 import com.google.common.base.MoreObjects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.magictractor.zillions.api.factory.ImplementationFactory;
 
 public abstract class AbstractProxyImplementationFactory implements ImplementationFactory {
+
+    private final Logger _logger = LoggerFactory.getLogger(getClass());
 
     // Perhaps allow null values for marker interfaces
     // TODO! would be ropey with super interfaces
@@ -36,6 +41,10 @@ public abstract class AbstractProxyImplementationFactory implements Implementati
     // Only a no-args constructor because strategy factories are generally wired in
     // via SPI
     public AbstractProxyImplementationFactory() {
+    }
+
+    protected Logger getLogger() {
+        return _logger;
     }
 
     protected void addInterface(Class<?> interfaceClass, Supplier<?> interfaceValueSupplier) {

@@ -15,11 +15,19 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class GmpLibInstance {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GmpLibInstance.class);
 
     public static GmpLib __lib;
 
     // private static final boolean IS_AVAILABLE;
+
+    private GmpLibInstance() {
+    }
 
     static {
         // TODO! make more robust
@@ -35,9 +43,6 @@ public final class GmpLibInstance {
         // One day, but not soon, there might be a JNI implementation.
         // JNA or JNI would be a configuration option.
         __lib = new JnaGmpLib();
-    }
-
-    private GmpLibInstance() {
     }
 
 }

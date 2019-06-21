@@ -47,8 +47,7 @@ import org.slf4j.LoggerFactory;
  * </p>
  */
 public abstract class AbstractValueChangeExtension
-        implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback, AfterEachCallback
-{
+        implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback, AfterEachCallback {
 
     private final Logger _logger = LoggerFactory.getLogger(getClass());
 
@@ -60,14 +59,15 @@ public abstract class AbstractValueChangeExtension
 
     @Override
     public final void beforeAll(ExtensionContext context) throws Exception {
-        System.err.println("beforeAll");
+        getLogger().trace("beforeAll");
+
         applyPending(true);
         _isRegistered = true;
     }
 
     @Override
     public final void beforeEach(ExtensionContext context) throws Exception {
-        System.err.println("beforeEach");
+        getLogger().trace("beforeEach");
 
         if (!_isRegistered) {
             // When the extension is used in a non-static variable then beforeAll() will not be called.
@@ -85,14 +85,16 @@ public abstract class AbstractValueChangeExtension
 
     @Override
     public final void afterEach(ExtensionContext context) throws Exception {
-        System.err.println("afterEach");
+        getLogger().trace("afterEach");
+
         _isWithinTest = false;
         revert(getValueChanges()._singleTest);
     }
 
     @Override
     public final void afterAll(ExtensionContext context) throws Exception {
-        System.err.println("afterAll");
+        getLogger().trace("afterAll");
+
         revert(getValueChanges()._allTests);
     }
 

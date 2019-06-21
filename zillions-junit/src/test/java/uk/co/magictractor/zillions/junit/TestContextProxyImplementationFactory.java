@@ -34,7 +34,7 @@ public class TestContextProxyImplementationFactory extends AbstractDelegatingImp
         //      S impl = TestContext.getInstance().getTestImplementation(apiClass);
         //     return impl;
 
-        System.err.println("delegate for: " + apiClass);
+        getLogger().debug("findDelegate({}) -> {}", apiClass, defaultImplementation);
 
         // throw new UnsupportedOperationException("TODO");
 
