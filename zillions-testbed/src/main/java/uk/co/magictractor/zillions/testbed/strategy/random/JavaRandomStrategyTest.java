@@ -15,10 +15,13 @@
  */
 package uk.co.magictractor.zillions.testbed.strategy.random;
 
+import org.junit.jupiter.api.Disabled;
+
 import uk.co.magictractor.zillions.core.random.JavaRandomStrategy;
 import uk.co.magictractor.zillions.suite.WithinSuite;
 
 @WithinSuite
+@Disabled("TODO")
 public class JavaRandomStrategyTest extends RandomStrategyTest {
 
     public JavaRandomStrategyTest() {
