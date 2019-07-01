@@ -33,7 +33,7 @@ include("zillions-semiprime")
 // https://proandroiddev.com/saying-goodbye-to-snapshots-with-gradles-composite-builds-bc98751392f6
 // Also see https://github.com/gradle/gradle/issues/1792
 //if( file(".marker").exists() ) {
-    includeBuild("zillions-suite")
+    includeBuild("jura")
 //}
 
 // Trick copied from https://github.com/robfletcher/strikt/blob/master/settings.gradle.kts
