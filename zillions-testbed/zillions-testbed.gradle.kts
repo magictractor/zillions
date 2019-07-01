@@ -1,6 +1,6 @@
 dependencies {
     api(project(":zillions-env"))
-    api(project(":zillions-suite"))
+    implementation("uk.co.magictractor:zillions-suite:0.0.1-SNAPSHOT")
     // junit-jupiter-params for @ParameterizedTests
     api("org.junit.jupiter:junit-jupiter-params:5.4.2")
     api("org.junit.platform:junit-platform-suite-api:1.4.2")

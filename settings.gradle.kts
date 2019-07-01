@@ -9,7 +9,6 @@
 
 rootProject.name = "zillions"
 
-include("zillions-suite")
 include("zillions-api")
 include("zillions-junit")
 include("zillions-env")
@@ -18,6 +17,24 @@ include("zillions-testbed")
 include("zillions-biginteger")
 include("zillions-gmp")
 include("zillions-semiprime")
+
+// includeBuild causes IDEs to link projects
+// See https://docs.gradle.org/current/userguide/composite_builds.html
+// But it doesn't fall back to repo jar if project is closed...
+// See https://github.com/eclipse/buildship/issues/690
+// 
+//includeBuild("zillions-suite")
+//if( file('../other-project').exists) {
+
+// Hmm. using includeBuild() changed Eclipse dependency to the suite project
+// BUT undoing it retains the project dependency (should revert to the repo?)
+
+// Perhaps use a marker file as suggested in
+// https://proandroiddev.com/saying-goodbye-to-snapshots-with-gradles-composite-builds-bc98751392f6
+// Also see https://github.com/gradle/gradle/issues/1792
+//if( file(".marker").exists() ) {
+    includeBuild("zillions-suite")
+//}
 
 // Trick copied from https://github.com/robfletcher/strikt/blob/master/settings.gradle.kts
 // Explained at http://www.developerphil.com/renaming-your-gradle-build-files

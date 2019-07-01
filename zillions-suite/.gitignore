@@ -6,3 +6,4 @@
 /.checkstyle
 /build/
 /bin/
+/.gradle/
