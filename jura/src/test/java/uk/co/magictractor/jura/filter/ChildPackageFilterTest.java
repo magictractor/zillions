@@ -13,55 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.testbed.suite.filter;
+package uk.co.magictractor.jura.filter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.platform.engine.FilterResult;
 
-import uk.co.magictractor.jura.filter.SamePackageFilter;
+import uk.co.magictractor.jura.filter.ChildPackageFilter;
 
-public class SamePackageFilterTest {
+public class ChildPackageFilterTest {
 
     @Test
-    public void testSelf() {
-        SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
-        FilterResult filterResult = filter.apply("a.b.c.Suite");
+    public void testSamePackage() {
+        ChildPackageFilter filter = new ChildPackageFilter("a.b.c.Suite");
+        FilterResult filterResult = filter.apply("a.b.c.Test");
         assertExcluded(filterResult);
     }
 
     @Test
-    public void testSamePackage() {
-        SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
-        FilterResult filterResult = filter.apply("a.b.c.Test");
-        assertIncluded(filterResult);
-    }
-
-    @Test
-    public void testSuiteInSamePackage() {
-        SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
-        FilterResult filterResult = filter.apply("a.b.c.OtherSuite");
-        assertIncluded(filterResult);
-    }
-
-    @Test
     public void testChildPackage() {
-        SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
+        ChildPackageFilter filter = new ChildPackageFilter("a.b.c.Suite");
         FilterResult filterResult = filter.apply("a.b.c.d.Test");
+        assertIncluded(filterResult);
+    }
+
+    @Test
+    public void testGrandchildPackage() {
+        ChildPackageFilter filter = new ChildPackageFilter("a.b.c.Suite");
+        FilterResult filterResult = filter.apply("a.b.c.d.e.Test");
         assertExcluded(filterResult);
     }
 
     @Test
     public void testParentPackage() {
-        SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
+        ChildPackageFilter filter = new ChildPackageFilter("a.b.c.Suite");
         FilterResult filterResult = filter.apply("a.b.Test");
         assertExcluded(filterResult);
     }
 
     @Test
     public void testSiblingPackage() {
-        SamePackageFilter filter = new SamePackageFilter("a.b.c.Suite");
+        ChildPackageFilter filter = new ChildPackageFilter("a.b.c.Suite");
         FilterResult filterResult = filter.apply("a.b.z.Test");
         assertExcluded(filterResult);
     }
@@ -69,13 +62,13 @@ public class SamePackageFilterTest {
     private void assertIncluded(FilterResult filterResult) {
         assertThat(filterResult.included()).isTrue();
         assertThat(filterResult.getReason().isPresent()).isTrue();
-        assertThat(filterResult.getReason().get()).isEqualTo("is in the same package as the suite class");
+        assertThat(filterResult.getReason().get()).isEqualTo("is in a child package of the suite class");
     }
 
     private void assertExcluded(FilterResult filterResult) {
         assertThat(filterResult.included()).isFalse();
         assertThat(filterResult.getReason().isPresent()).isTrue();
-        assertThat(filterResult.getReason().get()).isEqualTo("is in a different package than the suite class");
+        assertThat(filterResult.getReason().get()).isEqualTo("is in a package which is not a child of the suite class");
     }
 
 }
