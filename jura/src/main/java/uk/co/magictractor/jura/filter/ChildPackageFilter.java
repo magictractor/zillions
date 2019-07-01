@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite.filter;
+package uk.co.magictractor.jura.filter;
 
 import com.google.common.base.MoreObjects;
 

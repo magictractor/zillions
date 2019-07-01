@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.engine.FilterResult;
 
-import uk.co.magictractor.zillions.suite.filter.IsSuiteFilter;
+import uk.co.magictractor.jura.filter.IsSuiteFilter;
 
 public class IsSuiteFilterTest {
 

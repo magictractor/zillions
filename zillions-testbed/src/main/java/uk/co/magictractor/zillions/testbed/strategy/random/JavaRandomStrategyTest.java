@@ -17,8 +17,8 @@ package uk.co.magictractor.zillions.testbed.strategy.random;
 
 import org.junit.jupiter.api.Disabled;
 
+import uk.co.magictractor.jura.WithinSuite;
 import uk.co.magictractor.zillions.core.random.JavaRandomStrategy;
-import uk.co.magictractor.zillions.suite.WithinSuite;
 
 @WithinSuite
 @Disabled("TODO")

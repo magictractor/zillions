@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite.suite;
+package uk.co.magictractor.jura;
 
-import org.junit.jupiter.api.Test;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class DummyTestA {
+import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-    @Test
-    public void pass() {
-        // do nothing, passes
-    }
+@Target({ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@TestFactory
+@ExtendWith(CaptureContextExtension.class)
+public @interface Suite {
 
 }

@@ -13,23 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite;
+package uk.co.magictractor.jura.annotations;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import uk.co.magictractor.jura.SuiteStreamBuilder;
 
-import org.junit.jupiter.api.Tag;
+public interface SuiteAnnotationReader {
 
-/**
- * <p>
- * Marker for unit tests which are run using a test suite.
- * </p>
- */
-@Target({ ElementType.TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-@Tag("within-suite")
-public @interface WithinSuite {
+    void readAnnotations(SuiteStreamBuilder suiteStreamBuilder);
 
 }

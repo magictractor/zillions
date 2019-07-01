@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite;
+package uk.co.magictractor.jura;
 
 import java.lang.reflect.Method;
 import java.net.URI;

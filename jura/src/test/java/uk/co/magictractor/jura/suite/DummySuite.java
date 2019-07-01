@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite;
+package uk.co.magictractor.jura.suite;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.stream.Stream;
 
-import org.junit.jupiter.api.TestFactory;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.DynamicNode;
 
-@Target({ ElementType.METHOD })
-@Retention(RetentionPolicy.RUNTIME)
-@TestFactory
-@ExtendWith(CaptureContextExtension.class)
-public @interface Suite {
+import uk.co.magictractor.jura.Suite;
+import uk.co.magictractor.jura.SuiteStreamBuilder;
+import uk.co.magictractor.jura.WithinSuite;
+
+@WithinSuite
+public class DummySuite {
+
+    @Suite
+    public Stream<DynamicNode> suite() {
+        return new SuiteStreamBuilder().selectOthersInPackage().build();
+    }
 
 }

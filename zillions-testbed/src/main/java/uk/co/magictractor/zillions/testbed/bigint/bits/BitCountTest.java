@@ -18,11 +18,11 @@ package uk.co.magictractor.zillions.testbed.bigint.bits;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import uk.co.magictractor.jura.WithinSuite;
 import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.api.bits.BigIntBitCount;
 import uk.co.magictractor.zillions.environment.BigIntFactory;
 import uk.co.magictractor.zillions.environment.Environment;
-import uk.co.magictractor.zillions.suite.WithinSuite;
 
 @WithinSuite
 public class BitCountTest /* extends OpTestNoParam */ {

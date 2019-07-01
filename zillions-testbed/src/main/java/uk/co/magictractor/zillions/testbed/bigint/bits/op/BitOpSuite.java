@@ -19,9 +19,9 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 
-import uk.co.magictractor.zillions.suite.Suite;
-import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
-import uk.co.magictractor.zillions.suite.WithinSuite;
+import uk.co.magictractor.jura.Suite;
+import uk.co.magictractor.jura.SuiteStreamBuilder;
+import uk.co.magictractor.jura.WithinSuite;
 
 @WithinSuite
 public class BitOpSuite {

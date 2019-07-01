@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite;
+package uk.co.magictractor.jura;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DynamicNode;
+
+import uk.co.magictractor.jura.SuiteStreamBuilder;
 
 public class SuiteStreamBuilderTest {
 

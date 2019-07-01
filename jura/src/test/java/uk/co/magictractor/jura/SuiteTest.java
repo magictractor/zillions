@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite;
+package uk.co.magictractor.jura;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,7 +23,8 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import uk.co.magictractor.zillions.suite.suite.SuiteWatcher;
+import uk.co.magictractor.jura.CaptureContextExtension;
+import uk.co.magictractor.jura.suite.SuiteWatcher;
 
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

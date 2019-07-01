@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite;
+package uk.co.magictractor.jura;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,10 +39,10 @@ import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 
-import uk.co.magictractor.zillions.suite.annotations.JUnit4SuiteAnnotationReader;
-import uk.co.magictractor.zillions.suite.filter.ChildPackageFilter;
-import uk.co.magictractor.zillions.suite.filter.IsSuiteFilter;
-import uk.co.magictractor.zillions.suite.filter.SamePackageFilter;
+import uk.co.magictractor.jura.annotations.JUnit4SuiteAnnotationReader;
+import uk.co.magictractor.jura.filter.ChildPackageFilter;
+import uk.co.magictractor.jura.filter.IsSuiteFilter;
+import uk.co.magictractor.jura.filter.SamePackageFilter;
 
 /**
  * <p>

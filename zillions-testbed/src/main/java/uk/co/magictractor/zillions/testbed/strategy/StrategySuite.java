@@ -20,8 +20,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.platform.suite.api.SelectClasses;
 
-import uk.co.magictractor.zillions.suite.Suite;
-import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
+import uk.co.magictractor.jura.Suite;
+import uk.co.magictractor.jura.SuiteStreamBuilder;
 import uk.co.magictractor.zillions.testbed.strategy.exporter.BigIntByteExporterTest;
 import uk.co.magictractor.zillions.testbed.strategy.importer.BigIntByteImporterTest;
 

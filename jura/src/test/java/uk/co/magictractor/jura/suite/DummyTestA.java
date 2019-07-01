@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.zillions.suite.suite;
+package uk.co.magictractor.jura.suite;
 
-import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.DynamicNode;
+public class DummyTestA {
 
-import uk.co.magictractor.zillions.suite.Suite;
-import uk.co.magictractor.zillions.suite.SuiteStreamBuilder;
-import uk.co.magictractor.zillions.suite.WithinSuite;
-
-@WithinSuite
-public class DummySuite {
-
-    @Suite
-    public Stream<DynamicNode> suite() {
-        return new SuiteStreamBuilder().selectOthersInPackage().build();
+    @Test
+    public void pass() {
+        // do nothing, passes
     }
 
 }
