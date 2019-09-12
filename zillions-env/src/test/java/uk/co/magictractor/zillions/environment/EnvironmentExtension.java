@@ -15,7 +15,7 @@
  */
 package uk.co.magictractor.zillions.environment;
 
-import uk.co.magictractor.zillions.junit.extension.AbstractValueChangeExtension;
+import uk.co.magictractor.jura.extension.AbstractValueChangeExtension;
 
 public class EnvironmentExtension extends AbstractValueChangeExtension {
 

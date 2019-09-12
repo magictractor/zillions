@@ -17,10 +17,10 @@ package uk.co.magictractor.zillions.junit;
 
 import java.util.List;
 
-import uk.co.magictractor.zillions.junit.extension.AbstractValueChangeExtension;
-import uk.co.magictractor.zillions.junit.extension.CollectionAddValueChange;
-import uk.co.magictractor.zillions.junit.extension.SetterValueChange;
-import uk.co.magictractor.zillions.junit.extension.ValueChange;
+import uk.co.magictractor.jura.extension.AbstractValueChangeExtension;
+import uk.co.magictractor.jura.extension.CollectionAddValueChange;
+import uk.co.magictractor.jura.extension.SetterValueChange;
+import uk.co.magictractor.jura.extension.ValueChange;
 
 public class TestContextExtension extends AbstractValueChangeExtension {
 

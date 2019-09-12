@@ -22,11 +22,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.engine.JupiterTestEngine;
 import org.junit.platform.engine.TestEngine;
 
+import uk.co.magictractor.jura.extension.SystemPropertiesExtension;
 import uk.co.magictractor.zillions.environment.dummy.Single;
 import uk.co.magictractor.zillions.environment.dummy.SingleOne;
 import uk.co.magictractor.zillions.environment.dummy.SingleOther;
 import uk.co.magictractor.zillions.junit.TestContextExtension;
-import uk.co.magictractor.zillions.junit.extension.SystemPropertiesExtension;
 
 public class EnvironmentTest {
 
