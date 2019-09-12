@@ -22,7 +22,7 @@ import java.util.Arrays;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import uk.co.magictractor.jura.WithinSuite;
+import uk.co.magictractor.jura.suite.WithinSuite;
 import uk.co.magictractor.zillions.api.BigInt;
 import uk.co.magictractor.zillions.api.exporter.BigIntByteExporter;
 import uk.co.magictractor.zillions.core.bits.BitUtils;

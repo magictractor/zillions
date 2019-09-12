@@ -17,7 +17,7 @@ package uk.co.magictractor.zillions.testbed.strategy.random;
 
 import org.junit.jupiter.api.Disabled;
 
-import uk.co.magictractor.jura.WithinSuite;
+import uk.co.magictractor.jura.suite.WithinSuite;
 import uk.co.magictractor.zillions.core.random.JavaRandomStrategy;
 
 @WithinSuite

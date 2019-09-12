@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.jura;
+package uk.co.magictractor.jura.suite;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DynamicNode;
-
-import uk.co.magictractor.jura.SuiteStreamBuilder;
 
 public class SuiteStreamBuilderTest {
 
     @SuiteTest
-    public void t() {
-        SuiteStreamBuilder builder = new SuiteStreamBuilder().selectSuitesInChildPackages();
-        List<DynamicNode> nodes = build(builder);
+    public void testNoChildPackages() {
+        Assertions.assertThatThrownBy(() -> new SuiteStreamBuilder().selectSuitesInChildPackages())
+                .isExactlyInstanceOf(IllegalStateException.class)
+                .hasMessage("No child packages to select");
     }
 
     private List<DynamicNode> build(SuiteStreamBuilder suiteStreamBuilder) {

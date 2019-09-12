@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.jura.filter;
+package uk.co.magictractor.jura.suite.filter;
 
 import org.junit.platform.engine.Filter;
 import org.junit.platform.engine.FilterResult;

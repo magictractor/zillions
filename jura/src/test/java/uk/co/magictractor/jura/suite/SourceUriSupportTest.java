@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.jura;
+package uk.co.magictractor.jura.suite;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +23,7 @@ import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ReflectionUtils;
 
-import uk.co.magictractor.jura.SourceUriSupport;
+import uk.co.magictractor.jura.suite.SourceUriSupport;
 
 public class SourceUriSupportTest {
 

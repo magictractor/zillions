@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.jura;
+package uk.co.magictractor.jura.suite;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import uk.co.magictractor.jura.CaptureContextExtension;
-import uk.co.magictractor.jura.suite.SuiteWatcher;
 
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-@Test
+@TestFactory
 @ExtendWith(CaptureContextExtension.class)
-@ExtendWith(SuiteWatcher.class)
-public @interface SuiteTest {
+public @interface Suite {
 
 }

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.jura.filter;
+package uk.co.magictractor.jura.suite.filter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.platform.engine.FilterResult;
 
-import uk.co.magictractor.jura.filter.ChildPackageFilter;
+import uk.co.magictractor.jura.suite.filter.ChildPackageFilter;
 
 public class ChildPackageFilterTest {
 

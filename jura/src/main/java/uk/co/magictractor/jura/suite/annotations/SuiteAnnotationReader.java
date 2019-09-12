@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.jura.annotations;
+package uk.co.magictractor.jura.suite.annotations;
 
-import uk.co.magictractor.jura.SuiteStreamBuilder;
+import uk.co.magictractor.jura.suite.SuiteStreamBuilder;
 
 public interface SuiteAnnotationReader {
 

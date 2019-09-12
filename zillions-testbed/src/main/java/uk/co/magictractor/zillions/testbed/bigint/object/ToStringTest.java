@@ -20,7 +20,7 @@ import static uk.co.magictractor.zillions.environment.BigIntFactory.from;
 
 import org.junit.jupiter.api.Test;
 
-import uk.co.magictractor.jura.WithinSuite;
+import uk.co.magictractor.jura.suite.WithinSuite;
 import uk.co.magictractor.zillions.api.BigInt;
 
 @WithinSuite

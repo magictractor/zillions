@@ -27,6 +27,7 @@ dependencies {
     // JUnitSuiteSuiteAnnotationReader should not be used if this project is not present.    
     compileOnly("org.junit.platform:junit-platform-suite-api:1.4.2")
     testImplementation("org.junit.platform:junit-platform-suite-api:1.4.2")
+    testImplementation("ch.qos.logback:logback-classic:1.2.3")
 
     // MoreObjects is used for toString() implementations
     implementation("com.google.guava:guava:27.0.1-jre")

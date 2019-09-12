@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.magictractor.jura.annotations;
+package uk.co.magictractor.jura.suite.annotations;
 
 import java.lang.annotation.Annotation;
 import java.util.function.Consumer;
@@ -38,9 +38,9 @@ import org.junit.platform.suite.api.IncludeTags;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.SelectPackages;
 
-import uk.co.magictractor.jura.SuiteStreamBuilder;
-import uk.co.magictractor.jura.filter.IfElseFilter;
-import uk.co.magictractor.jura.filter.PreserveInterfaceFilter;
+import uk.co.magictractor.jura.suite.SuiteStreamBuilder;
+import uk.co.magictractor.jura.suite.filter.IfElseFilter;
+import uk.co.magictractor.jura.suite.filter.PreserveInterfaceFilter;
 
 /**
  * <p>

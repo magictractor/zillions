@@ -19,9 +19,9 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 
-import uk.co.magictractor.jura.Suite;
-import uk.co.magictractor.jura.SuiteStreamBuilder;
-import uk.co.magictractor.jura.WithinSuite;
+import uk.co.magictractor.jura.suite.Suite;
+import uk.co.magictractor.jura.suite.SuiteStreamBuilder;
+import uk.co.magictractor.jura.suite.WithinSuite;
 
 @WithinSuite
 public class ExporterSuite {
