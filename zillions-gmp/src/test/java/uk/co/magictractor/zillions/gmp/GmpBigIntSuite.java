@@ -15,11 +15,9 @@
  */
 package uk.co.magictractor.zillions.gmp;
 
-import org.junit.platform.suite.api.IncludeClassNamePatterns;
-
 import uk.co.magictractor.zillions.testbed.bigint.BigIntSuite;
 
-@IncludeClassNamePatterns(".*Subtract.*")
+//@IncludeClassNamePatterns(".*Subtract.*")
 public class GmpBigIntSuite extends BigIntSuite {
 
     // Nothing here. Full test suite is inherited from testbed parent suite.
