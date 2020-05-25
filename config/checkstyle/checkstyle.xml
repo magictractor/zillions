@@ -615,16 +615,11 @@
 		<module name="JavadocMethod">
 			<property name="severity" value="info" />
 			<property name="scope" value="public" />
-			<property name="allowUndeclaredRTE" value="true" />
-			<property name="logLoadErrors" value="true" />
-			<property name="suppressLoadErrors" value="true" />
 			<metadata name="uk.co.magictractor.checkstyle.description"
 				value="Checks the Javadoc of a method or constructor." />
 			<metadata name="uk.co.magictractor.checkstyle.opinion"
 				value="Documentation should be written to a high level, but this can usually only be done later in development, when methods are stable. Javadoc is not optional. The high level number is simply to reduce noise noise in early stages of development." />
 			<metadata name="uk.co.magictractor.sun.scope" value="added" />
-			<metadata name="uk.co.magictractor.sun.allowUndeclaredRTE"
-				value="added" />
 		</module>
 		<module name="JavadocStyle">
 			<property name="severity" value="info" />
